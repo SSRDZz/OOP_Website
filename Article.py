@@ -1,14 +1,7 @@
 from fasthtml.common import *
 from datetime import datetime
-
+from BackEnd import *
 app, rt = fast_app()
-
-class Article:
-    def __init__(self, title, href, image, description):
-        self.title = title
-        self.href = href
-        self.image = image
-        self.description = description
 
 articles = [
     Article(
