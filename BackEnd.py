@@ -8,6 +8,10 @@ class Website:
     # Class-level variables
     pendingTour = []
     tourManager = None
+
+    # Store account
+    account = []
+
     
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -16,6 +20,10 @@ class Website:
 
     def __init__(self):
         self.tourManager = TourManager()
+
+    def making_account(self, username, password):
+        self.account.append(Account(username, password))
+        return
 
     def RequestCreateTour(self,name):
         self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
@@ -77,8 +85,14 @@ class Travelling:
         pass
 
 class Account:
-    def __init__(self):
-        pass
+    def __init__(self, username, password):
+        self.__username = username
+        self.__password = password
+
+    def verify(self, username, password):
+        if username == self.__username and password == self.__password:
+            return True
+        return False
 
 class User(Account):
     def __init__(self):
@@ -106,7 +120,15 @@ class Payment():
     
     def Pay():
         pass
-    
+
+class Article:
+    def __init__(self, title, href, image, description):
+        self.title = title
+        self.href = href
+        self.image = image
+        self.description = description
+
+
 
 
 website = Website()
