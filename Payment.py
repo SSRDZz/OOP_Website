@@ -1,4 +1,4 @@
-from fasthtml.common import * #
+from fasthtml.common import * ##
 from dataclasses import dataclass
 
 app, rt = fast_app()
