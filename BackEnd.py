@@ -19,7 +19,10 @@ class Website:
 
     def __init__(self):
         self.__user = []
-        self.__tourManager = ''
+        self.__tour_manager = ''
+
+    def setter_tourmanager(self,tour_manager): #___________________เเก้ setter ด้วย ______________________
+        self.__tour_manager = tour_manager
 
     def create_account(self, username, password):
         self.account.append(Account(username, password))
@@ -28,7 +31,7 @@ class Website:
     def RequestCreateTour(self,name):
         self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
 
-    def SearchTour(self,id,place,time): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
+    def SearchTour(self,id=None,place=None,time=None): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.__tour_manager.search_tour(id,place,time)
     
     def booking_tour(self, user, tour_program, data):
@@ -63,10 +66,10 @@ class TourManager:
             while(1):
                 print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
 
-    def search_tour(self,id,place,time):
+    def search_tour(self,id=None,place=None,time=None):
         if(id!=None):
             for tour in self.__tour_program: #return only one instance
-                if(time==tour.__id):
+                if(id==tour.id): # น่าจะต้อง encap____________________
                     return tour
             else:
                 return None # ไม่เจอ 
@@ -75,22 +78,22 @@ class TourManager:
             return self.search_list_tour(place,time) # return list instance
 
 
-    def search_list_tour(self,place,time):
+    def search_list_tour(self,place=None,time=None):
         tours = []
 
         if(time!=None):
             if(place!=None):
                 for tour in self.__tour_program:
-                    if(time==tour.__time and place ==tour.__place):
+                    if(time==tour.time and place ==tour.place):
                         tours.append(tour)
             else:
                 for tour in self.__tour_program:
-                    if(time==tour.__time ):
+                    if(time==tour.time ):
                         tours.append(tour)
 
         elif(place!=None):
             for tour in self.__tour_program:
-                    if(place==tour.__place ):
+                    if(place==tour.place ):
                         tours.append(tour)
 
         else:
@@ -106,10 +109,23 @@ class TourManager:
 class TourProgram:
     Travelling = []
     def __init__(self,name,id,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
-        self.name = name
-        self.__id = ''
-        self.__place = ''
-        self.__time = ''
+        self.__name = name
+        self.__id = id
+        self.__place = place
+        self.__time = time
+    
+    @property
+    def id(self):
+        return self.__id
+    @property
+    def place(self):
+        return self.__place
+    @property
+    def name(self):
+        return self.__name
+    @property
+    def time(self):
+        return self.__time
 
 class Travelling:
     startLoacation = None
@@ -185,16 +201,17 @@ class Booking:
 
 
 
-
+website = Website()
 
 def create_enviroment():
 
-    website = Website()
-
     Tour = TourManager()
-    website.tourManager = Tour
+    website.setter_tourmanager(Tour)
+
     Tour.add_tour(TourProgram("minprogram",1,"Thai"))
     Tour.add_tour(TourProgram("zardprogram",2,"Thai"))
     Tour.add_tour(TourProgram("owenprogram",3,"Thai"))
+
+    print(website.SearchTour(id=1).name)
 
 create_enviroment()
