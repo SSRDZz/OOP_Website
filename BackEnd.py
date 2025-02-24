@@ -193,8 +193,8 @@ def create_enviroment():
 
     Tour = TourManager()
     website.tourManager = Tour
-    Tour.add_tour(TourProgram(1,"Thai"))
-    Tour.add_tour(TourProgram(2,"Thai"))
-    Tour.add_tour(TourProgram(3,"Thai"))
+    Tour.add_tour(TourProgram("minprogram",1,"Thai"))
+    Tour.add_tour(TourProgram("zardprogram",2,"Thai"))
+    Tour.add_tour(TourProgram("owenprogram",3,"Thai"))
 
 create_enviroment()
