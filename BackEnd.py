@@ -18,7 +18,8 @@ class Website:
         return cls._instance
 
     def __init__(self):
-        self.tourManager = TourManager()
+        self.__user = []
+        self.__tourManager = ''
 
     def create_account(self, username, password):
         self.account.append(Account(username, password))
@@ -27,8 +28,11 @@ class Website:
     def RequestCreateTour(self,name):
         self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
 
-    def SearchTour(self):
-        return "TourProgram Instance"
+    def SearchTour(self,id,place,time):
+        return self.__tour_manager.search_tour(id,place,time)
+    
+    def booking_tour(self, user, tour_program, data):
+        return user.create_booking_tour(tour_program, data)
     
     def SearchPendingTour(self):
         return self.pendingTour
@@ -43,6 +47,9 @@ class Website:
             else:
                 continue
         return False
+    
+    def search_user(self,user_id):
+        pass
 
 
 class TourManager:
@@ -109,13 +116,25 @@ class Account:
 
 class User(Account):
     def __init__(self):
-        pass
+        self.__booking = []
 
     def CreateTour(self):
         website.RequestCreatTour()
 
     def talk(self):
         print("Created User")
+
+    def create_booking_tour(self,tour_program, data):
+        try:
+            # สร้าง booking ตามเงื่อนไขสักอย่าง bogo = Booking(tour_program, datatour_program, data)
+            pass
+  
+            self.__booking.append(Booking)
+            return True
+        
+        except : 
+            return False
+
 
 class Staff(Account):
     def __init__(self):
@@ -141,14 +160,21 @@ class Article:
         self.image = image #path to that image
         self.description = description
 
+class Booking:
+    def __init__(self,tour_program, data):
+        self.__tour_program = tour_program
+        self.__data = data
 
 
 
-website = Website()
 
 
 def create_enviroment():
+
+    website = Website()
+
     Tour = TourManager()
+    website.tourManager = Tour
     Tour.add_tour(TourProgram(1,"Thai"))
     Tour.add_tour(TourProgram(2,"Thai"))
     Tour.add_tour(TourProgram(3,"Thai"))
