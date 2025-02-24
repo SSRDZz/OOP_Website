@@ -30,10 +30,32 @@ class Website:
         pass
 
 class TourManager:
-    tourProgram = []
     def __init__(self):
-        self.tourProgram.append(TourProgram("Tour1"))
-        self.tourProgram.append(TourProgram("Tour2"))
+        self.__tour_program = []
+
+    def add_tour(self,tour):
+        if isinstance(tour, TourProgram):
+            return self.__tour_program.append(tour)
+        else :
+            while(1):
+                print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
+
+    def search_tour(self,id,place,time):
+        if(id!=None):
+            pass #return only one instance
+        else:
+            return self.append_tour(place,time) # return list instance
+
+
+    def append_tour(self,place,time):
+        if(time!=None):
+            if(place!=None):
+                pass
+            else:
+                pass
+
+        elif(place!=None):
+            pass
 
     def CreateCustomizedTour(self,name):
         t = TourProgram(name)
@@ -42,8 +64,11 @@ class TourManager:
 
 class TourProgram:
     Travelling = []
-    def __init__(self,name):
+    def __init__(self,name,id,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
         self.name = name
+        self.__id = ''
+        self.__place = ''
+        self.__time = ''
 
 class Travelling:
     startLoacation = None
@@ -85,3 +110,10 @@ class Payment():
 
 
 website = Website()
+
+
+def create_enviroment():
+    Tour = TourManager()
+    Tour.add_tour(TourProgram(1,"Thai"))
+    Tour.add_tour(TourProgram(2,"Thai"))
+    Tour.add_tour(TourProgram(3,"Thai"))
