@@ -125,7 +125,7 @@ class Article:
     def __init__(self, title, href, image, description):
         self.title = title
         self.href = href
-        self.image = image
+        self.image = image #path to that image
         self.description = description
 
 
