@@ -196,3 +196,5 @@ def create_enviroment():
     Tour.add_tour(TourProgram(1,"Thai"))
     Tour.add_tour(TourProgram(2,"Thai"))
     Tour.add_tour(TourProgram(3,"Thai"))
+
+create_enviroment()
