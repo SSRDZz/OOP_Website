@@ -11,7 +11,6 @@ class Website:
 
     # Store account
     account = []
-
     
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -21,7 +20,7 @@ class Website:
     def __init__(self):
         self.tourManager = TourManager()
 
-    def making_account(self, username, password):
+    def create_account(self, username, password):
         self.account.append(Account(username, password))
         return
 
@@ -36,6 +35,15 @@ class Website:
     
     def ConfirmTour(self):
         pass
+
+    def TryLogIn(self,username, password):
+        for acc in self.account:
+            if(acc.verify(username,password) == True):
+                return True
+            else:
+                continue
+        return False
+
 
 class TourManager:
     def __init__(self):
@@ -85,6 +93,11 @@ class Travelling:
         pass
 
 class Account:
+    @property
+    def username(self):return self.__username
+    @property
+    def password(self):return self.__password
+
     def __init__(self, username, password):
         self.__username = username
         self.__password = password
