@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from BackEnd import *
 
 app, rt = fast_app()
-
-payment = False
+payment_status = False
 
 @rt("/")
 def get():
@@ -16,7 +15,7 @@ def get():
         Body(
             Container(
                 Div(  
-                    Div("Web Name", style=" font-size: 24px;font-weight: bold; margin-top: 10px"),
+                    Div("Tour Amateur", style=" font-size: 24px;font-weight: bold; margin-top: 10px"),
                     Div("Name", Img(src="user-icon.png"), alt="User Icon", style=" display: flex; align-items: center; margin-right: 2%"),
                     style="display: flex;justify-content: space-between;",
                 )
@@ -71,7 +70,7 @@ def get():
                     
                     Button(
                         "ดำเนินการต่อ",
-                        onclick=f"window.location.href = '{'/payment_complete' if payment else '/payment_failed'}'",
+                        onclick=f"window.location.href = '{'/payment_complete' if payment_status else '/payment_failed'}'",
                         style="""
                         background-color: #ff0000; 
                         color: white;

@@ -74,5 +74,14 @@ class Staff(Account):
 
     def ConfirmTour(self,tourInstance):
         pass
- 
+
+class Payment():
+    def __init__(self):
+        pass
+    
+    def Pay():
+        pass
+    
+
+
 website = Website()
