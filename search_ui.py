@@ -22,15 +22,20 @@ def get():
         Button("Search",hx_post="/search-tour")
    )
 
-@rt('/search-tour')
-def post(tour_place,tour_id,tour_time):
+@rt('/search-tour', methods=["POST"])
+def post(tour_place,tour_id,tour_time) :
 
     print(tour_place,tour_id,tour_time) 
     # function search
-    for tour in search:
-        pass
+    # for tour in website.SearchTour(id = tour_id, time = tour_time, place = tour_place):
+    #     pass
+    # return Div(
+    #     *[Card(H3(tour.id), P(tour.place))]
+    # )
+    tours = website.SearchTour(id=tour_id, time=tour_time, place=tour_place)
+
     return Div(
-        *[Card(H3(tour.id), P(tour.place))]
+        *[Card(H3(tour.id), P(tour.place)) for tour in tours]
     )
    
 serve()

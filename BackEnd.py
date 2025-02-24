@@ -28,7 +28,7 @@ class Website:
     def RequestCreateTour(self,name):
         self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
 
-    def SearchTour(self,id,place,time):
+    def SearchTour(self,id,place,time): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.__tour_manager.search_tour(id,place,time)
     
     def booking_tour(self, user, tour_program, data):
@@ -65,20 +65,38 @@ class TourManager:
 
     def search_tour(self,id,place,time):
         if(id!=None):
-            pass #return only one instance
+            for tour in self.__tour_program: #return only one instance
+                if(time==tour.__id):
+                    return tour
+            else:
+                return None # ไม่เจอ 
+            
         else:
-            return self.append_tour(place,time) # return list instance
+            return self.search_list_tour(place,time) # return list instance
 
 
-    def append_tour(self,place,time):
+    def search_list_tour(self,place,time):
+        tours = []
+
         if(time!=None):
             if(place!=None):
-                pass
+                for tour in self.__tour_program:
+                    if(time==tour.__time and place ==tour.__place):
+                        tours.append(tour)
             else:
-                pass
+                for tour in self.__tour_program:
+                    if(time==tour.__time ):
+                        tours.append(tour)
 
         elif(place!=None):
-            pass
+            for tour in self.__tour_program:
+                    if(place==tour.__place ):
+                        tours.append(tour)
+
+        else:
+            return self.__tour_program #กรณีไม่ใส่ input อะไรเลยให้ return ทั้งหมด
+        
+        return tours
 
     def CreateCustomizedTour(self,name):
         t = TourProgram(name)
