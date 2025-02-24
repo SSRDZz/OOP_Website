@@ -110,3 +110,10 @@ class Payment():
 
 
 website = Website()
+
+
+def create_enviroment():
+    Tour = TourManager()
+    Tour.add_tour(TourProgram(1,"Thai"))
+    Tour.add_tour(TourProgram(2,"Thai"))
+    Tour.add_tour(TourProgram(3,"Thai"))
