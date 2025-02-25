@@ -125,8 +125,8 @@ def get():
         Body(
             Container(
                 Div(
-                    Div("Tour Amateur", style="font-size: 24px; font-weight: bold; margin-top: 10px"),
-                    Div("Name", Img(src="user-icon.png", alt="User Icon"), style="display: flex; align-items: center; margin-right: 2%"),
+                    Div("Tour Amateur", style="font-size: 30px; font-weight: bold; margin-top: 10px"),
+                    Div("Name Surname", style="display: flex; align-items: center;"),
                     style="display: flex; justify-content: space-between;"
                 )
             ),
@@ -147,7 +147,7 @@ def get():
                         selected_payment_method = "Credit/Debit",
                         id="showed"
                     ),
-                    style="width:50%"
+                    style="width:50%; margin-left : 20px"
                 ),
                 Div(
                     Div(
