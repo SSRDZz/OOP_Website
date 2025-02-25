@@ -4,12 +4,29 @@ from BackEnd import *
 app, rt = fast_app()
 
 
+class User(Account):
+    def __init__(self,name,password):
+        self.__booking = []
+        super().__init__(name,password)
+        print("User created :",self.username)
+
+    def create_booking_tour(self,tour_program : TourProgram, data):
+        self.__booking.append(Booking(tour_program, None))
+    
+    @property
+    def bookingList(self):
+        return self.__booking
+    
+user1 = User("Pongsak", "1234")
+user1.create_booking_tour(website.SearchTour(1), None)
+
+
 def renderHistory():
     return  Body(
                   
                 Card( 
                     Grid(
-                        Div("Example Tour"),  
+                        Div(f"{user1.bookingList[0].name}"),  
                         Div("2025-02-25"),  
                         Div("(pending, ปุ่มชำระเงิน, success)"),  
                         Div(Button("พิมพ์ตั๋ว",hx_post="")),  
@@ -47,9 +64,6 @@ def get():
             style="text-align: center;"
         ),
 
-        renderHistory(),
-        renderHistory(),
-        renderHistory(),
         renderHistory(),
         
         
