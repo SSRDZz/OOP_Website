@@ -18,12 +18,15 @@ class Website:
         return cls._instance
 
     def __init__(self):
-        self.__user = []
         self.tour_manager = TourManager()
         self.currentUser = None
 
     def create_account(self, username, password):
-        self.account.append(Account(username, password))
+        self.account.append(User(username, password))
+        return
+    
+    def create_staff_account(self, username, password):
+        self.account.append(Staff(username, password))
         return
 
     def RequestCreateTour(self,name,location):
@@ -153,8 +156,10 @@ class Account:
         return False
 
 class User(Account):
-    def __init__(self):
+    def __init__(self,name,password):
         self.__booking = []
+        super().__init__(name,password)
+        print("User created :",self.username)
 
     def CreateTour(self):
         website.RequestCreatTour()
@@ -175,8 +180,9 @@ class User(Account):
 
 
 class Staff(Account):
-    def __init__(self):
-        pass
+    def __init__(self,name,password):
+        super().__init__(name,password)
+        print("Staff created",self.username)
 
     def SearchPendingTour(self,tourName):
         pass

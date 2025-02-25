@@ -36,7 +36,8 @@ def register_routes(rt):
                     Label(Input(id="newUserName", type="text", placeholder="Enter username")),  # type="text" for username
                     P("PassWord"),
                     Label(Input(id="newPassword", type="password", placeholder="Enter password")),  # type="password" for password
-                    Button("Sign Up", type="button", hx_post="/SignUpBackEnd",onclick="location.href='/'"),
+                    Button("Sign Up as User", type="button", hx_post="/SignUpUser",onclick="location.href='/'"),
+                    Button("Sign Up Staff", type="button", hx_post="/SignUpStaff",onclick="location.href='/'"),
                     method="post",
                     onkeydown="if(event.key==='Enter'){event.preventDefault();}"
                     ))
@@ -48,9 +49,14 @@ def register_routes(rt):
         else:
             return RedirectResponse("/SignInAgain")
 
-    @rt('/SignUpBackEnd', methods=["POST"])
+    @rt('/SignUpUser', methods=["POST"])
     def post(newUserName : str, newPassword : str):
         website.create_account(newUserName, newPassword)
+        return "Sign up success"
+    
+    @rt('/SignUpStaff', methods=["POST"])
+    def post(newUserName : str, newPassword : str):
+        website.create_staff_account(newUserName, newPassword)
         return "Sign up success"
 
 
