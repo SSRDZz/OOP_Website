@@ -223,6 +223,7 @@ class Booking:
         self.__tour_program = tour_program
         self.__data = data
 
+    @property
     def tour_program(self):
         return self.__tour_program
 

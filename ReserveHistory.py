@@ -19,14 +19,14 @@ class User(Account):
     
 user1 = User("Pongsak", "1234")
 user1.create_booking_tour(website.SearchTour(1), None)
-
+print(isinstance(user1.bookingList[0].tour_program))
 
 def renderHistory():
     return  Body(
                   
                 Card( 
                     Grid(
-                        Div(f"{user1.bookingList[0].name}"),  
+                        Div(""),  
                         Div("2025-02-25"),  
                         Div("(pending, ปุ่มชำระเงิน, success)"),  
                         Div(Button("พิมพ์ตั๋ว",hx_post="")),  
