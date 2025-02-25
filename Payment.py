@@ -6,18 +6,17 @@ app, rt = fast_app()
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 
-@dataclass
-class Payment():    
-    card_number = None
-    expiry_date = None
-    cvv = None
-    bank_account_number = None
-    promptpay_id = None
+user1Payment = Payment("123456ccc", 10, None, None)
 
+def assignPaymentMethod(method):
+    user1Payment.payment_method = method
 
 @rt("/payment_complete")
 def get():
-    print(payment_status)
+    
+    global selected_payment_method
+    assignPaymentMethod(selected_payment_method)
+    
     page = Html(
         Head(Title("Payment Complete")),
         Body(
@@ -26,11 +25,14 @@ def get():
             A("Return to Home", href="/")
         )
     )
+
     
     return page
 
 @rt("/payment_failed")
+    
 def get():
+    
     page = Html(
         Head(Title("Payment Failed")),
         Body(
@@ -105,12 +107,12 @@ def post():
 
 
 def updatePaymentMethod(method):
-    global selected_payment_method
     global payment_status
+    global selected_payment_method
     selected_payment_method = method
-    payment_status = 'complete' if method == "Credit/Debit" else 'failed'
-    print(payment_status)
-
+    payment_status = "complete" if method == "Credit/Debit" else "failed"
+    # print(selected_payment_method)
+    # print(payment_status)
 
 @rt("/")
 def get():
@@ -142,6 +144,7 @@ def get():
                     ),
                     Div(
                         cdcardRender(),
+                        selected_payment_method = "Credit/Debit",
                         id="showed"
                     ),
                     style="width:50%"
@@ -172,7 +175,7 @@ def get():
                         """,
                         id="payment-button",
                         
-                        onclick=f"window.location.href = '/payment_complete'",
+                        onclick=f"location.href = '/payment_complete'",
 
                         onmouseover="this.style.backgroundColor='#ff8080';this.style.transform='scale(1.1)';",
                         onmouseout="this.style.backgroundColor='#ff0000';this.style.transform='scale(1)';"
@@ -189,3 +192,4 @@ def get():
     return page
 serve()
                   
+

@@ -6,7 +6,7 @@ app, rt = fast_app()
 
 @rt("/")
 def get():
-    page = Html(
+    page = Div(
         Head(
             Style("""
                 body { font-family: Arial, sans-serif; }
@@ -27,27 +27,29 @@ def get():
                 ),
                 Div(
                     Button("Print Ticket", Class="button"),
-                    Button("Change Ticket", Class="button")
                 ),
                 Class="container"
             ),
-            Div(
-                H3("Thai Bus Transport"),
-                P("Booking Code: ", Span("THSBSXR15515", Class="highlight")),
-                P(Strong("Date: "), "Friday, September 24, 2021"),
-                P(Strong("Departure: "), "08:00 - Bangkok Bus Terminal"),
-                P(Strong("Arrival: "), "18:00 - Krabi Bus Terminal"),
-                P(Strong("Passenger: "), "Mr. Kasidit Chongrak (Seat A1)"),
-                Class="ticket-info"
-            ),
-            Div(
-                H3("Payment Summary"),
-                P(Strong("Adult Ticket: "), "776.00 THB"),
-                P(Strong("Processing Fee: "), "20.00 THB"),
-                P(Strong("Discount: "), "-100.00 THB"),
-                H3("Total: 696.00 THB"),
-                Class="payment"
+            Card(
+                Div(
+                    H3("Thai Bus Transport"),
+                    P("Booking Code: ", Span("THSBSXR15515", Class="highlight")),
+                    P(Strong("Date: "), "Friday, September 24, 2021"),
+                    P(Strong("Departure: "), "08:00 - Bangkok Bus Terminal"),
+                    P(Strong("Arrival: "), "18:00 - Krabi Bus Terminal"),
+                    P(Strong("Passenger: "), "Mr. Kasidit Chongrak (Seat A1)"),
+                    Class="ticket-info"
+                ),
+                Div(
+                    H3("Payment Summary"),
+                    P(Strong("Adult Ticket: "), "776.00 THB"),
+                    P(Strong("Processing Fee: "), "20.00 THB"),
+                    P(Strong("Discount: "), "-100.00 THB"),
+                    H3("Total: 696.00 THB"),
+                    Class="payment"
+                )
             )
+            
         )
     )
     return page
