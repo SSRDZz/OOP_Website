@@ -7,7 +7,7 @@ class Website:
     
     # Class-level variables
     pendingTour = []
-    tourManager = None
+    tour_manager = None
 
     # Store account
     account = []
@@ -19,20 +19,17 @@ class Website:
 
     def __init__(self):
         self.__user = []
-        self.__tour_manager = TourManager()
-
-    def setter_tourmanager(self,tour_manager): #___________________เเก้ setter ด้วย ______________________
-        self.__tour_manager = tour_manager
+        self.tour_manager = TourManager()
 
     def create_account(self, username, password):
         self.account.append(Account(username, password))
         return
 
     def RequestCreateTour(self,name,location):
-        self.pendingTour.append(self.__tour_manager.CreateCustomizedTour(name,location))
+        self.pendingTour.append(self.tour_manager.CreateCustomizedTour(name,location))
 
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
-        return self.__tour_manager.search_tour(id,place,time)
+        return self.tour_manager.search_tour(id,place,time)
     
     def booking_tour(self, user, tour_program, data):
         return user.create_booking_tour(tour_program, data)
@@ -205,12 +202,9 @@ website = Website()
 
 def create_enviroment():
 
-    Tour = TourManager()
-    website.setter_tourmanager(Tour)
-
-    Tour.add_tour(TourProgram("minprogram",1,"Thai"))
-    Tour.add_tour(TourProgram("zardprogram",2,"Thai"))
-    Tour.add_tour(TourProgram("owenprogram",3,"Thai"))
+    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai"))
+    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai"))
 
     print(website.SearchTour(id=1).name)
 
