@@ -167,17 +167,25 @@ class User(Account):
     def talk(self):
         print("Created User")
 
-    def create_booking_tour(self,tour_program, data):
-        try:
-            # สร้าง booking ตามเงื่อนไขสักอย่าง bogo = Booking(tour_program, datatour_program, data)
-            pass
+    # def create_booking_tour(self,tour_program, data):
+    #     try:
+    #         # สร้าง booking ตามเงื่อนไขสักอย่าง bogo = Booking(tour_program, datatour_program, data)
+    #         pass
   
-            self.__booking.append(Booking)
-            return True
+    #         self.__booking.append(Booking)
+    #         return True
         
-        except : 
-            return False
+    #     except : 
+    #         return False
 
+    #ชั่วคราว
+    def create_booking_tour(self,tour_program : TourProgram, data):
+        self.__booking.append(Booking(tour_program, None))
+    
+    @property
+    def bookingList(self):
+        return self.__booking
+    
 
 class Staff(Account):
     def __init__(self,name,password):
