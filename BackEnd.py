@@ -82,7 +82,7 @@ class TourManager:
         if(time!=""):
             if(place!=""):
                 for tour in self.__tour_program:
-                    if(time==tour.time and place ==tour.place):
+                    if(time==tour.time and place.lower() in tour.place.lower()):
                         tours.append(tour)
             else:
                 for tour in self.__tour_program:
@@ -91,7 +91,7 @@ class TourManager:
 
         elif(place!=""):
             for tour in self.__tour_program:
-                    if(place==tour.place ):
+                    if(place.lower() in tour.place.lower() ):
                         tours.append(tour)
 
         else:
