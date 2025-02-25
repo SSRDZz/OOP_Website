@@ -19,7 +19,7 @@ class Website:
 
     def __init__(self):
         self.__user = []
-        self.__tour_manager = ''
+        self.__tour_manager = TourManager()
 
     def setter_tourmanager(self,tour_manager): #___________________เเก้ setter ด้วย ______________________
         self.__tour_manager = tour_manager
@@ -28,8 +28,8 @@ class Website:
         self.account.append(Account(username, password))
         return
 
-    def RequestCreateTour(self,name):
-        self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
+    def RequestCreateTour(self,name,location):
+        self.pendingTour.append(self.__tour_manager.CreateCustomizedTour(name,location))
 
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.__tour_manager.search_tour(id,place,time)
@@ -101,8 +101,8 @@ class TourManager:
         
         return tours
 
-    def CreateCustomizedTour(self,name):
-        t = TourProgram(name)
+    def CreateCustomizedTour(self,name,location):
+        t = TourProgram(name,str(len(self.__tour_program)),location)
         print("Created",name)
         return t
 

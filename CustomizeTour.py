@@ -53,7 +53,7 @@ def post(startDate: str = None, endDate: str = None, location: str = None):
             return "Error: Start date must be before end date!", 400
 
         # If valid, proceed with tour creation
-        website.RequestCreateTour(location)
+        website.RequestCreateTour("test Tour",location)
         return "Tour created successfully!"
 
     except ValueError:
