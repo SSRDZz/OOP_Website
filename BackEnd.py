@@ -20,6 +20,7 @@ class Website:
     def __init__(self):
         self.__user = []
         self.tour_manager = TourManager()
+        self.currentUser = None
 
     def create_account(self, username, password):
         self.account.append(Account(username, password))
@@ -43,6 +44,7 @@ class Website:
     def TryLogIn(self,username, password):
         for acc in self.account:
             if(acc.verify(username,password) == True):
+                self.currentUser = acc
                 return True
             else:
                 continue
