@@ -31,7 +31,7 @@ class Website:
     def RequestCreateTour(self,name):
         self.pendingTour.append(self.tourManager.CreateCustomizedTour(name))
 
-    def SearchTour(self,id=None,place=None,time=None): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
+    def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.__tour_manager.search_tour(id,place,time)
     
     def booking_tour(self, user, tour_program, data):
@@ -66,8 +66,8 @@ class TourManager:
             while(1):
                 print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
 
-    def search_tour(self,id=None,place=None,time=None):
-        if(id!=None):
+    def search_tour(self,id="",place="",time=""):
+        if(id!=""):
             for tour in self.__tour_program: #return only one instance
                 if(id==tour.id): # น่าจะต้อง encap____________________
                     return tour
@@ -78,11 +78,11 @@ class TourManager:
             return self.search_list_tour(place,time) # return list instance
 
 
-    def search_list_tour(self,place=None,time=None):
+    def search_list_tour(self,place="",time=""):
         tours = []
 
-        if(time!=None):
-            if(place!=None):
+        if(time!=""):
+            if(place!=""):
                 for tour in self.__tour_program:
                     if(time==tour.time and place ==tour.place):
                         tours.append(tour)
@@ -91,7 +91,7 @@ class TourManager:
                     if(time==tour.time ):
                         tours.append(tour)
 
-        elif(place!=None):
+        elif(place!=""):
             for tour in self.__tour_program:
                     if(place==tour.place ):
                         tours.append(tour)
