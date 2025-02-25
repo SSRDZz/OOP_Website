@@ -1,5 +1,4 @@
 from fasthtml.common import *
-from dataclasses import dataclass
 from BackEnd import *
 
 # FastHTML app setup----------------------
@@ -42,12 +41,14 @@ def get(tour_place:str, tour_id:str, tour_time:str): # ต้องประก�
             return Div(
             H2("ผลลัพธ์การค้นหา"),
             *[Card(H3(tours.id),P(tours.name), P(tours.place),P(tours.time)) ],
+
             Button("ย้อนกลับ", onclick="window.location.href='/'")  
             )
         else: 
             return Div(
             H2("ผลลัพธ์การค้นหา"),
             *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time)) for tour in tours],
+            
             Button("ย้อนกลับ", onclick="window.location.href='/'")  
         )
     else:
