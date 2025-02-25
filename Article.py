@@ -1,35 +1,20 @@
 from fasthtml.common import *
 from datetime import datetime
-from Backend import *
+from BackEnd import *
 import os
 
 app, rt = fast_app()
 
 # Directory where uploaded images will be stored
-UPLOAD_FOLDER = "./Articleimage"
-
-# Create the upload directory if it doesn't exist
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
+UPLOAD_FOLDER = "./Articleimage/"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
 
 articles = [
     Article(
         "รีวิวการไปเที่ยวญี่ปุ่น",
         "https://example.com",
-        "/Japan.jpg",
+        "/Articleimage/Japan.jpg",  # Ensure correct image URL
         "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!"
-    ),
-    Article(
-        "รีวิวการไปเที่ยวเกาหลี",
-        "https://example.com/korea",
-        "https://example.com/korea_image.jpg",
-        "ท่องเที่ยวเกาหลีใต้ และสถานที่น่าสนใจ"
-    ),
-    Article(
-        "รีวิวการไปเที่ยวฝรั่งเศส",
-        "https://example.com/france",
-        "https://example.com/france_image.jpg",
-        "ดื่มด่ำกับความโรแมนติกในกรุงปารีส ฝรั่งเศส"
     ),
 ]
 
@@ -38,8 +23,21 @@ def add_article(title, href, image_path, description):
     new_article = Article(title, href, image_path, description)
     articles.append(new_article)
 
+@rt('/uploads/<filename>')
+def get_static_file(req, filename):
+    """ Serve uploaded images """
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    if not os.path.exists(file_path):
+        print(f"❌ File not found: {file_path}")
+        return P("File not found", style="color: red;")
+
+    with open(file_path, 'rb') as f:
+        return f.read()
+
 @rt('/')
 def get():
+    """ Main page with search and upload form """
     return Titled("Article",
         Form(
             Input(
@@ -49,57 +47,51 @@ def get():
                 hx_trigger="keyup delay:500ms",
                 hx_target="#search-results"
             ),
-            Div(id="search-results")  # ส่วนแสดงผลลัพธ์การค้นหา
+            Div(id="search-results")  # Display search results here
         ),
         Form(
-            H3("Add New Article"),
+            H3("เพิ่มบทความใหม่"),
             Input(name="title", placeholder="Title"),
             Input(name="href", placeholder="URL"),
-            FileInput(name="image", placeholder="Choose an Image File"),  # File upload input
+            Input(name="image", type="file"),  # File upload input
             Input(name="description", placeholder="Description"),
-            Button("Add Article", hx_post="/add_article", hx_trigger="click")
+            Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data")
         ),
         Div(
             id="update-section",
             hx_get="/updates",
             hx_trigger="every 3s"
         ),
-        
-        # Show all cards in a grid with 4 per row
         Div(
             *[
                 Div(
                     Card(
-                        Img(src=article.image),  # Image path is used here
+                        Img(src=article.image),  # Use correct image path
                         H3(A(article.title, href=article.href, style="color: #1976d2;")),
                         P(article.description),
-                        style="""
-                            border: 2px solid #2196f3;
-                            border-radius: 10px;
-                            padding: 20px;
-                            margin: 10px;
-                        """
+                        style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                     ),
                     style="width: 24%; display: inline-block; vertical-align: top;"
                 )
                 for article in articles
             ],
+            id="article-list",
             style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between;"
         )
     )
 
 @rt('/search')
 def get(req):
-    query = req.query_params.get("query", "").strip()
-    
+    """ Search articles by title or description """
+    query = req.query_params.get("query", "").strip().lower()
+
     if query:
-        # Search for articles containing the query word in their title or description
         matched_articles = [
-            article for article in articles if query in article.title or query in article.description
+            article for article in articles
+            if query in article.title.lower() or query in article.description.lower()
         ]
-        
+
         if matched_articles:
-            # Return matched articles as cards with the normal layout
             return Div(
                 *[
                     Div(
@@ -107,12 +99,7 @@ def get(req):
                             Img(src=article.image),
                             H3(A(article.title, href=article.href, style="color: #1976d2;")),
                             P(article.description),
-                            style="""
-                                border: 2px solid #2196f3;
-                                border-radius: 10px;
-                                padding: 20px;
-                                margin: 10px;
-                            """
+                            style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                         ),
                         style="width: 24%; display: inline-block; vertical-align: top;"
                     )
@@ -123,6 +110,53 @@ def get(req):
         else:
             return P(f"ไม่พบผลลัพธ์ที่เกี่ยวข้องกับ '{query}'")
     else:
-        # If no query is provided, return all articles
-        return Div(
-            *
+        return P("กรุณากรอกข้อความค้นหา")
+
+@rt('/add_article')
+async def post(req):
+    """ Handles article upload and saves the image file """
+    form_data = await req.form()
+    print("✅ Received form data:", form_data)
+
+    title = form_data.get("title", "").strip()
+    href = form_data.get("href", "").strip()
+    description = form_data.get("description", "").strip()
+    uploaded_image = form_data.get("image")
+
+    # Ensure file is uploaded
+    if not uploaded_image:
+        print("❌ No file uploaded!")
+        return P("กรุณาอัปโหลดรูปภาพ", style="color: red;")
+
+    # Check if file has a valid filename
+    if not hasattr(uploaded_image, "filename") or not uploaded_image.filename:
+        print("❌ Uploaded image has no filename!")
+        return P("ไฟล์รูปภาพไม่ถูกต้อง", style="color: red;")
+
+    # Save the file
+    image_filename = uploaded_image.filename
+    image_path = os.path.join(UPLOAD_FOLDER, image_filename)
+
+    try:
+        with open(image_path, "wb") as f:
+            f.write(await uploaded_image.read())  # Read and write file content
+
+        print(f"✅ Image saved: {image_path}")
+
+        # Create accessible URL for the uploaded image
+        image_url = f"/Articleimage/{image_filename}"
+
+        # Add new article to the list
+        add_article(title, href, image_url, description)
+
+        return P("บทความถูกเพิ่มแล้ว!", style="color: green;")
+    except Exception as e:
+        print(f"❌ Error saving file: {e}")
+        return P("เกิดข้อผิดพลาดในการบันทึกไฟล์", style="color: red;")
+
+@rt('/updates')
+def get():
+    """ Update section """
+    return P(f"อัปเดตล่าสุด: {datetime.now().strftime('%H:%M:%S')}")
+
+serve()
