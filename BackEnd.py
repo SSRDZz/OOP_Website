@@ -66,7 +66,8 @@ class TourManager:
     def search_tour(self,id="",place="",time=""):
         if(id!=""):
             for tour in self.__tour_program: #return only one instance
-                if(id==tour.id): # น่าจะต้อง encap____________________
+                if(str(id)==str(tour.id)): # น่าจะต้อง encap____________________
+                    
                     return tour
             else:
                 return None # ไม่เจอ 
