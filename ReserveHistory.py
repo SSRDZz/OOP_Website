@@ -1,45 +1,59 @@
 from fasthtml.common import *
 from BackEnd import *
+from Payment import register_routes as register_pay
+from PrintTicket import register_routes as register_ticket
+
 
 app, rt = fast_app()
 
-
-class User(Account):
-    def __init__(self,name,password):
-        self.__booking = []
-        super().__init__(name,password)
-        print("User created :",self.username)
-
-    def create_booking_tour(self,tour_program : TourProgram, data):
-        self.__booking.append(Booking(tour_program, None))
+register_pay(rt)
+register_ticket(rt)
     
-    @property
-    def bookingList(self):
-        return self.__booking
+status = "payment"  
     
-user1 = User("Pongsak", "1234")
-user1.create_booking_tour(website.SearchTour(1), None)
+#Test Instance
+user = User("Pongsak", "1234")
+user.create_booking_tour(website.SearchTour(1), None)
 
+
+def updateStatus(status):
+    if status == "pending":
+        return P("Pending...", style="color: #d4bc08")
+    elif status == "done":
+        return P("Done", style="color: #0cad5d")
+    elif status == "payment":
+        content = Button("จ่ายเงิน",onclick="location.href='/payment'")  
+        return content
+    elif status == "canceled":
+        return P("Canceled", style="color: #8c8787")
+    
+    else :
+        return "Error"
 
 def renderHistory():
-    return  Body(
-                  
+    return  Body(  
                 Card( 
                     Grid(
-                        Div(f"{user1.bookingList[0].tour_program.name}"),  
-                        Div(f"{user1.bookingList[0].tour_program.time}"),  
-                        Div("(pending, ปุ่มชำระเงิน, success)"),  
-                        Div(Button("พิมพ์ตั๋ว",hx_post="")),  
-                        Div(Button("ยกเลิก", ),  
-                        style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; "
+                        Div(f"{user.bookingList[0].tour_program.name}"),  
+                        Div(f"{user.bookingList[0].tour_program.time}"),  
+                        Div(updateStatus(status)),                          #["pending", "payment", "done", "canceled"]    
+                        Div(Button("พิมพ์ตั๋ว",onclick="location.href='/ticket'")),  
+                        Div(Button("ยกเลิก", ),  #onclick="location.href='/canceled-booked'
                         ),
+                        style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center; "
                     ),
-                    style="padding: 10px; margin: 5px; border: 1px solid #ddd;  align-items: center;"
+                    style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
                 )
             )
+    
+@rt('/update_status_done')
+def get():
+    
+    global status
+    status = "done"                   # Update the status to 'done' after successful payment
+    # print("Updated status:", status)  # Debugging output
 
-
-
+    return Redirect("/")
 
 
 @rt('/')
