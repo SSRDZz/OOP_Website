@@ -223,7 +223,7 @@ class Booking:
         self.__tour_program = tour_program
         self.__data = data
 
-    def get_tour(self):
+    def tour_program(self):
         return self.__tour_program
 
 website = Website()
