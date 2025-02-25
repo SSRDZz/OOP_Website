@@ -5,7 +5,9 @@ app, rt = fast_app()
 
 @rt('/') # tour-description
 def get():
-    tour = website.SearchTour(id=1)
+
+    tour_id = 1
+    tour = website.SearchTour(id=tour_id)
 
     return Head(Title("Tour ame"),
            Body(
@@ -15,7 +17,7 @@ def get():
                         H2("รายละเอียดทัวร์",style = "text-align:center"),
                         
                         Img(src = "https://cdn.weon.website/WOW/8546/ImageProduct/tpro221122.png?v=2",
-                            style = "width:100%; height: auto"), # picture ,
+                            style = "width:100%; height: auto ; margin-top:20px ; margin-bottom:20px"), # picture ,
                        Div(
                         Div(
                                 P(f"ชื่อทัวร์ : {tour.name}")
@@ -29,16 +31,16 @@ def get():
                             Div(
                                 P(f"วันที่ : {tour.time}")
                             ),
-                            style = "text-align:left"
+                            style = "text-align:left " # ; margin-top:20px
                         )
                        ,
 
                         style="width:350px"
                     ),
                         # ปุ่มจองทัวร์
-                    Button("จองทัวร์",style="width: 150px; margin-top: 10px;", onclick="location.href='/tour-book'" ),
+                    Button("จองทัวร์",style="width: 150px; margin-top: 10px;", onclick=f"location.href='/tour-book/{tour_id}'"),
                     # method="GET",action="/tour-book",
-                    style = "margin-right :20px;text-align:center"
+                    style = "margin-right:20px ; text-align:center " 
                     )
                 ,
                 Div(
@@ -69,9 +71,9 @@ def get():
     )
 )   
 
-@rt('/tour-book') 
-def get():
-    tour = website.SearchTour(id=1)
+@rt('/tour-book/{tour_id}') 
+def get(tour_id:str):
+    tour = website.SearchTour(tour_id)
 
     return Head(Title("Tour ame"),
            Body(
