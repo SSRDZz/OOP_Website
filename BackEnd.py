@@ -191,7 +191,7 @@ class Staff(Account):
         pass
 
 class Payment():
-    def __init__(self, transaction_id, discount, payment_method, booking:'Booking'):
+    def __init__(self, transaction_id:str, discount:bool, payment_method:str, booking:'Booking'):
         self.__triansaction_id = transaction_id
         self.__discount = discount
         self.__payment_method = payment_method
@@ -204,10 +204,11 @@ class Payment():
     def payment_method(self, method):
         self.__payment_method = method
     
-    def Pay():
+    def Pay(self):
+        self.CreateHistory()
         pass
     
-    def CreateHistory():
+    def CreateHistory(self):
         pass
 
 class Article:
