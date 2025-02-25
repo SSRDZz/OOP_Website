@@ -128,7 +128,7 @@ def get():
                     Div("Tour Amateur", style="font-size: 30px; font-weight: bold; margin-top: 10px"),
                     Div("Name Surname", style="display: flex; align-items: center;"),
                     style="display: flex; justify-content: space-between;"
-                )
+                )   
             ),
             Div(
                 Div(
