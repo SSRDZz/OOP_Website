@@ -183,10 +183,23 @@ class Staff(Account):
         pass
 
 class Payment():
-    def __init__(self):
-        pass
+    def __init__(self, transaction_id, discount, payment_method, booking:'Booking'):
+        self.__triansaction_id = transaction_id
+        self.__discount = discount
+        self.__payment_method = payment_method
+        self.__booking = booking
+    
+    @property
+    def payment_method(self): return self.__payment_method
+    
+    @payment_method.setter
+    def payment_method(self, method):
+        self.__payment_method = method
     
     def Pay():
+        pass
+    
+    def CreateHistory():
         pass
 
 class Article:
