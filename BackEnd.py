@@ -102,8 +102,12 @@ class TourManager:
         t = TourProgram(name,str(len(self.__tour_program)),location)
         print("Created",name)
         return t
+    
+    def get_all_tour(self):
+        return self.__tour_program
 
 class TourProgram:
+    
     Travelling = []
     def __init__(self,name,id,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
         self.__name = name

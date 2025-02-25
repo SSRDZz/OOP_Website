@@ -6,6 +6,8 @@ app, rt = fast_app()  # type: ignore
 
 @rt('/')
 def get():
-    return Titled("MainPage")
+    tour_list = website.tour_manager.get_all_tour()
+    return Titled("MainPage",
+                  Div(*[Card(P(result)) for result in results]))
 
 serve()
