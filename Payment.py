@@ -6,7 +6,7 @@ app, rt = fast_app()
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 
-user1Payment = Payment("123456ccc", 10, None, None)
+user1Payment = Payment("123456ccc", true, None, None)
 
 def assignPaymentMethod(method):
     user1Payment.payment_method = method
@@ -16,6 +16,8 @@ def get():
     
     global selected_payment_method
     assignPaymentMethod(selected_payment_method)
+
+    user1Payment.Pay();
     
     page = Html(
         Head(Title("Payment Complete")),
