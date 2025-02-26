@@ -218,7 +218,45 @@ class Payment():
     
     def CreateHistory(self):
         pass
+    
+class Promotion:
+    def __init__(self):
+        self.__summer_tour = []
+        self.__winter_tour = []
+        self.__fall_tour = []
+        self.__autumn_tour = []
+    
+    def add_tour(self, tour: TourProgram, season: str):
+        match season:
+            case "summer":
+                self.__summer_tour.append(tour)
+            case "winter":
+                self.__winter_tour.append(tour)
+            case "fall":
+                self.__fall_tour.append(tour)
+            case "autumn":
+                self.__autumn_tour.append(tour)
+            case _:
+                return "Error: cannot add tour to discount"
+        return "Discount added"
 
+    
+    def get_discount(self, tour:TourProgram):
+        for program in self.__summer_tour:
+            if tour == program:
+                return float(10)
+        for program in self.__winter_tour:
+            if tour == program:
+                return float(10)
+        for program in self.__fall_tour:
+            if tour == program:
+                return float(10)
+        for program in self.__autumn_tour:
+            if tour == program:
+                return float(10)
+        return float(0)
+    
+    
 class Article:
     def __init__(self, title, href, image, description):
         self.title = title
