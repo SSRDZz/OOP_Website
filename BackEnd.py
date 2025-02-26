@@ -267,7 +267,7 @@ class Article:
 class Booking:
     def __init__(self,tour_program, data):
         self.__tour_program = tour_program
-        self.__data = data
+        self.__data = data                  #ัยังไม่เสร็จ
 
     @property
     def tour_program(self):
