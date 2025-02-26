@@ -4,7 +4,7 @@ from Payment import register_routes as register_pay
 from PrintTicket import register_routes as register_ticket
 
 
-app, rt = fast_app()
+app, rt = fast_app()    #        pico=False,live=True
 
 register_pay(rt)
 register_ticket(rt)
@@ -22,7 +22,7 @@ def updateStatus(status):
     elif status == "done":
         return P("Done", style="color: #0cad5d")
     elif status == "payment":
-        content = Button("จ่ายเงิน",onclick="location.href='/payment'")  
+        content = Button("จ่ายเงิน",onclick="location.href='/payment'") 
         return content
     elif status == "canceled":
         return P("Canceled", style="color: #8c8787")
@@ -49,7 +49,6 @@ def renderHistory(booked):
                     style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
                 )
             )
- 
 
 @rt('/update_status_done/')
 def get():

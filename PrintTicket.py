@@ -1,6 +1,7 @@
 from fasthtml.common import *
 from BackEnd import *
 
+
 def register_routes(rt):
     @rt("/ticket")
     def get():
