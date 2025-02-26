@@ -5,9 +5,6 @@ selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 # app, rt = fast_app()
 
-user = User("Pongsak", "1234")
-user.create_booking_tour(website.SearchTour(1), None)
-
 def register_routes(rt):
 
     user1Payment = Payment("123456ccc", true, None, None)
@@ -157,14 +154,11 @@ def register_routes(rt):
                     ),
                     Div(
                         Div(
-                            f"{user.bookingList[0].tour_program.name}",
+                            "Tour Name",
                             style="background-color: #FFD700; padding: 10px; text-align: center; font-weight: bold; font-size: 18px"
                         ),
                         Div(
-                            P(f"Tour id : {user.bookingList[0].tour_program.id}"),
-                            P(f"Location : {user.bookingList[0].tour_program.place}"),
-                            P(f"Date : {user.bookingList[0].tour_program.time}"),
-                            
+                            "ข้อมูล tour คร่าวๆ",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(

@@ -9,11 +9,11 @@ app, rt = fast_app()
 register_pay(rt)
 register_ticket(rt)
     
-status = "payment"  
-    
 #Test Instance
 user = User("Pongsak", "1234")
 user.create_booking_tour(website.SearchTour(1), None)
+
+status = "payment"
 
 
 def updateStatus(status):
@@ -30,12 +30,16 @@ def updateStatus(status):
     else :
         return "Error"
 
-def renderHistory():
+def renderHistory(booked):
+    
+    # booked.update_status = "payment"  
+    global status
+    
     return  Body(  
                 Card( 
                     Grid(
-                        Div(f"{user.bookingList[0].tour_program.name}"),  
-                        Div(f"{user.bookingList[0].tour_program.time}"),  
+                        Div(f"{booked.tour_program.name}"),  
+                        Div(f"{booked.tour_program.time}"),  
                         Div(updateStatus(status)),                          #["pending", "payment", "done", "canceled"]    
                         Div(Button("พิมพ์ตั๋ว",onclick="location.href='/ticket'")),  
                         Div(Button("ยกเลิก", ),  #onclick="location.href='/canceled-booked'
@@ -45,13 +49,13 @@ def renderHistory():
                     style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
                 )
             )
-    
-@rt('/update_status_done')
+ 
+
+@rt('/update_status_done/')
 def get():
     
     global status
     status = "done"                   # Update the status to 'done' after successful payment
-    # print("Updated status:", status)  # Debugging output
 
     return Redirect("/")
 
@@ -78,7 +82,7 @@ def get():
             style="text-align: center;"
         ),
 
-        renderHistory(),
+        *[renderHistory(booked) for booked in user.bookingList],
         
         
         style="margin: 15px;"

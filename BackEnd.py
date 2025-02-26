@@ -265,14 +265,23 @@ class Article:
         self.description = description
 
 class Booking:
-    def __init__(self,tour_program, data):
+    def __init__(self,tour_program, data=None):
         self.__tour_program = tour_program
-        self.__data = data                  #ัยังไม่เสร็จ
+        self.__status : str = None    #pending paying done
+        self.__data = data                  #ัยังไม่เสร็จ   
 
     @property
     def tour_program(self):
         return self.__tour_program
 
+    @property
+    def status(self):
+        return self.__status
+    
+    @status.setter
+    def update_status(self,status:str):
+        self.__status = status
+    
 website = Website()
 
 def create_enviroment():
