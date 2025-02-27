@@ -19,7 +19,7 @@ class Website:
 
     def __init__(self):
         self.tour_manager = TourManager()
-        self.currentUser = None
+        self.currentUser = User("testUser","123")
 
     def create_account(self, username, password):
         self.account.append(User(username, password))
