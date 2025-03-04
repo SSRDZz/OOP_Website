@@ -169,10 +169,10 @@ def register_routes(rt):
                 website.booking_tour(website.SearchTour(id=tour_id), data_user)
                 return Div(
                         H2("Success"),
-                        Button("ย้อนกลับ", onclick="window.location.href='/'")  
+                        Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
                 )
         else :
             return Div(
                     H1("Something don't work normal"),
-                    Button("ย้อนกลับ", onclick="window.location.href='/'")  
+                    Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
             )
