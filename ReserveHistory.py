@@ -38,7 +38,7 @@ def renderHistory(booked):
                 Div(f"{booked.tour_program.time}"),
                 Div(updateStatus(status)),  # ["pending", "payment", "done", "canceled"]
                 Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick="location.href='/ticket'")),
-                Div(Button("ยกเลิก", disabled=status == "canceled", onclick="location.href='/cancel-resevation'")),
+                Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick="location.href='/cancel-resevation'")),
                 style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center;"
             ),
             style="padding: 10px; margin: 5px; border: 1px solid #ddd;"

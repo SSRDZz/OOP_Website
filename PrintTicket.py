@@ -1,10 +1,23 @@
 from fasthtml.common import *
 from BackEnd import *
 
+user = website.currentUser
+current_booked = user.bookingList[0]
 
 def register_routes(rt):
     @rt("/ticket")
     def get():
+        booking_code = current_booked.booking_id
+        tour_name = current_booked.tour_program.name
+        tour_date = current_booked.tour_program.time
+        departure_time = current_booked.tour_program.departure_time if hasattr(current_booked.tour_program, 'departure_time') else "N/A"
+        arrival_time = current_booked.tour_program.arrival_time if hasattr(current_booked.tour_program, 'arrival_time') else "N/A"
+        departure_location = current_booked.tour_program.departure_location if hasattr(current_booked.tour_program, 'departure_location') else "N/A"
+        arrival_location = current_booked.tour_program.arrival_location if hasattr(current_booked.tour_program, 'arrival_location') else "N/A"
+        passenger_name = user.username
+        seat_number = current_booked.seat_number if hasattr(current_booked, 'seat_number') else "N/A"
+        total_price = current_booked.total_price if hasattr(current_booked, 'total_price') else "N/A"
+
         page = Div(
             Head(
                 Style("""
@@ -21,7 +34,7 @@ def register_routes(rt):
                 Div(
                     Div(
                         H2("Booking Ticket"),
-                        P("Payment Reference: ", Strong("1700009781")),
+                        P("Payment Reference: ", Strong(f"{booking_code}")),
                         Class="header"
                     ),
                     Div(
@@ -31,25 +44,20 @@ def register_routes(rt):
                 ),
                 Card(
                     Div(
-                        H3("Thai Bus Transport"),
-                        P("Booking Code: ", Span("THSBSXR15515", Class="highlight")),
-                        P(Strong("Date: "), "Friday, September 24, 2021"),
-                        P(Strong("Departure: "), "08:00 - Bangkok Bus Terminal"),
-                        P(Strong("Arrival: "), "18:00 - Krabi Bus Terminal"),
-                        P(Strong("Passenger: "), "Mr. Kasidit Chongrak (Seat A1)"),
+                        H3(tour_name),
+                        P("Booking Code: ", Span(booking_code, Class="highlight")),
+                        P(Strong("Date: "), tour_date),
+                        P(Strong("Departure: "), f"{departure_time} - {departure_location}"),
+                        P(Strong("Arrival: "), f"{arrival_time} - {arrival_location}"),
+                        P(Strong("Passenger: "), f"{passenger_name} (Seat {seat_number})"),
                         Class="ticket-info"
                     ),
                     Div(
                         H3("Payment Summary"),
-                        P(Strong("Adult Ticket: "), "776.00 THB"),
-                        P(Strong("Processing Fee: "), "20.00 THB"),
-                        P(Strong("Discount: "), "-100.00 THB"),
-                        H3("Total: 696.00 THB"),
+                        P(Strong("Total: "), f"{total_price} THB"),
                         Class="payment"
                     )
                 )
-                
             )
         )
         return page
-
