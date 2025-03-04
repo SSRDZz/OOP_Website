@@ -3,22 +3,22 @@ from datetime import datetime
 from BackEnd import *
 import os
 
+# Directory where uploaded images will be stored
+UPLOAD_FOLDER = "./Articleimage/"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
+
+# Store articles in a list
+articles = [
+    {"title": "รีวิวการไปเที่ยวญี่ปุ่น", "href": "japan", "image": "/Articleimage/Japan.jpg", "description": "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!"},
+    {"title": "wow", "href": "welcome", "image": "/Articleimage/japan1.jpg", "description": "dis"}
+]
+
+# Function to add a new article
+def add_article(title, href, image_path, description):
+    articles.append({"title": title, "href": href, "image": image_path, "description": description})
+
 
 def register_routes(rt):
-
-    # Directory where uploaded images will be stored
-    UPLOAD_FOLDER = "./Articleimage/"
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
-
-    # Store articles in a list
-    articles = [
-        {"title": "รีวิวการไปเที่ยวญี่ปุ่น", "href": "japan", "image": "/Articleimage/Japan.jpg", "description": "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!"},
-        {"title": "wow", "href": "welcome", "image": "/Articleimage/japan1.jpg", "description": "dis"}
-    ]
-
-    # Function to add a new article
-    def add_article(title, href, image_path, description):
-        articles.append({"title": title, "href": href, "image": image_path, "description": description})
 
     @rt('/Articleimage/<filename>')
     def get_uploaded_image(req, filename):

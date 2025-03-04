@@ -10,7 +10,7 @@ def register_routes(rt):
         grouped_tours = [tour_list[i:i+3] for i in range(0, len(tour_list), 3)]
         
         return Div(Button("profile", onclick="location.href='/'"),
-                   Button("article", onclick="location.href='/Article"),
+                   Button("article", onclick="location.href='/Article'"),
                    Button("Create Tour", onclick="location.href='/CreatTourPage'"),
                    Button("History"),
                    Button("Search", onclick="location.href='/search-tour'"),
