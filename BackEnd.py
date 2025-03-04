@@ -11,6 +11,9 @@ class Website:
 
     # Store account
     account = []
+
+    @property
+    def currentUser(self): return self.__currentUser
     
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -19,7 +22,7 @@ class Website:
 
     def __init__(self):
         self.tour_manager = TourManager()
-        self.currentUser = User("testUser","123")
+        self.__currentUser = User("testUser","123")
 
     def create_account(self, username, password):
         self.account.append(User(username, password))
@@ -47,7 +50,8 @@ class Website:
     def TryLogIn(self,username, password):
         for acc in self.account:
             if(acc.verify(username,password) == True):
-                self.currentUser = acc
+                self.__currentUser = acc
+                print("user LogIn : ",acc.username)
                 return True
             else:
                 continue
@@ -154,6 +158,9 @@ class Account:
         if username == self.__username and password == self.__password:
             return True
         return False
+    
+    def RequestCreateTour(self,name,location):
+        pass
 
 class User(Account):
     def __init__(self,name,password):
@@ -161,8 +168,8 @@ class User(Account):
         super().__init__(name,password)
         print("User created :",self.username)
 
-    def CreateTour(self):
-        website.RequestCreatTour()
+    def RequestCreateTour(self,name,location):
+        website.RequestCreatTour(self,name,location)
 
     def talk(self):
         print("Created User")
@@ -289,6 +296,14 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai"))
     website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",11,"Thai"))
 
     print(website.SearchTour(id=1).name)
 
