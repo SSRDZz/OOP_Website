@@ -38,8 +38,8 @@ class Website:
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.tour_manager.search_tour(id,place,time)
     
-    def booking_tour(self, tour_program, data):
-        return self.__currentUser.create_booking_tour(tour_program, data)
+    def booking_tour(self, tour_program, data,id):
+        return self.__currentUser.create_booking_tour(tour_program, data,id)
     
     def SearchPendingTour(self):
         return self.pendingTour
@@ -175,8 +175,8 @@ class User(Account):
         print("Created User")
 
 
-    def create_booking_tour(self,tour_program : TourProgram, data):
-        self.__booking.append(Booking(tour_program, data))
+    def create_booking_tour(self,tour_program : TourProgram, data:str,id:str):
+        self.__booking.append(Booking(tour_program, data,id))
     
     @property
     def bookingList(self):
@@ -261,11 +261,11 @@ class Article:
         self.description = description
 
 class Booking:
-    def __init__(self,tour_program, data=None):
+    def __init__(self,tour_program, data:str, id_booking:str):
         self.__tour_program = tour_program
         self.__status : str = 'payment'    #pending payment done
-        self.__data = data                  #ัยังไม่เสร็จ   
-        self.__id = None
+        self.__data = data        # data -> "fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}" adult มากกว่า 0 คนเสมอ ราคา adult->8xx child 2xx
+        self.__id = id_booking      # id -> {tour_id}+{fname} *firstname
 
     @property
     def tour_program(self):

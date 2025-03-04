@@ -158,9 +158,10 @@ def register_routes(rt):
         # print("min")
         if (child=="" or int(child)>=0) and adult!="" :
             if (0<int(adult)<100):
-                data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}"
+                data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
                 # print(data_user)
-                website.booking_tour(website.SearchTour(id=tour_id), data_user)
+                id = f"{tour_id}_{fname}"
+                website.booking_tour(website.SearchTour(id=tour_id), data_user, id)
                 return Div(
                         H2("Success"),
                         Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
