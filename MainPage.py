@@ -16,6 +16,18 @@ def register_routes(rt):
                    Button("Search", onclick="location.href='/search-tour'"),
                    Titled("MainPage",
                           Div(
-                              *[Grid(*[Card(P(tour.name), P(tour.place)) for tour in group]) for group in grouped_tours]
+                              *[Grid(*[Card(P(tour.name), P(tour.place),
+                                    style="""
+                                        transition: all 0.3s;
+                                        cursor: pointer;
+                                        margin-left : 40px;
+                                        margin-right : 40px;
+                                        padding: 30px
+                                    """, 
+                                    onmouseover="this.style.backgroundColor='#e0f7fa';this.style.transform='scale(1.03)';",
+                                    onmouseout="this.style.backgroundColor='';this.style.transform='scale(1)';",
+                        
+                                    onclick = f"window.location.href='/tour-information/{tour.id}'"
+                                    ) for tour in group]) for group in grouped_tours]
                           )
                    ))

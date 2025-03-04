@@ -39,16 +39,46 @@ def register_routes(rt):
             if(isinstance(tours,TourProgram)) :
                 return Div(
                 H2("ผลลัพธ์การค้นหา"),
-                *[Card(H3(tours.id),P(tours.name), P(tours.place),P(tours.time), onclick = f"window.location.href='/tour-information/{tour_id}'") ],
+                *[Card(H3(tours.id),P(tours.name), P(tours.place),P(tours.time),
+                style="""
+                    transition: all 0.3s;
+                    cursor: pointer;
+                    margin-left : 40px;
+                    margin-right : 40px;
+                    padding: 30px
+                 """, 
+                 onmouseover="this.style.backgroundColor='#e0f7fa';this.style.transform='scale(1.03)';",
+                onmouseout="this.style.backgroundColor='';this.style.transform='scale(1)';",
+                        
+                 onclick = f"window.location.href='/tour-information/{tours.id}'") ],
 
-                Button("ย้อนกลับ", onclick="window.location.href='/search-tour''")  
+                Button("ย้อนกลับ", onclick="window.location.href='/search-tour''"),
+                style = """
+                    margin : 20px;
+                    
+                """  
                 )
             else: 
                 return Div(
                 H2("ผลลัพธ์การค้นหา"),
-                *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time)) for tour in tours],
+                *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time),
+                style="""
+                    transition: all 0.3s;
+                    cursor: pointer;
+                    margin-left : 40px;
+                    margin-right : 40px;
+                    padding: 30px
+                """, 
+                onmouseover="this.style.backgroundColor='#e0f7fa';this.style.transform='scale(1.03)';",
+                onmouseout="this.style.backgroundColor='';this.style.transform='scale(1)';",
+
+                onclick = f"window.location.href='/tour-information/{tour.id}'") for tour in tours],
                 
-                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  
+                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  ,
+                style = """
+                    margin : 20px;
+                    
+                """
             )
         else:
             return Div(H2("ไม่พบผลลัพธ์"), Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  )

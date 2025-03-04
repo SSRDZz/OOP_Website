@@ -1,9 +1,9 @@
 from fasthtml.common import *
 from BackEnd import *
 
-def tour_engine(rt):
+def register_routes(rt):
     @rt('/tour-information/{tour_id}') # tour-description
-    def get():
+    def get(tour_id:str):
 
         # tour_id = 1
         tour = website.SearchTour(id=tour_id)
