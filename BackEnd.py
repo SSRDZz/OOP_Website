@@ -41,11 +41,21 @@ class Website:
     def booking_tour(self, tour_program, data,id):
         return self.__currentUser.create_booking_tour(tour_program, data,id)
     
-    def SearchPendingTour(self):
-        return self.pendingTour
+    def SearchPendingTour(self,tourId):
+        print("Search received :",tourId)
+        for i in range(len(self.pendingTour)):
+            if(self.pendingTour[i].id == tourId):
+                print("Found pending")
+                return i
+            else:
+                continue
     
     def ConfirmTour(self):
         pass
+
+    def DenyTour(self,tourId):
+        i = self.SearchPendingTour(tourId)
+        del self.pendingTour[i]
 
     def TryLogIn(self,username, password):
         for acc in self.account:
@@ -110,7 +120,7 @@ class TourManager:
 
     def CreateCustomizedTour(self,name,location):
         t = TourProgram(name,str(len(self.__tour_program)),location)
-        print("Created",name)
+        print("Created",name,"Id :",t.id)
         return t
     
     def get_all_tour(self):
