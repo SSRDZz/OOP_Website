@@ -294,6 +294,12 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",11,"Thai"))
 
+    
+    website.create_account("testUser","123")
+    website.TryLogIn("testUser","123")
+    website.booking_tour(website.currentUser,website.tour_manager.search_tour('1'),None)
+    
+    
     print(website.SearchTour(id=1).name)
 
 create_enviroment()

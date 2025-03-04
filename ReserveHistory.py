@@ -10,13 +10,11 @@ app, rt = fast_app()    #        pico=False,live=True
 register_pay(rt)
 register_ticket(rt)
 register_cancel(rt)
-    
-#Test Instance
-user = User("Pongsak", "1234")
-user.create_booking_tour(website.SearchTour(1), None)
+
+user = website.currentUser
+user.create_booking_tour(website.tour_manager.search_tour('1'), None)
 
 status = "payment"
-
 
 def updateStatus(status):
     if status == "pending":
@@ -24,42 +22,39 @@ def updateStatus(status):
     elif status == "done":
         return P("Done", style="color: #0cad5d")
     elif status == "payment":
-        content = Button("จ่ายเงิน",onclick="location.href='/payment'") 
+        content = Button("จ่ายเงิน", onclick="location.href='/payment'")
         return content
     elif status == "canceled":
         return P("Canceled", style="color: #8c8787")
-    
-    else :
+    else:
         return "Error"
 
 def renderHistory(booked):
     global status
-    
-    return  Body(  
-                Card( 
-                    Grid(
-                        Div(f"{booked.tour_program.name}"),  
-                        Div(f"{booked.tour_program.time}"),  
-                        Div(updateStatus(status)),                          #["pending", "payment", "done", "canceled"]    
-                        Div(Button("พิมพ์ตั๋ว", disabled= status!="done", onclick="location.href='/ticket'")),  
-                        Div(Button("ยกเลิก", disabled= status =="canceled", onclick="location.href='/cancel-resevation'"), 
-                        ),
-                        style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center; "
-                    ),
-                    style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
-                )
-            )
+    return Body(
+        Card(
+            Grid(
+                Div(f"{booked.tour_program.name}"),
+                Div(f"{booked.tour_program.time}"),
+                Div(updateStatus(status)),  # ["pending", "payment", "done", "canceled"]
+                Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick="location.href='/ticket'")),
+                Div(Button("ยกเลิก", disabled=status == "canceled", onclick="location.href='/cancel-resevation'")),
+                style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center;"
+            ),
+            style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
+        )
+    )
+
 @rt('/update_status_done')
 def get():
     global status
-    status = "done"                   # Update the status to 'done' after successful payment
+    status = "done"  # Update the status to 'done' after successful payment
     return Redirect("/")
 
 @rt('/update_status_cancel')
 def get():
     global status
     status = "canceled"
-    
     return Redirect("/")
 
 @rt('/')
@@ -69,7 +64,7 @@ def get():
             Title("Tour Amateur"),
             style="""
             
-            """ 
+            """
         ),
         Div(
             H1("Web Name"),
@@ -83,12 +78,10 @@ def get():
             Card("ยกเลิกการจอง"),
             style="text-align: center;"
         ),
-
         *[renderHistory(booked) for booked in user.bookingList],
-        
-        
         style="margin: 15px;"
     )
     return page
 
-serve()
+if __name__ == "__main__":
+    serve()
