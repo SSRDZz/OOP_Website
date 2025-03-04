@@ -188,9 +188,16 @@ class User(Account):
     def create_booking_tour(self,tour_program : TourProgram, data:str,id:str):
         self.__booking.append(Booking(tour_program, data,id))
     
+    def search_booking(self,id):
+        for booking in self.__booking:
+            if booking.booking_id == id:
+                return booking
+        return None
+    
     @property
     def bookingList(self):
         return self.__booking
+    
     
 
 class Staff(Account):
