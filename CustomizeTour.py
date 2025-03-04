@@ -53,7 +53,7 @@ def register_routes(rt):
                 return "Error: Start date must be before end date!", 400
 
             # If valid, proceed with tour creation
-            Website.currentUser.RequestCreateTour("test Tour",location)
+            website.RequestCreateTour("test Tour",location)
             return "Tour created successfully!"
 
         except ValueError:
