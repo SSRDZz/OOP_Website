@@ -38,8 +38,8 @@ class Website:
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.tour_manager.search_tour(id,place,time)
     
-    def booking_tour(self, user, tour_program, data):
-        return user.create_booking_tour(tour_program, data)
+    def booking_tour(self, tour_program, data):
+        return self.__currentUser.create_booking_tour(tour_program, data)
     
     def SearchPendingTour(self):
         return self.pendingTour
@@ -174,20 +174,9 @@ class User(Account):
     def talk(self):
         print("Created User")
 
-    # def create_booking_tour(self,tour_program, data):
-    #     try:
-    #         # สร้าง booking ตามเงื่อนไขสักอย่าง bogo = Booking(tour_program, datatour_program, data)
-    #         pass
-  
-    #         self.__booking.append(Booking)
-    #         return True
-        
-    #     except : 
-    #         return False
 
-    #ชั่วคราว
     def create_booking_tour(self,tour_program : TourProgram, data):
-        self.__booking.append(Booking(tour_program, None))
+        self.__booking.append(Booking(tour_program, data))
     
     @property
     def bookingList(self):

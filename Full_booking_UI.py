@@ -161,10 +161,12 @@ def get(tour_id:str):
 )   
 
 @rt('/tour-book-result')
-def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str):
-    print("min")
+def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str,tour_id:str):
+    # print("min")
     if (child=="" or int(child)>=0) and adult!="" :
         if (0<int(adult)<100):
+            data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}"
+            website.booking_tour(website.SearchTour(tour_id), data_user)
             return Div(
                     H2("Success"),
                     Button("ย้อนกลับ", onclick="window.location.href='/'")  
