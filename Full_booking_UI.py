@@ -104,11 +104,11 @@ def register_routes(rt):
                             Div(
                                 # ผู้ใหญ่
                                 Label("ผู้ใหญ่ 8xx บาท"),
-                                Input(id="adult",type="number",placeholder="จำนวน"),
+                                Input(id="adult",type="number",min="0",max="100",placeholder="จำนวน"),
                                 Br(),
                                 # เด็ก
                                 Label("เด็ก 2xx บาท"),
-                                Input(id="child",type="number",placeholder="จำนวน"),
+                                Input(id="child",type="number",min="0",max="100",placeholder="จำนวน"),
                                 Br(),
                                 # ราคารวม
                                 P("รวม: 1xxx บาท"),
@@ -122,22 +122,22 @@ def register_routes(rt):
                             H3("ข้อมูลผู้เดินทาง"),
                             Div(
                                 Label("ชื่อ: "),
-                                Input(id="fname", placeholder="ชื่อ"),
+                                Input(type="text",id="fname", placeholder="ชื่อ"),
                                 style="margin-bottom: 5px;"
                             ),
                             Div(
                                 Label("นามสกุล: "),
-                                Input(id="lname", placeholder="นามสกุล"),
+                                Input(type="text",id="lname", placeholder="นามสกุล"),
                                 style="margin-bottom: 5px;"
                             ),
                             Div(
                                 Label("อีเมล: "),
-                                Input(id="email", placeholder="อีเมล"),
+                                Input(type="email",id="email", placeholder="อีเมล"),
                                 style="margin-bottom: 5px;"
                             ),
                             Div(
                                 Label("มือถือ: "),
-                                Input(id="phone", placeholder="เบอร์มือถือ"),
+                                Input(type="text",id="phone", placeholder="เบอร์มือถือ"),
                                 style="margin-bottom: 5px;"
                             ),
                             style="padding: 10px;"
@@ -156,18 +156,17 @@ def register_routes(rt):
     @rt('/tour-book-result/{tour_id}')
     def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str,tour_id:str):
         # print("min")
-        if (child=="" or int(child)>=0) and adult!="" :
-            if (0<int(adult)<100):
-                data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-                # print(data_user)
-                id = f"{tour_id}_{fname}"
-                website.booking_tour(website.SearchTour(id=tour_id), data_user, id)
-                return Div(
-                        H2("Success"),
-                        Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
-                )
+        if adult!="" and fname!="" and lname!="" and email!="" and phone!="":
+            data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
+            # print(data_user)
+            id = f"{tour_id}_{fname}"
+            website.booking_tour(website.SearchTour(id=tour_id), data_user, id)
+            return Div(
+                    H2("Success"),
+                    Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
+            )
         else :
             return Div(
                     H1("Something don't work normal"),
-                    Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
+                    Button("ย้อนกลับ", onclick=f"window.location.href='/tour-book/{tour_id}'")  
             )
