@@ -263,7 +263,7 @@ class Article:
 class Booking:
     def __init__(self,tour_program, data=None):
         self.__tour_program = tour_program
-        self.__status : str = None    #pending paying done
+        self.__status : str = 'payment'    #pending payment done
         self.__data = data                  #ัยังไม่เสร็จ   
 
     @property
@@ -298,7 +298,7 @@ def create_enviroment():
     website.create_account("testUser","123")
     website.TryLogIn("testUser","123")
     website.booking_tour(website.tour_manager.search_tour('1'),None)
-    
+    website.booking_tour(website.tour_manager.search_tour('4'),None)
     
     print(website.SearchTour(id=1).name)
 
