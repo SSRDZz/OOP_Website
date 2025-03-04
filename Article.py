@@ -7,19 +7,20 @@ import os
 UPLOAD_FOLDER = "./Articleimage/"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
 
+
+
 # Store articles in a list
 articles = [
-    {"title": "รีวิวการไปเที่ยวญี่ปุ่น", "href": "japan", "image": "/Articleimage/Japan.jpg", "description": "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!"},
-    {"title": "wow", "href": "welcome", "image": "/Articleimage/japan1.jpg", "description": "dis"}
+    Article("รีวิวการไปเที่ยวญี่ปุ่น", "japan", "/Articleimage/Japan.jpg", "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!"),
+    Article("wow", "welcome", "/Articleimage/japan1.jpg", "dis")
 ]
 
 # Function to add a new article
 def add_article(title, href, image_path, description):
-    articles.append({"title": title, "href": href, "image": image_path, "description": description})
-
+    new_article = Article(title, href, image_path, description)
+    articles.append(new_article)
 
 def register_routes(rt):
-
     @rt('/Articleimage/<filename>')
     def get_uploaded_image(req, filename):
         """ Serve uploaded images """
@@ -62,9 +63,9 @@ def register_routes(rt):
                 *[
                     Div(
                         Card(
-                            Img(src=article["image"]),
-                            H3(A(article["title"], href=article["href"], style="color: #1976d2;")),
-                            P(article["description"]),
+                            Img(src=article.image),
+                            H3(A(article.title, href=article.href, style="color: #1976d2;")),
+                            P(article.description),
                             style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                         ),
                         style="width: 24%; display: inline-block; vertical-align: top;"
@@ -86,16 +87,16 @@ def register_routes(rt):
 
         matched_articles = [
             article for article in articles
-            if query in article["title"].lower() or query in article["description"].lower()
+            if query in article.title.lower() or query in article.description.lower()
         ]
 
         return Div(
             *[
                 Div(
                     Card(
-                        Img(src=article["image"]),
-                        H3(A(article["title"], href=article["href"], style="color: #1976d2;")),
-                        P(article["description"]),
+                        Img(src=article.image),
+                        H3(A(article.title, href=article.href, style="color: #1976d2;")),
+                        P(article.description),
                         style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                     ),
                     style="width: 24%; display: inline-block; vertical-align: top;"
@@ -151,4 +152,3 @@ def register_routes(rt):
     def get():
         """ Update section """
         return P(f"อัปเดตล่าสุด: {datetime.now().strftime('%H:%M:%S')}")
-
