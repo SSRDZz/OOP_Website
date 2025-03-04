@@ -265,6 +265,7 @@ class Booking:
         self.__tour_program = tour_program
         self.__status : str = 'payment'    #pending payment done
         self.__data = data                  #ัยังไม่เสร็จ   
+        self.__id = None
 
     @property
     def tour_program(self):
@@ -277,6 +278,11 @@ class Booking:
     @status.setter
     def update_status(self,status:str):
         self.__status = status
+        
+    @property
+    def booking_id(self):
+        return self.__id    
+    
     
 website = Website()
 
