@@ -10,7 +10,7 @@ def register_routes(rt):
 
         return Head(Title("Tour ame"),
             Body(
-                    Container(
+                    Div(
                         Div(
                             Div(
                             H2("รายละเอียดทัวร์",style = "text-align:center"),
@@ -49,24 +49,18 @@ def register_routes(rt):
                             Div(
                                 # ผู้ใหญ่
                                 Label("ผู้ใหญ่ 8xx บาท"),
-                                # Input(id="adult",type="number",placeholder="จำนวน"),
-                                # Br(),
-                                # # เด็ก
+
                                 Label("เด็ก 2xx บาท"),
-                                # Input(id="child",type="number",placeholder="จำนวน"),
-                                # Br(),
-                                # # ราคารวม
-                                # P("รวม: 1xxx บาท"),
-                                # style="margin: 10px 0;"
+   
                             ),
-                            style="margin-bottom: 20px;"
+                            style="margin-bottom: 20px; margin-right:60px"
                         ),
                     
                     style="display: flex; flex-direction: column; gap: 20px; width: 1200px;",
                     
                 ),
-                style="display: flex; flex-direction: row; gap: 20px; margin: 20px;"
-            )
+                style="display: flex; flex-direction: row; gap: 20px; margin: 20px;width:100%;"
+            ),
         )
     )   
 
@@ -76,7 +70,7 @@ def register_routes(rt):
 
         return Head(Title("Tour ame"),
             Body(
-                    Container(
+                    Div(
                         
                         Div(
                         Card(
