@@ -1,13 +1,15 @@
 from fasthtml.common import *
 from BackEnd import *
+
 from Payment import register_routes as register_pay
 from PrintTicket import register_routes as register_ticket
-
+from CancelReserve import register_routes as register_cancel
 
 app, rt = fast_app()    #        pico=False,live=True
 
 register_pay(rt)
 register_ticket(rt)
+register_cancel(rt)
     
 #Test Instance
 user = User("Pongsak", "1234")
@@ -31,8 +33,6 @@ def updateStatus(status):
         return "Error"
 
 def renderHistory(booked):
-    
-    # booked.update_status = "payment"  
     global status
     
     return  Body(  
@@ -41,23 +41,26 @@ def renderHistory(booked):
                         Div(f"{booked.tour_program.name}"),  
                         Div(f"{booked.tour_program.time}"),  
                         Div(updateStatus(status)),                          #["pending", "payment", "done", "canceled"]    
-                        Div(Button("พิมพ์ตั๋ว",onclick="location.href='/ticket'")),  
-                        Div(Button("ยกเลิก", ),  #onclick="location.href='/canceled-booked'
+                        Div(Button("พิมพ์ตั๋ว", disabled= status!="done", onclick="location.href='/ticket'")),  
+                        Div(Button("ยกเลิก", disabled= status =="canceled", onclick="location.href='/cancel-resevation'"), 
                         ),
                         style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center; "
                     ),
                     style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
                 )
             )
-
-@rt('/update_status_done/')
+@rt('/update_status_done')
 def get():
-    
     global status
     status = "done"                   # Update the status to 'done' after successful payment
-
     return Redirect("/")
 
+@rt('/update_status_cancel')
+def get():
+    global status
+    status = "canceled"
+    
+    return Redirect("/")
 
 @rt('/')
 def get():
