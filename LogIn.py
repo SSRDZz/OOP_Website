@@ -45,9 +45,9 @@ def register_routes(rt):
     @rt('/SignInBackEnd', methods=["POST"])
     def post(userName : str, password : str):
         if website.TryLogIn(userName, password):
-            return RedirectResponse("/MainPage")
+            return Redirect("/MainPage")
         else:
-            return RedirectResponse("/SignInAgain")
+            return Redirect("/SignInAgain")
 
     @rt('/SignUpUser', methods=["POST"])
     def post(newUserName : str, newPassword : str):

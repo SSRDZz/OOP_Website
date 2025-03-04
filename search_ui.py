@@ -1,10 +1,11 @@
 from fasthtml.common import *
 from BackEnd import *
 
-def search_engine(rt):
+def register_routes(rt):
     @rt('/search-tour')
     def get():
-        return Form(H3("ค้นหาทัวร์สุดพิเศษ"),
+        return Div(Button("Back",onclick = "window.location.href='/MainPage'"),
+                   Form(H3("ค้นหาทัวร์สุดพิเศษ"),
                 Group(
                         
                     Label(Input(id="tour_place",type="text",placeholder="ชื่อสถานที่")),
@@ -21,7 +22,7 @@ def search_engine(rt):
                 ) 
             ,
             method="GET",action="/tour-results"
-            )
+            ))
 
     @rt('/tour-results')
     def get(tour_place:str, tour_id:str, tour_time:str): # ต้องประกาศ : str
@@ -40,15 +41,15 @@ def search_engine(rt):
                 H2("ผลลัพธ์การค้นหา"),
                 *[Card(H3(tours.id),P(tours.name), P(tours.place),P(tours.time), onclick = f"window.location.href='/tour-information/{tour_id}'") ],
 
-                Button("ย้อนกลับ", onclick="window.location.href='/'")  
+                Button("ย้อนกลับ", onclick="window.location.href='/search-tour''")  
                 )
             else: 
                 return Div(
                 H2("ผลลัพธ์การค้นหา"),
                 *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time)) for tour in tours],
                 
-                Button("ย้อนกลับ", onclick="window.location.href='/'")  
+                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  
             )
         else:
-            return Div(H2("ไม่พบผลลัพธ์"), Button("ย้อนกลับ", onclick="window.location.href='/'")  )
+            return Div(H2("ไม่พบผลลัพธ์"), Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  )
 

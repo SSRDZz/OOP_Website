@@ -9,9 +9,11 @@ def register_routes(rt):
         tour_list = website.tour_manager.get_all_tour()
         grouped_tours = [tour_list[i:i+3] for i in range(0, len(tour_list), 3)]
         
-        return Div(Button("profile", onclick="location.href='/SignUpPage'"),
+        return Div(Button("profile", onclick="location.href='/'"),
                    Button("article"),
                    Button("Create Tour", onclick="location.href='/CreatTourPage'"),
+                   Button("History"),
+                   Button("Search", onclick="location.href='/search-tour'"),
                    Titled("MainPage",
                           Div(
                               *[Grid(*[Card(P(tour.name), P(tour.place)) for tour in group]) for group in grouped_tours]

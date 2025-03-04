@@ -13,8 +13,9 @@ locations = [
 def register_routes(rt):
     @rt('/CreatTourPage')
     def get():
-        return Titled("ทัวร์แบบจัดเอง",
-            Form(
+        return Div(Button("Back",onclick = "window.location.href='/MainPage'"),
+                   Titled("ทัวร์แบบจัดเอง",
+                Form(
                 P("วันที่เริ่มทัวร์"),
                 Label(Input(id="startDate", type="date", placeholder="วัน/เดือน/ปี")),
                 P("วันที่จบทัวร์"),
@@ -35,8 +36,8 @@ def register_routes(rt):
                 Button("ตกลง", type="button", hx_post="/CreateCustomizedTour"),
                 method="post",
                 onkeydown="if(event.key==='Enter'){event.preventDefault();}"
-            )
-        )
+            ),
+        ))
 
     @rt('/CreateCustomizedTour', methods=["POST"])
     def post(startDate: str = None, endDate: str = None, location: str = None):
@@ -54,7 +55,7 @@ def register_routes(rt):
 
             # If valid, proceed with tour creation
             website.RequestCreateTour("test Tour",location)
-            return "Tour created successfully!"
+            return Redirect("/MainPage")
 
         except ValueError:
             return "Error: Invalid date format!", 400  # Handles wrong date input
