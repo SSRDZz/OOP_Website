@@ -263,7 +263,7 @@ class Article:
 class Booking:
     def __init__(self,tour_program, data=None):
         self.__tour_program = tour_program
-        self.__status : str = None    #pending paying done
+        self.__status : str = 'payment'    #pending payment done
         self.__data = data                  #ัยังไม่เสร็จ   
 
     @property
