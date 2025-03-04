@@ -12,7 +12,7 @@ register_ticket(rt)
 register_cancel(rt)
 
 user = website.currentUser
-user.create_booking_tour(website.tour_manager.search_tour('1'), None)
+
 
 status = "payment"
 
