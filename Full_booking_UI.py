@@ -1,12 +1,16 @@
 from fasthtml.common import *
 from BackEnd import *
+from search_ui import search_engine 
 
+# FastHTML app setup----------------------
 app, rt = fast_app()
 
-@rt('/') # tour-description
+search_engine(rt)
+
+@rt('/tour-information/{tour_id}') # tour-description
 def get():
 
-    tour_id = 1
+    # tour_id = 1
     tour = website.SearchTour(id=tour_id)
 
     return Head(Title("Tour ame"),
