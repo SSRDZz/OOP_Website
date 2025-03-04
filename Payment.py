@@ -5,18 +5,18 @@ selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 # app, rt = fast_app()
 
-user1Payment = Payment("123456ccc", true, None, None)
-
 def register_routes(rt):
+
+    user1Payment = Payment("123456ccc", true, None, None)
         
-    def assignPaymentMethod(user,method):
-        user.payment_method = method
+    def assignPaymentMethod(method):
+        user1Payment.payment_method = method
 
     @rt("/payment_complete")
     def get():
         
         global selected_payment_method
-        assignPaymentMethod(user1Payment,selected_payment_method)
+        assignPaymentMethod(selected_payment_method)
 
         user1Payment.Pay();
         
