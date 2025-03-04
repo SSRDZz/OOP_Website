@@ -298,7 +298,7 @@ def create_enviroment():
     website.create_account("testUser","123")
     website.TryLogIn("testUser","123")
     website.booking_tour(website.tour_manager.search_tour('1'),None)
-    
+    website.booking_tour(website.tour_manager.search_tour('4'),None)
     
     print(website.SearchTour(id=1).name)
 
