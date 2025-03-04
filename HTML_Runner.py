@@ -4,7 +4,7 @@ from MainPage import register_routes as register_Main # type: ignore
 from CustomizeTour import register_routes as register_CustomizeTour
 from search_ui import register_routes as register_SearchUI
 from Full_booking_UI import register_routes as register_BookUI
-
+from Article import register_routes as register_ArticleUI
 app, rt = fast_app()  # type: ignore
 
 register_login(rt)
@@ -12,6 +12,7 @@ register_Main(rt)
 register_CustomizeTour(rt)
 register_SearchUI(rt)
 register_BookUI(rt)
+register_ArticleUI(rt)
                   
 serve()
 
