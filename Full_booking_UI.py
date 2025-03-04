@@ -73,7 +73,7 @@ def get():
 
 @rt('/tour-book/{tour_id}') 
 def get(tour_id:str):
-    tour = website.SearchTour(tour_id)
+    tour = website.SearchTour(id=tour_id)
 
     return Head(Title("Tour ame"),
            Body(
@@ -151,7 +151,7 @@ def get(tour_id:str):
                     ),
                 # ปุ่มยืนยัน
                 Button("ยืนยันการจอง",style="width: 150px; margin-top: 10px;"),
-                method="GET",action="/tour-book-result",
+                method="GET",action=f"/tour-book-result/{tour_id}", #f"location.href='/tour-book/{tour_id}'
                 style="display: flex; flex-direction: column; gap: 20px; width: 1200px;",
                 
             ),
@@ -160,13 +160,14 @@ def get(tour_id:str):
     )
 )   
 
-@rt('/tour-book-result')
+@rt('/tour-book-result/{tour_id}')
 def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str,tour_id:str):
     # print("min")
     if (child=="" or int(child)>=0) and adult!="" :
         if (0<int(adult)<100):
             data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}"
-            website.booking_tour(website.SearchTour(tour_id), data_user)
+            # print(data_user)
+            website.booking_tour(website.SearchTour(id=tour_id), data_user)
             return Div(
                     H2("Success"),
                     Button("ย้อนกลับ", onclick="window.location.href='/'")  

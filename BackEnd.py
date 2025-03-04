@@ -286,13 +286,13 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany"))
     website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel"))
     website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",11,"Thai"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India"))
 
     
     website.create_account("testUser","123")
