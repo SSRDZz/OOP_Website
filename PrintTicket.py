@@ -8,17 +8,13 @@ def register_routes(rt):
     def get(booking_id: str):
         
         current_booked = website.currentUser.search_booking(booking_id)
+        payment = user.search_payment(booking_id) 
         
-        booking_code = current_booked.booking_id
-        tour_name = current_booked.tour_program.name
-        tour_date = current_booked.tour_program.time
-        departure_time = current_booked.tour_program.departure_time if hasattr(current_booked.tour_program, 'departure_time') else "N/A"
-        arrival_time = current_booked.tour_program.arrival_time if hasattr(current_booked.tour_program, 'arrival_time') else "N/A"
-        departure_location = current_booked.tour_program.departure_location if hasattr(current_booked.tour_program, 'departure_location') else "N/A"
-        arrival_location = current_booked.tour_program.arrival_location if hasattr(current_booked.tour_program, 'arrival_location') else "N/A"
-        passenger_name = user.username
-        seat_number = current_booked.seat_number if hasattr(current_booked, 'seat_number') else "N/A"
-        total_price = current_booked.total_price if hasattr(current_booked, 'total_price') else "N/A"
+        transaction_id = current_booked.booking_id
+        name = current_booked.tour_program.name
+        date = current_booked.tour_program.time
+        payment_method = payment.payment_method
+        payment_info = payment.info if hasattr(payment, 'info') else "N/A"
 
         page = Div(
             Head(
@@ -36,31 +32,28 @@ def register_routes(rt):
                 Div(
                     Div(
                         H2("Booking Ticket"),
-                        P("Payment Reference: ", Strong(f"{booking_code}")),
+                        P("Transaction ID: ", Strong(f"{transaction_id}")),
                         Class="header"
                     ),
                     Div(
                         Button("Print Ticket", Class="button", onclick="location.href='/'"),
-                        
                     ),
                     Class="container"
                 ),
                 Card(
                     Div(
-                        H3(tour_name),
-                        P("Booking Code: ", Span(booking_code, Class="highlight")),
-                        P(Strong("Date: "), tour_date),
-                        P(Strong("Departure: "), f"{departure_time} - {departure_location}"),
-                        P(Strong("Arrival: "), f"{arrival_time} - {arrival_location}"),
-                        P(Strong("Passenger: "), f"{passenger_name} (Seat {seat_number})"),
+                        H3(name),
+                        P("Transaction ID: ", Span(transaction_id, Class="highlight")),
+                        P(Strong("Date: "), date),
+                        P(Strong("Payment Method: "), payment_method),
+                        P(Strong("Payment Info: "), payment_info),
                         Class="ticket-info"
                     ),
-                    Div(
-                        H3("Payment Summary"),
-                        P(Strong("Total: "), f"{total_price} THB"),
-                        Class="payment"
-                    )
-                )
-            )
+                    style="padding: 20px; width: 55%;"
+                ),
+                style="display: flex; justify-content: space-between; margin-top: 20px;"
+            ),
+            style="font-family: Arial, sans-serif;"
         )
+        
         return page

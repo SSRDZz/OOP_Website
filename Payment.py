@@ -4,14 +4,14 @@ from BackEnd import *
 user = website.currentUser
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
+user = website.currentUser
+user_payment = None
 # app, rt = fast_app()
 
 def register_routes(rt):
-
-    user1Payment = Payment("123456ccc", True, None, None)
         
     def assignPaymentMethod(method):
-        user1Payment.payment_method = method
+        user_payment.payment_method = method
 
     def updatePaymentMethod(method):
         global payment_status
@@ -22,10 +22,12 @@ def register_routes(rt):
 
     @rt("/payment/{booking_id}/payment_complete/")
     def get(booking_id: str):
+        global user_payment
+        
         current_booked = user.search_booking(booking_id)
         assignPaymentMethod(selected_payment_method)
         
-        user1Payment.Pay()
+        user_payment.Pay()
         
         page = Html(
             Head(Title("Payment Complete")),
@@ -109,7 +111,9 @@ def register_routes(rt):
     @rt("/payment/{booking_id}")
     def get(booking_id: str):  
         global payment_status
+        global user_payment
         current_booked = user.search_booking(booking_id)
+        user_payment = user.search_payment(booking_id)
         
         page = Div(
             Head(
