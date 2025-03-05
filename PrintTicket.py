@@ -6,7 +6,6 @@ user = website.currentUser
 def register_routes(rt):
     @rt("/ticket/{booking_id}")
     def get(booking_id: str):
-        
         current_booked = website.currentUser.search_booking(booking_id)
         payment = user.search_payment(booking_id) 
         
@@ -25,35 +24,47 @@ def register_routes(rt):
                     .ticket-info { margin-top: 20px; }
                     .highlight { font-weight: bold; color: red; }
                     .payment { margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
-                    .button { background-color: #ffffff; color: orange; font-weight: bold; padding: 10px; font-size: 16px; border: solid; cursor: pointer; text-align: center; }
+                    .button { padding: 10px; font-size: 16px; border: solid; cursor: pointer; text-align: center; }
+                    .print-button { background-color: #ffffff; color: orange; font-weight: bold; }
+                    .print-button:hover { background-color: orange; color: #ffffff; }
+                    .back-button { background-color: #f0f0f0; color: #000000; font-weight: bold; }
+                    .back-button:hover { background-color: #d0d0d0; }
+                    .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+                    .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 50%; }
+                    .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+                    .close:hover { color: black; }
                 """)
             ),
             Body(
                 Div(
                     Div(
                         H2("Booking Ticket"),
-                        P("Transaction ID: ", Strong(f"{transaction_id}")),
+                        P("Transaction ID: ", Strong(transaction_id)),
                         Class="header"
                     ),
                     Div(
-                        Button("Print Ticket", Class="button", onclick="location.href='/'"),
+                        P("Transaction ID: ", Span(transaction_id, Class="highlight")),
+                        P(Strong("Name: "), Span(name)),
+                        P(Strong("Date: "), Span(date)),
+                        P(Strong("Payment Method: "), Span(payment_method)),
+                        P(Strong("Payment Info: "), Span(payment_info)),
+                        Button("Print Ticket", Class="button print-button", onclick="document.getElementById('myModal').style.display='block'"),
+                        Button("Back", Class="button back-button", onclick="window.history.back()"),
+                        Class="ticket-info"
                     ),
                     Class="container"
                 ),
-                Card(
+                Div(
                     Div(
-                        H3(name),
-                        P("Transaction ID: ", Span(transaction_id, Class="highlight")),
-                        P(Strong("Date: "), date),
-                        P(Strong("Payment Method: "), payment_method),
-                        P(Strong("Payment Info: "), payment_info),
-                        Class="ticket-info"
-                    ),
-                    style="padding: 20px; width: 55%;"
-                ),
-                style="display: flex; justify-content: space-between; margin-top: 20px;"
-            ),
-            style="font-family: Arial, sans-serif;"
+                        Div(
+                            P("Printed!!"),
+                            Button("Close", Class="button", onclick="document.getElementById('myModal').style.display='none'"),
+                            Class="modal-content"
+                        ),
+                        Class="modal", Id="myModal"
+                    )
+                )
+            )
         )
         
         return page
