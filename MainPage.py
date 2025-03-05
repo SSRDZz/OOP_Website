@@ -12,7 +12,7 @@ def register_routes(rt):
         return Div(Button("profile", onclick="location.href='/'"),
                    Button("article", onclick="location.href='/Article'"),
                    Button("Create Tour", onclick="location.href='/CreatTourPage'"),
-                   Button("History"),
+                   Button("History", onclick="location.href='/reserve-history'"),
                    Button("Search", onclick="location.href='/search-tour'"),
                    Titled("MainPage",
                           Div(

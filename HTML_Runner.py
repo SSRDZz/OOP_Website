@@ -5,6 +5,7 @@ from CustomizeTour import register_routes as register_CustomizeTour
 from search_ui import register_routes as register_SearchUI
 from Full_booking_UI import register_routes as register_BookUI
 from Article import register_routes as register_ArticleUI
+from ReserveHistory import register_routes as register_History_Payment_Ticket
 app, rt = fast_app()  # type: ignore
 
 register_login(rt)
@@ -13,6 +14,7 @@ register_Main(rt)
 register_CustomizeTour(rt)
 register_BookUI(rt)
 register_ArticleUI(rt)
+register_History_Payment_Ticket(rt)
                   
 serve()
 
