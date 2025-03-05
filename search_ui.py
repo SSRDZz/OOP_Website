@@ -36,29 +36,6 @@ def register_routes(rt):
             print(tour_place+"|"+tour_id+"|"+tour_time)
 
         if(tours!=None and tours!=[]):
-            if(isinstance(tours,TourProgram)) :
-                return Div(
-                H2("ผลลัพธ์การค้นหา"),
-                *[Card(H3(tours.id),P(tours.name), P(tours.place),P(tours.time),
-                style="""
-                    transition: all 0.3s;
-                    cursor: pointer;
-                    margin-left : 40px;
-                    margin-right : 40px;
-                    padding: 30px
-                 """, 
-                 onmouseover="this.style.backgroundColor='#e0f7fa';this.style.transform='scale(1.03)';",
-                onmouseout="this.style.backgroundColor='';this.style.transform='scale(1)';",
-                        
-                 onclick = f"window.location.href='/tour-information/{tours.id}'") ],
-
-                Button("ย้อนกลับ", onclick="window.location.href='/search-tour''"),
-                style = """
-                    margin : 20px;
-                    
-                """  
-                )
-            else: 
                 return Div(
                 H2("ผลลัพธ์การค้นหา"),
                 *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time),

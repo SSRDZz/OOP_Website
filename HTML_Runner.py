@@ -8,9 +8,9 @@ from Article import register_routes as register_ArticleUI
 app, rt = fast_app()  # type: ignore
 
 register_login(rt)
+register_SearchUI(rt)
 register_Main(rt)
 register_CustomizeTour(rt)
-register_SearchUI(rt)
 register_BookUI(rt)
 register_ArticleUI(rt)
                   
