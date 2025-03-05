@@ -2,11 +2,13 @@ from fasthtml.common import *
 from BackEnd import *
 
 user = website.currentUser
-current_booked = user.bookingList[0]
 
 def register_routes(rt):
-    @rt("/ticket")
-    def get():
+    @rt("/ticket/{booking_id}")
+    def get(booking_id: str):
+        
+        current_booked = website.currentUser.search_booking(booking_id)
+        
         booking_code = current_booked.booking_id
         tour_name = current_booked.tour_program.name
         tour_date = current_booked.tour_program.time

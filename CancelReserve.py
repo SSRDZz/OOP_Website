@@ -4,8 +4,10 @@ from BackEnd import *
 
 def register_routes(rt):
 
-    @rt("/cancel-resevation")
-    def get():
+    @rt("/cancel-resevation/{booking_id}")
+    def get(booking_id:str):
+        
+        current_booked = website.currentUser.search_booking(booking_id)
         
         page = Div(
             Head(
@@ -15,7 +17,7 @@ def register_routes(rt):
                 H1("Cancel Reservation"),
                 P("Are you sure you want to cancel your reservation?"),
                 Div(
-                    Button("Yes, Cancel", onclick="location.href='/update_status_cancel'"),
+                    Button("Yes, Cancel", onclick=f"location.href='/update_status_cancel/{current_booked.booking_id}'"),
                     Button("No, Go Back", onclick="location.href='/'"),
                     style="display: flex; justify-content: space-around; margin-top: 20px;"
                 ),

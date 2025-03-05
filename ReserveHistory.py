@@ -12,17 +12,15 @@ register_ticket(rt)
 register_cancel(rt)
 
 user = website.currentUser
+# status = "payment"
 
-
-status = "payment"
-
-def updateStatus(status):
+def updateStatus(booked,status):
     if status == "pending":
         return P("Pending...", style="color: #d4bc08")
     elif status == "done":
         return P("Done", style="color: #0cad5d")
     elif status == "payment":
-        content = Button("จ่ายเงิน", onclick="location.href='/payment'")
+        content = Button("จ่ายเงิน", onclick=f"location.href='/payment/{booked.booking_id}'") #?booking_id={booked.booking_id}
         return content
     elif status == "canceled":
         return P("Canceled", style="color: #8c8787")
@@ -30,31 +28,37 @@ def updateStatus(status):
         return "Error"
 
 def renderHistory(booked):
-    global status
+    # global status
+    
+    status = booked.status
+    
     return Body(
         Card(
             Grid(
                 Div(f"{booked.tour_program.name}"),
                 Div(f"{booked.tour_program.time}"),
-                Div(updateStatus(status)),  # ["pending", "payment", "done", "canceled"]
-                Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick="location.href='/ticket'")),
-                Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick="location.href='/cancel-resevation'")),
+                Div(updateStatus(booked,status)),  # ["pending", "payment", "done", "canceled"]
+                Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'")),
+                Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'")),
                 style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center;"
             ),
             style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
         )
     )
 
-@rt('/update_status_done')
-def get():
-    global status
-    status = "done"  # Update the status to 'done' after successful payment
+@rt('/update_status_done/{booking_id}')
+def get(booking_id:str):
+    
+    current_booked = user.search_booking(booking_id)    
+    # print(current_booked) 
+    current_booked.update_status = "done" 
     return Redirect("/")
 
-@rt('/update_status_cancel')
-def get():
-    global status
-    status = "canceled"
+@rt('/update_status_cancel/{booking_id}')
+def get(booking_id:str):
+  
+    current_booked = user.search_booking(booking_id)
+    current_booked.update_status = "canceled" 
     return Redirect("/")
 
 @rt('/')

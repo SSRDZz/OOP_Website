@@ -1,6 +1,7 @@
 from fasthtml.common import *
 from BackEnd import *
 
+user = website.currentUser
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 # app, rt = fast_app()
@@ -12,9 +13,10 @@ def register_routes(rt):
     def assignPaymentMethod(method):
         user1Payment.payment_method = method
 
-    @rt("/payment_complete")
-    def get():
+    @rt("/payment_complete/{booking_id}")
+    def get(booking_id: str):
         
+        current_booked = user.search_booking(booking_id)
         global selected_payment_method
         assignPaymentMethod(selected_payment_method)
 
@@ -25,7 +27,7 @@ def register_routes(rt):
             Body(
                 H1("Thank You!"),
                 P("Your payment has been successfully processed."),
-                A("Return to Home", href="/update_status_done")
+                A("Return to Home", href= f"/update_status_done/{current_booked.booking_id}")
 
             )
         )
@@ -117,9 +119,10 @@ def register_routes(rt):
         # print(selected_payment_method)
         # print(payment_status)
 
-    @rt("/payment")
-    def get():
+    @rt("/payment/{booking_id}")
+    def get(booking_id: str):  
         global payment_status
+        current_booked = user.search_booking(booking_id)
         
         page = Div(
             Head(
@@ -178,7 +181,7 @@ def register_routes(rt):
                             """,
                             id="payment-button",
                             
-                            onclick=f"location.href = '/payment_complete'",
+                            onclick= f"location.href = '/payment_complete/{current_booked.booking_id}'",
 
                             onmouseover="this.style.backgroundColor='#ff8080';this.style.transform='scale(1.1)';",
                             onmouseout="this.style.backgroundColor='#ff0000';this.style.transform='scale(1)';"
