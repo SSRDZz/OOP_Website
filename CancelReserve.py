@@ -18,7 +18,7 @@ def register_routes(rt):
                 P("Are you sure you want to cancel your reservation?"),
                 Div(
                     Button("Yes, Cancel", onclick=f"location.href='/cancel-resevation/{current_booked.booking_id}/update_status_cancel'"),
-                    Button("No, Go Back", onclick="location.href='/'"),
+                    Button("No, Go Back", onclick="window.history.back()"),
                     style="display: flex; justify-content: space-around; margin-top: 20px;"
                 ),
                 style="text-align: center; margin-top: 50px;"

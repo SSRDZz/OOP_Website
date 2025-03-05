@@ -4,12 +4,16 @@ from BackEnd import *
 user = website.currentUser
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
-user = website.currentUser
 user_payment = None
-# app, rt = fast_app()
 
 def register_routes(rt):
-        
+    
+    def calculate_price(adults, children):
+        adult_price = 800  # Price per adult
+        child_price = 200  # Price per child
+        total_price = (adults * adult_price) + (children * child_price)
+        return total_price
+    
     def assignPaymentMethod(method):
         user_payment.payment_method = method
 
@@ -23,7 +27,7 @@ def register_routes(rt):
     @rt("/payment/{booking_id}/payment_complete/")
     def get(booking_id: str):
         global user_payment
-        
+        # data -> "fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}" adult มากกว่า 0 คนเสมอ ราคา adult->8xx child 2xx
         current_booked = user.search_booking(booking_id)
         assignPaymentMethod(selected_payment_method)
         
@@ -57,11 +61,11 @@ def register_routes(rt):
             Br(), Br(),
             Label("Card Number:"),
             Br(),
-            Input(id="card_number", type="text", placeholder="1234 5678 9012 3456", style="margin-bottom: 10px; padding: 5px; width: 100%;"),
+            Input(id="card_number", type="text", placeholder="1234 5678 9012 3456", style="margin-bottom: 10px; padding: 5px; width: 100%;", oninput="formatCardNumber(this)"),
             Br(), Br(),
             Label("Expiry Date:"),
             Br(),
-            Input(id="expiry_date", type="text", placeholder="MM/YY", style="margin-bottom: 10px; padding: 5px; width: 100%;"),
+            Input(id="expiry_date", type="text", placeholder="MM/YY", style="margin-bottom: 10px; padding: 5px; width: 100%;", oninput="formatExpiryDate(this)"),
             Br(), Br(),
             Label("CVC:"),
             Br(),
@@ -115,9 +119,72 @@ def register_routes(rt):
         current_booked = user.search_booking(booking_id)
         user_payment = user.search_payment(booking_id)
         
+        # Extract booking details
+        booking_data = current_booked.data.split('|')
+        name = booking_data[0].split(':')[1]
+        email = booking_data[2].split(':')[1]
+        phone = booking_data[3].split(':')[1]
+        adults = int(booking_data[4].split(':')[1])
+        children = int(booking_data[5].split(':')[1])
+        total_price = calculate_price(adults, children)
+        
         page = Div(
             Head(
                 Title("Payment Session"),
+                Script("""
+                    function validateCardForm() {
+                        var cardNumber = document.getElementById('card_number').value;
+                        var expiryDate = document.getElementById('expiry_date').value;
+                        var cvc = document.getElementById('cvc').value;
+                        
+                        var cardNumberPattern = /^[0-9]{16}$/;
+                        var expiryDatePattern = /^(0[1-9]|1[0-2])\/[0-9]{2}$/;
+                        var cvcPattern = /^[0-9]{3}$/;
+                        
+                        if (!cardNumberPattern.test(cardNumber.replace(/\s+/g, ''))) {
+                            alert('Invalid card number. Please enter a 16-digit card number.');
+                            return false;
+                        }
+                        
+                        if (!expiryDatePattern.test(expiryDate)) {
+                            alert('Invalid expiry date. Please enter a valid expiry date in MM/YY format.');
+                            return false;
+                        }
+                        
+                        if (!cvcPattern.test(cvc)) {
+                            alert('Invalid CVC. Please enter a 3-digit CVC.');
+                            return false;
+                        }
+                        
+                        return true;
+                    }
+
+                    function handlePayment(bookingId) {
+                        var selectedMethod = document.querySelector('input[name="payment-method"]:checked').value;
+                        if (selectedMethod === "Credit/Debit") {
+                            if (validateCardForm()) {
+                                location.href = '/payment/' + bookingId + '/payment_complete/';
+                            }
+                        } else {
+                            location.href = '/payment/' + bookingId + '/payment_complete/';
+                        }
+                    }
+
+                    function formatCardNumber(input) {
+                        var value = input.value.replace(/\D/g, '').substring(0, 16);
+                        var formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+                        input.value = formattedValue;
+                    }
+
+                    function formatExpiryDate(input) {
+                        var value = input.value.replace(/[^0-9]/g, '');
+                        if (value.length >= 2) {
+                            input.value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                        } else {
+                            input.value = value;
+                        }
+                    }
+                """)
             ),
             Body(
                 Container(
@@ -129,12 +196,12 @@ def register_routes(rt):
                 ),
                 Div(
                     Div(
-                    Div(
+                        Div(
                             H3("Payment Method"),
                             Div(
-                                Label(Input(type="radio", name="payment-method", checked=True, hx_post='/render-card'), "Credit/Debit"),
-                                Label(Input(type="radio", name="payment-method", hx_post='/render-bank'), "Transfer from Bank"),
-                                Label(Input(type="radio", name="payment-method", hx_post='/render-promptQR'), "PromptPay"),
+                                Label(Input(type="radio", name="payment-method", value="Credit/Debit", checked=True, hx_post='/render-card'), "Credit/Debit"),
+                                Label(Input(type="radio", name="payment-method", value="Bank Transfer", hx_post='/render-bank'), "Transfer from Bank"),
+                                Label(Input(type="radio", name="payment-method", value="PromptPay", hx_post='/render-promptQR'), "PromptPay"),
                                 method='post',
                                 hx_target='#showed',
                             ),
@@ -148,16 +215,40 @@ def register_routes(rt):
                     ),
                     Div(
                         Div(
-                            "Tour Name",
+                            f"{current_booked.tour_program.name}",
                             style="background-color: #FFD700; padding: 10px; text-align: center; font-weight: bold; font-size: 18px"
                         ),
                         Div(
-                            "ข้อมูล tour คร่าวๆ",
+                            f"{current_booked.tour_program.place}",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            "ราคา+โปรโมชั่น = ราคาสุทธิ",
+                            f"{current_booked.tour_program.time}",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Name: {name}",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Email: {email}",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Phone: {phone}",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Adults: {adults}",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Children: {children}",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
+                        ),
+                        Div(
+                            f"Total Price: {total_price} THB",
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px; background-color: #333; color: #fff; font-weight: bold; font-size: 16px;"
                         ),
                         Div(
                             Button(
@@ -172,9 +263,7 @@ def register_routes(rt):
                                 transition: background-color 0.3s, transform 0.3s;
                                 """,
                                 id="payment-button",
-                                
-                                onclick= f"location.href = '/payment/{booking_id}/payment_complete/'",
-
+                                onclick=f"handlePayment('{booking_id}')",
                                 onmouseover="this.style.backgroundColor='#ff8080';this.style.transform='scale(1.1)';",
                                 onmouseout="this.style.backgroundColor='#ff0000';this.style.transform='scale(1)';"
                             ),
@@ -191,9 +280,7 @@ def register_routes(rt):
                                 margin-left: 10px;
                                 """,
                                 id="go-back-button",
-                                
                                 onclick="history.back()",
-
                                 onmouseover="this.style.backgroundColor='#e0e0e0';this.style.transform='scale(1.1)';",
                                 onmouseout="this.style.backgroundColor='#cccccc';this.style.transform='scale(1)';"
                             ),
