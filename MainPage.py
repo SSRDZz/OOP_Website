@@ -16,6 +16,24 @@ def register_routes(rt):
                    Button("Search", onclick="location.href='/search-tour'"),
                    Titled("MainPage",
                           Div(
+                              NotStr(
+                                
+                                    """<iframe 
+                                            src= "/search-tour"
+                                            width="100%" 
+                                            height="100%" 
+                                            frameborder="0" 
+                                            scrolling="auto">
+                                        </iframe>""",
+                                    
+                                ),
+                                style="""
+                                    width: 800px; 
+                                    height: 200px; 
+                                    border: 1px solid #ccc;
+                                """
+                          ),
+                          Div(
                               *[Grid(*[Card(P(tour.name), P(tour.place),
                                     style="""
                                         transition: all 0.3s;
