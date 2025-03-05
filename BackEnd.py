@@ -175,6 +175,7 @@ class Account:
 class User(Account):
     def __init__(self,name,password):
         self.__booking = []
+        self.__payment = []
         super().__init__(name,password)
         print("User created :",self.username)
 
@@ -184,9 +185,13 @@ class User(Account):
     def talk(self):
         print("Created User")
 
+    def create_payment(self, transaction_id:str, booked:'Booking'):
+        self.__payment.append(Payment(transaction_id, booked))
 
     def create_booking_tour(self,tour_program : TourProgram, data:str,id:str):
-        self.__booking.append(Booking(tour_program, data,id))
+        new_booked = Booking(tour_program, data,id)
+        self.__booking.append(new_booked)
+        self.create_payment(new_booked.booking_id, new_booked)
     
     def search_booking(self,id):
         for booking in self.__booking:
@@ -194,10 +199,19 @@ class User(Account):
                 return booking
         return None
     
+    def search_payment(self, id):
+        for payment in self.__payment:
+            if payment.transaction_id == id:
+                return payment
+        return None
+    
     @property
     def bookingList(self):
         return self.__booking
     
+    @property
+    def payment_list(self):
+        return self.__payment
     
 
 class Staff(Account):
@@ -212,11 +226,14 @@ class Staff(Account):
         pass
 
 class Payment():
-    def __init__(self, transaction_id:str, discount:bool, payment_method:str, booking:'Booking'):
+    def __init__(self, transaction_id:str, booking:'Booking'):
         self.__triansaction_id = transaction_id
-        self.__discount = discount
-        self.__payment_method = payment_method
+        self.__discount = None #bool
+        self.__payment_method = None #str
         self.__booking = booking
+    
+    @property
+    def transaction_id(self): return self.__triansaction_id
     
     @property
     def payment_method(self): return self.__payment_method
@@ -330,8 +347,10 @@ def create_enviroment():
     
     website.create_account("testUser","123")
     website.TryLogIn("testUser","123")
+    
     website.booking_tour(website.tour_manager.search_tour('1'),None,"1_Min")
     website.booking_tour(website.tour_manager.search_tour('4'),None,"4_Owen")
+    
     print(website.SearchTour(id=1).name)
 
 create_enviroment()

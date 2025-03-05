@@ -46,15 +46,14 @@ def renderHistory(booked):
         )
     )
 
-@rt('/update_status_done/{booking_id}')
+@rt('/payment/{booking_id}/update_status_done/')
 def get(booking_id:str):
     
     current_booked = user.search_booking(booking_id)    
-    # print(current_booked) 
     current_booked.update_status = "done" 
     return Redirect("/")
 
-@rt('/update_status_cancel/{booking_id}')
+@rt('/cancel-resevation/{booking_id}/update_status_cancel/')
 def get(booking_id:str):
   
     current_booked = user.search_booking(booking_id)

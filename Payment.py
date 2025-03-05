@@ -8,37 +8,37 @@ payment_status = 'complete'
 
 def register_routes(rt):
 
-    user1Payment = Payment("123456ccc", true, None, None)
+    user1Payment = Payment("123456ccc", True, None, None)
         
     def assignPaymentMethod(method):
         user1Payment.payment_method = method
 
-    @rt("/payment_complete/{booking_id}")
-    def get(booking_id: str):
-        
-        current_booked = user.search_booking(booking_id)
+    def updatePaymentMethod(method):
+        global payment_status
         global selected_payment_method
-        assignPaymentMethod(selected_payment_method)
+        
+        selected_payment_method = method
+        payment_status = "complete" if method == "Credit/Debit" else "failed"
 
-        user1Payment.Pay();
+    @rt("/payment/{booking_id}/payment_complete/")
+    def get(booking_id: str):
+        current_booked = user.search_booking(booking_id)
+        assignPaymentMethod(selected_payment_method)
+        
+        user1Payment.Pay()
         
         page = Html(
             Head(Title("Payment Complete")),
             Body(
                 H1("Thank You!"),
                 P("Your payment has been successfully processed."),
-                A("Return to Home", href= f"/update_status_done/{current_booked.booking_id}")
-
+                A("Return to Home", href=f"/payment/{current_booked.booking_id}/update_status_done/")
             )
         )
-
-        
         return page
 
     @rt("/payment_failed")
-        
     def get():
-        
         page = Html(
             Head(Title("Payment Failed")),
             Body(
@@ -47,12 +47,9 @@ def register_routes(rt):
                 A("Try Again", href="/")
             )
         )
-        
         return page
 
-
     def cdcardRender():
-        
         page = Div(
             "Enter Credit/Debit Card Details",
             Br(), Br(),
@@ -64,20 +61,18 @@ def register_routes(rt):
             Br(),
             Input(id="expiry_date", type="text", placeholder="MM/YY", style="margin-bottom: 10px; padding: 5px; width: 100%;"),
             Br(), Br(),
-            Label("CVV:"),
+            Label("CVC:"),
             Br(),
-            Input(id="cvv", type="text", placeholder="123", style="margin-bottom: 10px; padding: 5px; width: 100%;"),
+            Input(id="cvc", type="text", placeholder="123", style="margin-bottom: 10px; padding: 5px; width: 100%;"),
             id="credit-details",
             style="border: 1px solid #ccc; padding: 20px; min-height: 150px; margin-top: 10px; background-color: #f9f9f9;"
         )
         return page
 
-
     @rt('/render-card', methods=["POST"])
     def post():
         updatePaymentMethod("Credit/Debit")
         return cdcardRender()
-
 
     @rt('/render-bank', methods=["POST"])
     def post():
@@ -111,14 +106,6 @@ def register_routes(rt):
         )
         return page
 
-    def updatePaymentMethod(method):
-        global payment_status
-        global selected_payment_method
-        selected_payment_method = method
-        payment_status = "complete" if method == "Credit/Debit" else "failed"
-        # print(selected_payment_method)
-        # print(payment_status)
-
     @rt("/payment/{booking_id}")
     def get(booking_id: str):  
         global payment_status
@@ -132,7 +119,7 @@ def register_routes(rt):
                 Container(
                     Div(
                         Div("Tour Amateur", style="font-size: 30px; font-weight: bold; margin-top: 10px"),
-                        Div("Name Surname", style="display: flex; align-items: center;"),
+                        Div(f"{user.username}", style="display: flex; align-items: center;"),
                         style="display: flex; justify-content: space-between;"
                     )   
                 ),
@@ -168,23 +155,45 @@ def register_routes(rt):
                             "ราคา+โปรโมชั่น = ราคาสุทธิ",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
-                        Button(
-                            "ดำเนินการต่อ",
-                            style="""
-                            background-color: #ff0000; 
-                            color: white;
-                            padding: 10px 20px;
-                            text-align: center;
-                            margin-top: 20px;
-                            cursor: pointer;
-                            transition: background-color 0.3s, transform 0.3s;
-                            """,
-                            id="payment-button",
-                            
-                            onclick= f"location.href = '/payment_complete/{current_booked.booking_id}'",
+                        Div(
+                            Button(
+                                "ดำเนินการต่อ",
+                                style="""
+                                background-color: #ff0000; 
+                                color: white;
+                                padding: 10px 20px;
+                                text-align: center;
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                """,
+                                id="payment-button",
+                                
+                                onclick= f"location.href = '/payment/{booking_id}/payment_complete/'",
 
-                            onmouseover="this.style.backgroundColor='#ff8080';this.style.transform='scale(1.1)';",
-                            onmouseout="this.style.backgroundColor='#ff0000';this.style.transform='scale(1)';"
+                                onmouseover="this.style.backgroundColor='#ff8080';this.style.transform='scale(1.1)';",
+                                onmouseout="this.style.backgroundColor='#ff0000';this.style.transform='scale(1)';"
+                            ),
+                            Button(
+                                "Go Back",
+                                style="""
+                                background-color: #cccccc; 
+                                color: black;
+                                padding: 10px 20px;
+                                text-align: center;
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                margin-left: 10px;
+                                """,
+                                id="go-back-button",
+                                
+                                onclick="history.back()",
+
+                                onmouseover="this.style.backgroundColor='#e0e0e0';this.style.transform='scale(1.1)';",
+                                onmouseout="this.style.backgroundColor='#cccccc';this.style.transform='scale(1)';"
+                            ),
+                            style="display: flex; justify-content: space-between; margin-top: 20px;"
                         ),
                         style="padding: 20px; width: 45%;"
                     ),
@@ -196,5 +205,3 @@ def register_routes(rt):
         )
         
         return page
-                  
-

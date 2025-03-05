@@ -41,6 +41,7 @@ def register_routes(rt):
                     ),
                     Div(
                         Button("Print Ticket", Class="button", onclick="location.href='/'"),
+                        
                     ),
                     Class="container"
                 ),
