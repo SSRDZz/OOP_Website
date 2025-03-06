@@ -11,8 +11,7 @@ def register_routes(rt):
     register_ticket(rt)
     register_cancel(rt)
 
-    user = website.currentUser
-    # status = "payment"
+    user = website.currentUser  #easier to access
     
     def updateStatus(booked, status):
         if status == "pending":
