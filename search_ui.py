@@ -4,7 +4,7 @@ from BackEnd import *
 def register_routes(rt):
     @rt('/search-tour')
     def get():
-        return Div(Button("Back",onclick = "window.location.href='/MainPage'"),
+        return Div(Button("Home",onclick = "window.location.href='/MainPage'"),
                    Form(H3("ค้นหาทัวร์สุดพิเศษ"),
                 Group(
                         

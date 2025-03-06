@@ -16,23 +16,23 @@ def register_routes(rt):
                    Button("Search", onclick="location.href='/search-tour'"),
                    Titled("MainPage",
                           Div(
-                              NotStr(
-                                
-                                    """<iframe 
-                                            src= "/search-tour"
-                                            width="100%" 
-                                            height="100%" 
-                                            frameborder="0" 
-                                            scrolling="auto">
-                                        </iframe>""",
+                            Form(H3("ค้นหาทัวร์สุดพิเศษ"),
+                            Group(
                                     
-                                ),
-                                style="""
-                                    width: 800px; 
-                                    height: 200px; 
-                                    border: 1px solid #ccc;
-                                """
-                          ),
+                                Label(Input(id="tour_place",type="text",placeholder="ชื่อสถานที่")),
+                                Label(Input(id="tour_id",type="text",placeholder="รหัสทัวร์")),
+                                Label(Input(id="tour_time",type="text",placeholder="วันที่")),
+                                
+                                
+                                
+
+                                style="max-width: 75%; margin: 0 auto;",
+                            ),
+                            Button("Search"),
+                            method="GET",action="/tour-results",
+                            style="margin-top: ",
+                        ),
+                        style = "margin:20px;"),
                           Div(
                               *[Grid(*[Card(P(tour.name), P(tour.place),
                                     style="""
