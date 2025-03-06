@@ -20,7 +20,7 @@ def register_routes(rt):
         elif status == "done":
             return P("Done", style="color: #0cad5d")
         elif status == "payment":
-            content = Button("จ่ายเงิน", onclick=f"location.href='/payment/{booked.booking_id}'") #?booking_id={booked.booking_id}
+            content = Button("จ่ายเงิน", onclick=f"location.href='/payment/{booked.booking_id}'", style="background-color: #ffcc00; color: #fff; padding: 10px 20px; border: none; cursor: pointer;") #?booking_id={booked.booking_id}
             return content
         elif status == "canceled":
             return P("Canceled", style="color: #8c8787")
@@ -28,8 +28,6 @@ def register_routes(rt):
             return "Error"
 
     def renderHistory(booked):
-        # global status
-        
         status = booked.status
         
         return Body(
@@ -38,8 +36,8 @@ def register_routes(rt):
                     Div(f"{booked.tour_program.name}"),
                     Div(f"{booked.tour_program.time}"),
                     Div(updateStatus(booked, status)),  # ["pending", "payment", "done", "canceled"]
-                    Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'")),
-                    Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'")),
+                    Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'", style="background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
+                    Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'", style="background-color: #f44336; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
                     style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center;"
                 ),
                 style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
@@ -55,7 +53,7 @@ def register_routes(rt):
 
     @rt('/cancel-resevation/{booking_id}/update_status_cancel/')
     def get(booking_id: str):
-    
+
         current_booked = user.search_booking(booking_id)
         current_booked.update_status = "canceled" 
         return Redirect("/reserve-history")

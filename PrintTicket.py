@@ -44,7 +44,7 @@ def register_routes(rt):
                     ),
                     Div(
                         P("Transaction ID: ", Span(transaction_id, Class="highlight")),
-                        P(Strong("Name: "), Span(name)),
+                        P(Strong("Tour: "), Span(name)),
                         P(Strong("Date: "), Span(date)),
                         P(Strong("Payment Method: "), Span(payment_method)),
                         P(Strong("Payment Info: "), Span(payment_info)),

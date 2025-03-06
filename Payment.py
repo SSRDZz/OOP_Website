@@ -119,14 +119,30 @@ def register_routes(rt):
         current_booked = user.search_booking(booking_id)
         user_payment = user.search_payment(booking_id)
         
-        # Extract booking details
-        booking_data = current_booked.data.split('|')
-        name = booking_data[0].split(':')[1]
-        email = booking_data[2].split(':')[1]
-        phone = booking_data[3].split(':')[1]
-        adults = int(booking_data[4].split(':')[1])
-        children = int(booking_data[5].split(':')[1])
-        total_price = calculate_price(adults, children)
+        try:
+            booking_data = current_booked.data.split('|')
+        except AttributeError:
+            booking_data = None
+        
+        if booking_data is not None:
+                
+            name = booking_data[0].split(':')[1]
+            email = booking_data[2].split(':')[1]
+            phone = booking_data[3].split(':')[1]
+            adults = int(booking_data[4].split(':')[1])
+            try:
+                children = int(booking_data[5].split(':')[1])
+            except ValueError:
+                children = 0
+            total_price = calculate_price(adults, children)
+            
+        else:
+            name = None
+            email = None
+            phone = None
+            adults = None
+            children = None
+            total_price = 0
         
         page = Div(
             Head(
@@ -219,11 +235,11 @@ def register_routes(rt):
                             style="background-color: #FFD700; padding: 10px; text-align: center; font-weight: bold; font-size: 18px"
                         ),
                         Div(
-                            f"{current_booked.tour_program.place}",
+                            f"Location : {current_booked.tour_program.place}",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            f"{current_booked.tour_program.time}",
+                            f"Date : {current_booked.tour_program.time}",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
@@ -247,7 +263,7 @@ def register_routes(rt):
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            f"Total Price: {total_price} THB",
+                            f"Total Price: {total_price:,} THB",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px; background-color: #333; color: #fff; font-weight: bold; font-size: 16px;"
                         ),
                         Div(
