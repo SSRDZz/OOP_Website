@@ -228,10 +228,16 @@ class Staff(Account):
 class Payment():
     def __init__(self, transaction_id:str, booking:'Booking'):
         self.__triansaction_id = transaction_id
-        self.__discount = None #bool
         self.__payment_method = None #str
         self.__booking = booking
+        self.__net_price = 0
     
+    @property
+    def net_price(self): return self.__net_price
+    
+    @net_price.setter
+    def net_price(self,amount): self.__net_price = amount
+            
     @property
     def transaction_id(self): return self.__triansaction_id
     
@@ -332,9 +338,11 @@ class Booking:
         return self.__data 
     
 website = Website()
+promotion = Promotion()
 
 def create_enviroment():
 
+    
     website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai"))
     website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai"))
@@ -346,6 +354,7 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel"))
     website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai"))
     website.tour_manager.add_tour(TourProgram("owenprogram",11,"India"))
+
 
     
     website.create_account("testUser","123")
