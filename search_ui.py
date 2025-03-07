@@ -1,5 +1,7 @@
 from fasthtml.common import *
 from BackEnd import *
+from datetime import datetime
+
 
 def register_routes(rt):
     @rt('/search-tour')
@@ -10,7 +12,9 @@ def register_routes(rt):
                         
                     Label(Input(id="tour_place",type="text",placeholder="ชื่อสถานที่")),
                     Label(Input(id="tour_id",type="text",placeholder="รหัสทัวร์")),
-                    Label(Input(id="tour_time",type="text",placeholder="วันที่")),
+                    Label(Input(id="tour_time_go",type="date",placeholder="วันไป")),
+                    Label(Input(id="tour_time_end",type="date",placeholder="วันกลับ")),
+                    # Label(),
                     
 
                     style="max-width: 75%; margin: 0 auto;"
@@ -25,9 +29,23 @@ def register_routes(rt):
             ))
 
     @rt('/tour-results')
-    def get(tour_place:str, tour_id:str, tour_time:str): # ต้องประกาศ : str
+    def get(tour_place:str, tour_id:str, tour_time_go:str, tour_time_end:str): # ต้องประกาศ : str
+        
+        start_date = datetime.strptime(tour_time_go, '%Y-%m-%d')
+        end_date = datetime.strptime(tour_time_end, '%Y-%m-%d')
+        # print(tour_time_go,tour_time_end,"-----",start_date,end_date)
 
-        tours = website.SearchTour(tour_id,tour_place,tour_time)
+        if start_date >= end_date:
+                return Script(f"""
+                          alert('Start date must be before end date!');
+                          window.location.href='/search-tour';
+                          """
+                          )
+        
+
+        time = f"{tour_time_go.day}/{tour_time_go.month}/{tour_time_go.year} - {tour_time_end.day}/{tour_time_end.month}/{tour_time_end.year}"
+        # tours = website.SearchTour(tour_id,tour_place,time)
+        tours = website.SearchTour(tour_id,tour_place,"")
         try:
             for tour in tours:
                 print(tour.name)

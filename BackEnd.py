@@ -99,6 +99,9 @@ class TourManager:
         tours = []
 
         if(time!=""):
+            time_start = time.split(" - ")[0]
+            time_end = time.split(" - ")[1]
+
             if(place!=""):
                 for tour in self.__tour_program:
                     if(time==tour.time and place.lower() in tour.place.lower()):
@@ -133,7 +136,7 @@ class TourProgram:
         self.__name = name
         self.__id = id
         self.__place = place
-        self.__time = time
+        self.__time = time # time formaat -> DD/MM/YY - DD/MM/YY
     
     @property
     def id(self):
@@ -354,17 +357,17 @@ promotion = Promotion()
 def create_enviroment():
 
     
-    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai"))
-    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India"))
+    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany","1/2/2020 - 3/4/2024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai","1/2/2020 - 3/4/2024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel","1/2/2020 - 3/4/2024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai","1/2/2020 - 3/4/2024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India","1/2/2020 - 3/4/2024"))
 
 
     

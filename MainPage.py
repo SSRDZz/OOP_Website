@@ -21,7 +21,8 @@ def register_routes(rt):
                                     
                                 Label(Input(id="tour_place",type="text",placeholder="ชื่อสถานที่")),
                                 Label(Input(id="tour_id",type="text",placeholder="รหัสทัวร์")),
-                                Label(Input(id="tour_time",type="text",placeholder="วันที่")),
+                                Label(Input(id="tour_time_go",type="date",placeholder="วันไป")),
+                                Label(Input(id="tour_time_end",type="date",placeholder="วันกลับ")),
                                 
                                 
                                 
