@@ -31,11 +31,11 @@ def register_routes(rt):
     @rt('/tour-results')
     def get(tour_place:str, tour_id:str, tour_time_go:str, tour_time_end:str): # ต้องประกาศ : str
         
-        start_date = datetime.strptime(tour_time_go, '%Y-%m-%d')
-        end_date = datetime.strptime(tour_time_end, '%Y-%m-%d')
+        start = datetime.strptime(tour_time_go, '%Y-%m-%d')
+        end = datetime.strptime(tour_time_end, '%Y-%m-%d')
         # print(tour_time_go,tour_time_end,"-----",start_date,end_date)
 
-        if start_date >= end_date:
+        if start >= end:
                 return Script(f"""
                           alert('Start date must be before end date!');
                           window.location.href='/search-tour';
@@ -43,7 +43,7 @@ def register_routes(rt):
                           )
         
 
-        time = f"{tour_time_go.day}/{tour_time_go.month}/{tour_time_go.year} - {tour_time_end.day}/{tour_time_end.month}/{tour_time_end.year}"
+        time = f"{start.day}/{start.month}/{start.year} - {end.day}/{end.month}/{end.year}"
         # tours = website.SearchTour(tour_id,tour_place,time)
         tours = website.SearchTour(tour_id,tour_place,"")
         try:
