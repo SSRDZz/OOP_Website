@@ -52,7 +52,7 @@ def register_routes(rt):
                     Div(
                         Card(
                             Img(src=article.get_image()),
-                            H3(A(article.get_title(), href=f"/article/{article.get_href()}", style="color: #1976d2;")),
+                            H3(A(article.get_title(), href=f"/Article/{article.get_href()}", style="color: #1976d2;")),
                             P(article.get_description()),
                             style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                         ),
@@ -65,8 +65,8 @@ def register_routes(rt):
             )
         )
 
-    @rt('/Article/<href>')
-    def get(req, href):
+    @rt('/Article/{href}')
+    def get(req, href : str):
         """ Display full article details """
         href = href.lower()  # Ensure lowercase comparison
         article = next((a for a in articles if a.get_href() == href), None)
