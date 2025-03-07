@@ -248,12 +248,6 @@ class Payment():
     def payment_method(self, method):
         self.__payment_method = method
     
-    def Pay(self):
-        self.CreateHistory()
-        pass
-    
-    def CreateHistory(self):
-        pass
     
 class Promotion:
     def __init__(self):
