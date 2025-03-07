@@ -248,6 +248,8 @@ class Payment():
     def payment_method(self, method):
         self.__payment_method = method
     
+    def Pay(self):
+        return "Success"
     
 class Promotion:
     def __init__(self):
