@@ -16,7 +16,7 @@ def register_routes(rt):
 
         return Div(
             P(Strong("Payment Method: "), Span(payment_method)),
-            P(Strong("Place of Tour: "), Span(place)),
+            P(Strong("Location: "), Span(place)),
             P(Strong("Date: "), Span(date)),
             P(Strong("Booker: "), Span(name)),
             P(Strong("Adults: "), Span(adults)),
