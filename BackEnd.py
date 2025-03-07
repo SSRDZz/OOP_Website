@@ -288,22 +288,37 @@ class Promotion:
     
     
 class Article:
-    """ Represents an article with title, href, image, and description """
-    def __init__(self, title, href, image, description):
-        self.title = title
-        self.href = href
-        self.image = image  # Path to the image
-        self.description = description
+    def __init__(self, title, href, image, description, content=""):
+        self.__title = title
+        self.__href = href
+        self.__image = image  # Path to the image
+        self.__description = description
+        self.__content = content  # Full article content
+
+    def get_title(self):
+        return self.__title
+
+    def get_href(self):
+        return self.__href
+
+    def get_image(self):
+        return self.__image
+
+    def get_description(self):
+        return self.__description
+
+    def get_content(self):
+        return self.__content
 
     def to_dict(self):
-        """ Converts object to dictionary format for rendering """
         return {
-            "title": self.title,
-            "href": self.href,
-            "image": self.image,
-            "description": self.description
+            "title": self.__title,
+            "href": self.__href,
+            "image": self.__image,
+            "description": self.__description,
+            "content": self.__content
         }
-
+    
 class Booking:
     def __init__(self,tour_program, data:str, id_booking:str):
         self.__tour_program = tour_program
