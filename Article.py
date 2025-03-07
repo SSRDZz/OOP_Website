@@ -8,7 +8,17 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
 
 articles = [
     Article("รีวิวการไปเที่ยวญี่ปุ่น", "japan", "/Articleimage/Japan.jpg", "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!", "รายละเอียดการเดินทางไปญี่ปุ่น..."),
-    Article("wow", "welcome", "/Articleimage/japan1.jpg", "dis", "เนื้อหาเพิ่มเติมเกี่ยวกับบทความ wow")
+    Article("wow", "france", "/Articleimage/Japan1.jpg", "dis", "เนื้อหาเพิ่มเติมเกี่ยวกับบทความ wow"),
+    Article("Exploring the Alps", "alps", "/Articleimage/Alps.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps..."),
+    Article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris..."),
+    Article("Discovering Thailand", "thailand", "/Articleimage/Thailand.jpg", "An exciting trip to Thailand!", "All you need to know about traveling in Thailand..."),
+    Article("The Wonders of Egypt", "egypt", "/Articleimage/Egypt.jpg", "Exploring the ancient wonders of Egypt!", "A comprehensive guide to visiting Egypt's historical sites..."),
+    Article("Adventures in Australia", "australia", "/Articleimage/Australia.jpg", "Discover the beauty of Australia!", "A guide to exploring Australia's natural wonders..."),
+    Article("Journey through India", "india", "/Articleimage/India.jpg", "Experience the vibrant culture of India!", "Details about traveling through India's diverse regions..."),
+    Article("Safari in Kenya", "kenya", "/Articleimage/Kenya.jpg", "An unforgettable safari experience in Kenya!", "A comprehensive guide to Kenya's wildlife and safaris..."),
+    Article("Exploring the Amazon", "amazon", "/Articleimage/Amazon.jpg", "A thrilling adventure in the Amazon rainforest!", "Details about the journey through the Amazon..."),
+    Article("Discovering Iceland", "iceland", "/Articleimage/Iceland.jpg", "Experience the stunning landscapes of Iceland!", "A guide to exploring Iceland's natural beauty..."),
+    Article("Cultural Tour of China", "china", "/Articleimage/China.jpg", "Discover the rich culture and history of China!", "Details about traveling through China's historical sites...")
 ]
 
 # Function to add a new article
@@ -21,6 +31,7 @@ def register_routes(rt):
     @rt('/Articleimage/<filename>')
     def get_uploaded_image(req, filename):
         file_path = os.path.join(UPLOAD_FOLDER, filename)
+        print(f"Checking file path: {file_path}")  # Debugging statement
         if not os.path.exists(file_path):
             return P("File not found", style="color: red;")
         return FileResponse(file_path)
@@ -50,6 +61,8 @@ def register_routes(rt):
             Div(
                 *[
                     Div(
+                        print(articles),
+                        print(article.get_image()),
                         Card(
                             Img(src=article.get_image()),
                             H3(A(article.get_title(), href=f"/Article/{article.get_href()}", style="color: #1976d2;")),
@@ -75,7 +88,7 @@ def register_routes(rt):
             return P("บทความไม่พบ", style="color: red;")
 
         return Titled(article.get_title(),
-            Img(src=article.get_image()),
+            Img(src=article.get_image(),style="width: 70%; height:75%; display: inline-block; vertical-align: top;"),
             P(article.get_description()),
             P(article.get_content())
         )
