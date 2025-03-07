@@ -130,11 +130,10 @@ def register_routes(rt):
             email = booking_data[2].split(':')[1]
             phone = booking_data[3].split(':')[1]
             adults = int(booking_data[4].split(':')[1])
-            try:
-                children = int(booking_data[5].split(':')[1])
-            except ValueError:
-                children = 0
-            total_price = calculate_price(adults, children)
+            children = int(booking_data[5].split(':')[1])
+  
+            total_price = calculate_price(adults, children) - promotion.get_discount(current_booked.tour_program)
+            user_payment.net_price = total_price
             
         else:
             name = None
@@ -263,7 +262,7 @@ def register_routes(rt):
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            f"Total Price: {total_price:,} THB",
+                            f"Total Price: {total_price:,.2f} THB",
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px; background-color: #333; color: #fff; font-weight: bold; font-size: 16px;"
                         ),
                         Div(

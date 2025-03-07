@@ -4,6 +4,28 @@ from BackEnd import *
 user = website.currentUser
 
 def register_routes(rt):
+
+    def show_payment_information(current_booked, payment):
+        name = current_booked.tour_program.name
+        place = current_booked.tour_program.place
+        date = current_booked.tour_program.time
+        adults = current_booked.data.split('|')[4].split(':')[1]
+        children = current_booked.data.split('|')[5].split(':')[1]
+        total_price = payment.net_price
+        payment_method = payment.payment_method
+
+        return Div(
+            P(Strong("Payment Method: "), Span(payment_method)),
+            P(Strong("Place of Tour: "), Span(place)),
+            P(Strong("Date: "), Span(date)),
+            P(Strong("Booker: "), Span(name)),
+            P(Strong("Adults: "), Span(adults)),
+            P(Strong("Children: "), Span(children)),
+            P(Strong("Total Price: "), Span(f"{total_price:,.2f} THB")),
+            Class="payment-info"
+        )
+
+
     @rt("/ticket/{booking_id}")
     def get(booking_id: str):
         current_booked = website.currentUser.search_booking(booking_id)
@@ -13,8 +35,6 @@ def register_routes(rt):
         name = current_booked.tour_program.name
         date = current_booked.tour_program.time
         payment_method = payment.payment_method
-        payment_info = payment.info if hasattr(payment, 'info') else "N/A"
-
         page = Div(
             Head(
                 Style("""
@@ -47,7 +67,7 @@ def register_routes(rt):
                         P(Strong("Tour: "), Span(name)),
                         P(Strong("Date: "), Span(date)),
                         P(Strong("Payment Method: "), Span(payment_method)),
-                        P(Strong("Payment Info: "), Span(payment_info)),
+                        P(Strong("Payment Info: "), show_payment_information(current_booked, payment)),
                         Button("Print Ticket", Class="button print-button", onclick="document.getElementById('myModal').style.display='block'"),
                         Button("Back", Class="button back-button", onclick="window.history.back()"),
                         Class="ticket-info"
