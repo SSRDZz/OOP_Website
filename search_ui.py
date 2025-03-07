@@ -58,5 +58,8 @@ def register_routes(rt):
                 """
             )
         else:
-            return Div(H2("ไม่พบผลลัพธ์"), Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  )
-
+            return Script(f"""
+                          alert('ไม่พบผลลัพธ์');
+                          window.location.href='/search-tour';
+                          """
+                          )

@@ -162,12 +162,15 @@ def register_routes(rt):
             # print(data_user)
             id = f"{tour_id}_{fname}"
             website.booking_tour(website.SearchTour(id=tour_id), data_user, id)
-            return Div(
-                    H2("Success"),
-                    Button("ย้อนกลับ", onclick="window.location.href='/MainPage'")  
-            )
+            return Script(f"""
+                          alert('Success');
+                          window.location.href='/MainPage';
+                          """
+                          )
         else :
-            return Div(
-                    H1("Something don't work normal"),
-                    Button("ย้อนกลับ", onclick=f"window.location.href='/tour-book/{tour_id}'")  
-            )
+            return Script(f"""
+                          alert('Please Input again');
+                          window.location.href='/tour-book/{tour_id}';
+                          """
+                          )
+           
