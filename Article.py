@@ -1,44 +1,11 @@
 from fasthtml.common import *
 from datetime import datetime
+from BackEnd import *
 import os
 
-# Directory where uploaded images will be stored
 UPLOAD_FOLDER = "./Articleimage/"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Ensure folder exists
 
-# Article class with private attributes
-class Article:
-    def __init__(self, title, href, image, description, content=""):
-        self.__title = title
-        self.__href = href.lower().replace(" ", "-")  # Ensure href is URL-friendly
-        self.__image = image
-        self.__description = description
-        self.__content = content
-
-    def to_dict(self):
-        return {
-            "title": self.__title,
-            "href": self.__href,
-            "image": self.__image,
-            "description": self.__description
-        }
-    
-    def get_title(self):
-        return self.__title
-    
-    def get_href(self):
-        return self.__href  # Always return lowercase, URL-friendly href
-    
-    def get_image(self):
-        return self.__image
-    
-    def get_description(self):
-        return self.__description
-    
-    def get_content(self):
-        return self.__content
-
-# Store articles in a list
 articles = [
     Article("รีวิวการไปเที่ยวญี่ปุ่น", "japan", "/Articleimage/Japan.jpg", "ประสบการณ์การท่องเที่ยวประเทศญี่ปุ่นที่น่าตื่นเต้น!", "รายละเอียดการเดินทางไปญี่ปุ่น..."),
     Article("wow", "welcome", "/Articleimage/japan1.jpg", "dis", "เนื้อหาเพิ่มเติมเกี่ยวกับบทความ wow")
@@ -51,7 +18,6 @@ def add_article(title, href, image_path, description, content):
     articles.append(new_article)
 
 def register_routes(rt):
-    # Serve uploaded images
     @rt('/Articleimage/<filename>')
     def get_uploaded_image(req, filename):
         file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -59,9 +25,8 @@ def register_routes(rt):
             return P("File not found", style="color: red;")
         return FileResponse(file_path)
 
-    # Display articles and search form
-    @rt('/article')
-    def index(req):
+    @rt('/Article')
+    def get():
         return Titled("Article",
             Form(
                 Input(
@@ -100,21 +65,23 @@ def register_routes(rt):
             )
         )
 
-    # Display individual article
-    @rt('/article/<href>')
-    def article(req, href):
+    @rt('/Article/<href>')
+    def get(req, href):
+        """ Display full article details """
+        href = href.lower()  # Ensure lowercase comparison
         article = next((a for a in articles if a.get_href() == href), None)
+
         if not article:
             return P("บทความไม่พบ", style="color: red;")
+
         return Titled(article.get_title(),
             Img(src=article.get_image()),
             P(article.get_description()),
             P(article.get_content())
         )
 
-    # Search articles
     @rt('/search')
-    def search(req):
+    def get(req):
         query = req.query_params.get("query", "").strip().lower()
         if not query:
             return P("กรุณากรอกข้อความค้นหา")
@@ -138,9 +105,8 @@ def register_routes(rt):
             style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between;"
         ) if matched_articles else P(f"ไม่พบผลลัพธ์ที่เกี่ยวข้องกับ '{query}'")
 
-    # Add a new article
     @rt('/add_article')
-    async def add_article_route(req):
+    async def post(req):
         form_data = await req.form()
         title = form_data.get("title", "").strip()
         href = form_data.get("href", "").strip()
@@ -163,5 +129,5 @@ def register_routes(rt):
             return P("เกิดข้อผิดพลาดในการบันทึกไฟล์", style="color: red;")
 
     @rt('/updates')
-    def updates(req):
+    def get():
         return P(f"อัปเดตล่าสุด: {datetime.now().strftime('%H:%M:%S')}")
