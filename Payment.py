@@ -88,7 +88,7 @@ def register_routes(rt):
             Body(
                 H1("Payment Failed"),
                 P("Unfortunately, there was an issue processing your payment."),
-                A("Try Again", href="/")
+                A("Try Again", href=f"/")
             )
         )
         return page

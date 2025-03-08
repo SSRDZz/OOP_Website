@@ -110,7 +110,7 @@ def register_routes(rt):
                 ),
                 
                 # ปุ่มย้อนกลับ
-                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'", 
+                Button("ย้อนกลับ", onclick="window.history.back()", 
                     style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px; display: block; margin-left: auto; margin-right: auto;"),
                 
                 style="margin: 20px;"
