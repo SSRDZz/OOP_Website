@@ -13,6 +13,7 @@ def register_routes(rt):
 
     user = website.currentUser  #easier to access
     
+    
     def updateStatus(booked, status):
         if status == "pending":
             return P("Pending...", style="color: #d4bc08")
@@ -28,6 +29,7 @@ def register_routes(rt):
 
     def renderHistory(booked):
         status = booked.status
+        print(booked.tour_program)
         
         return Body(
             Card(
