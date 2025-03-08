@@ -6,27 +6,39 @@ from datetime import datetime
 def register_routes(rt):
     @rt('/search-tour')
     def get():
-        return Div(Button("Home",onclick = "window.location.href='/MainPage'"),
-                   Form(H3("ค้นหาทัวร์สุดพิเศษ"),
-                Group(
-                        
-                    Label(Input(id="tour_place",type="text",placeholder="ชื่อสถานที่")),
-                    Label(Input(id="tour_id",type="text",placeholder="รหัสทัวร์")),
-                    Label(Input(id="tour_time_go",type="date",placeholder="วันไป")),
-                    Label(Input(id="tour_time_end",type="date",placeholder="วันกลับ")),
-                    # Label(),
-                    
+        return Div(
+            # ปุ่ม Home
+            Button("Home", onclick="window.location.href='/MainPage'", 
+                   style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer;"),
 
-                    style="max-width: 75%; margin: 0 auto;"
-                    
-                    # 
+            # ฟอร์มค้นหาทัวร์
+            Form(
+                H3("ค้นหาทัวร์สุดพิเศษ", 
+                   style="color: #333; text-align: center; font-size: 24px; margin-bottom: 20px;"),
+
+                Group(
+                    Label(Input(id="tour_place", type="text", placeholder="ชื่อสถานที่",
+                                style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),
+                    Label(Input(id="tour_id", type="text", placeholder="รหัสทัวร์",
+                                style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),
+                    Label(Input(id="tour_time_go", type="date", placeholder="วันไป",
+                                style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),
+                    Label(Input(id="tour_time_end", type="date", placeholder="วันกลับ",
+                                style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),
+
+                    style="max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px;"
                 ),
-            Button("Search"
-                # ส่งข้อมูล post 
-                ) 
-            ,
-            method="GET",action="/tour-results"
-            ))
+
+                # ปุ่มค้นหา
+                Button("Search", 
+                       style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px;"),
+                
+                method="GET", action="/tour-results",
+                style="background-color: #F5F7F8; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); max-width: 500px; margin: 20px auto; text-align: center;"
+            ),
+            
+        # style = "background-color: #F5F7F8;"
+        ),
 
     @rt('/tour-results')
     def get(tour_place:str, tour_id:str, tour_time_go:str, tour_time_end:str): # ต้องประกาศ : str
@@ -57,27 +69,53 @@ def register_routes(rt):
             
 
         if(tours!=None and tours!=[]):
-                return Div(
-                H2("ผลลัพธ์การค้นหา"),
-                *[Card(H3(tour.id),P(tour.name), P(tour.place),P(tour.time),
-                style="""
-                    transition: all 0.3s;
-                    cursor: pointer;
-                    margin-left : 40px;
-                    margin-right : 40px;
-                    padding: 30px
-                """, 
-                onmouseover="this.style.backgroundColor='#e0f7fa';this.style.transform='scale(1.03)';",
-                onmouseout="this.style.backgroundColor='';this.style.transform='scale(1)';",
-
-                onclick = f"window.location.href='/tour-information/{tour.id}'") for tour in tours],
+            #     
+            return Div(
+                # หัวข้อหลัก
+                H2("ผลลัพธ์การค้นหา", 
+                style="color: #333; text-align: center; font-size: 28px; margin-bottom: 20px;"),
                 
-                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'")  ,
-                style = """
-                    margin : 20px;
+                # ใช้ Flexbox + Grid ช่วยจัดเรียงการ์ดให้ดูดี
+                Div(
+                    *[
+                        Card(
+                            H3(tour.id, style="color: #FFD700; font-size: 22px;"),  # ใช้สีเหลืองทอง
+                            P(tour.name, style="color: #444; font-size: 18px; font-weight: bold;"),
+                            P(f"สถานที่: {tour.place}", style="color: #666; font-size: 16px;"),
+                            P(f"เวลาเดินทาง: {tour.time}", style="color: #666; font-size: 16px;"),
+                            
+                            # Style ของ Card
+                            style="""
+                                background-color: white;
+                                border-radius: 10px;
+                                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                                padding: 20px;
+                                text-align: center;
+                                transition: all 0.3s;
+                                cursor: pointer;
+                                width: 250px;
+                            """,
+                            
+                            # Hover Effect
+                            onmouseover="this.style.backgroundColor='#FFFACD';this.style.transform='scale(1.05)';",
+                            onmouseout="this.style.backgroundColor='white';this.style.transform='scale(1)';",
+                            
+                            # คลิกเพื่อดูรายละเอียด
+                            onclick=f"window.location.href='/tour-information/{tour.id}'"
+                        ) for tour in tours
+                    ],
                     
-                """
+                    # Grid Layout ให้การ์ดเรียงสวย
+                    style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px;"
+                ),
+                
+                # ปุ่มย้อนกลับ
+                Button("ย้อนกลับ", onclick="window.location.href='/search-tour'", 
+                    style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px; display: block; margin-left: auto; margin-right: auto;"),
+                
+                style="margin: 20px;"
             )
+        
         else:
             return Script(f"""
                           alert('ไม่พบผลลัพธ์');
