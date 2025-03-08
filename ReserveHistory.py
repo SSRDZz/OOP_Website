@@ -138,6 +138,6 @@ def register_routes(rt):
                 ),
                 style="margin: 15px; position: relative;"
             ),
-
+        
         )
         return page

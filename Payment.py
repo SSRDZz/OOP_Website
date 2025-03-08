@@ -84,11 +84,56 @@ def register_routes(rt):
     @rt("/payment_failed")
     def get():
         page = Html(
-            Head(Title("Payment Failed")),
+            Head(
+                Title("Payment Failed"),
+                Style("""
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                    }
+                    .container {
+                        background-color: #fff;
+                        padding: 40px;
+                        border-radius: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        text-align: center;
+                    }
+                    .container h1 {
+                        color: #f44336;
+                        font-size: 36px;
+                        margin-bottom: 20px;
+                    }
+                    .container p {
+                        font-size: 18px;
+                        margin-bottom: 30px;
+                    }
+                    .container a {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        color: #fff;
+                        background-color: #f44336;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        transition: background-color 0.3s;
+                    }
+                    .container a:hover {
+                        background-color: #e53935;
+                    }
+                """)
+            ),
             Body(
-                H1("Payment Failed"),
-                P("Unfortunately, there was an issue processing your payment."),
-                A("Try Again", href=f"/")
+                Div(
+                    H1("Payment Failed"),
+                    P("Unfortunately, there was an issue processing your payment."),
+                    A("Try Again", href=f"/MainPage"),
+                    _class="container"
+                )
             )
         )
         return page
