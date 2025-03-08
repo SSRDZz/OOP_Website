@@ -8,12 +8,6 @@ user_payment = None
 
 def register_routes(rt):
     
-    def calculate_price(adults, children):
-        adult_price = 800  # Price per adult
-        child_price = 200  # Price per child
-        total_price = (adults * adult_price) + (children * child_price)
-        return total_price
-    
     def assignPaymentMethod(method):
         user_payment.payment_method = method
 
@@ -131,7 +125,7 @@ def register_routes(rt):
             adults = int(booking_data[4].split(':')[1])
             children = int(booking_data[5].split(':')[1])
   
-            total_price = calculate_price(adults, children) - promotion.get_discount(current_booked.tour_program)
+            total_price = user_payment.calculate_price(adults, children) - promotion.get_discount(current_booked.tour_program)
             user_payment.net_price = total_price
             
         else:

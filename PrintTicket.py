@@ -34,7 +34,6 @@ def register_routes(rt):
         transaction_id = current_booked.booking_id
         name = current_booked.tour_program.name
         date = current_booked.tour_program.time
-        payment_method = payment.payment_method
         page = Div(
             Head(
                 Style("""
@@ -65,7 +64,7 @@ def register_routes(rt):
                     Div(
                         P("Transaction ID: ", Span(transaction_id, Class="highlight")),
                         P(Strong("Tour: "), Span(name)),
-                        P(Strong("Payment Method: "), Span(payment_method)),
+                        P(Strong("Date: "), Span(date)),
                         P(Strong("Payment Info: "), show_payment_information(current_booked, payment)),
                         Button("Print Ticket", Class="button print-button", onclick="document.getElementById('myModal').style.display='block'"),
                         Button("Back", Class="button back-button", onclick="window.history.back()"),

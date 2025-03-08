@@ -29,7 +29,7 @@ def register_routes(rt):
 
     def renderHistory(booked):
         status = booked.status
-        print(booked.tour_program)
+        print(booked.booking_id)
         
         return Body(
             Card(
