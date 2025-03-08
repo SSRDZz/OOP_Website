@@ -65,7 +65,6 @@ def register_routes(rt):
                     Div(
                         P("Transaction ID: ", Span(transaction_id, Class="highlight")),
                         P(Strong("Tour: "), Span(name)),
-                        P(Strong("Date: "), Span(date)),
                         P(Strong("Payment Method: "), Span(payment_method)),
                         P(Strong("Payment Info: "), show_payment_information(current_booked, payment)),
                         Button("Print Ticket", Class="button print-button", onclick="document.getElementById('myModal').style.display='block'"),

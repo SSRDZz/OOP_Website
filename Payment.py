@@ -27,7 +27,6 @@ def register_routes(rt):
     @rt("/payment/{booking_id}/payment_complete/")
     def get(booking_id: str):
         global user_payment
-        # data -> "fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}" adult มากกว่า 0 คนเสมอ ราคา adult->8xx child 2xx
         current_booked = user.search_booking(booking_id)
         assignPaymentMethod(selected_payment_method)
         
