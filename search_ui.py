@@ -30,28 +30,31 @@ def register_routes(rt):
 
     @rt('/tour-results')
     def get(tour_place:str, tour_id:str, tour_time_go:str, tour_time_end:str): # ต้องประกาศ : str
-        
-        start = datetime.strptime(tour_time_go, '%Y-%m-%d')
-        end = datetime.strptime(tour_time_end, '%Y-%m-%d')
-        # print(tour_time_go,tour_time_end,"-----",start_date,end_date)
 
-        if start >= end:
-                return Script(f"""
-                          alert('Start date must be before end date!');
-                          window.location.href='/search-tour';
-                          """
-                          )
-        
+        if(tour_time_go=="" and tour_time_end==""):
+             tours = website.SearchTour(tour_id,tour_place,"")
 
-        time = f"{start.day}/{start.month}/{start.year} - {end.day}/{end.month}/{end.year}"
-        # tours = website.SearchTour(tour_id,tour_place,time)
-        tours = website.SearchTour(tour_id,tour_place,"")
-        try:
-            for tour in tours:
-                print(tour.name)
-        except:
-            print("tours = 0")
-            print(tour_place+"|"+tour_id+"|"+tour_time)
+        else:
+            check = 0 # check ว่าใส่มากี่ค่า
+            if(tour_time_go==""): 
+                tour_time_go = "9999-12-31"
+                check+=1
+            if(tour_time_end==""): 
+                tour_time_end = "1000-01-01"
+                check+=1
+            
+            start = datetime.strptime(tour_time_go, '%Y-%m-%d')
+            end = datetime.strptime(tour_time_end, '%Y-%m-%d')
+            if start >= end and check == 0:
+                    return Script(f"""
+                            alert('Start date must be before end date!');
+                            window.location.href='/search-tour';
+                            """
+                            )
+            
+            time = f"{start.day}/{start.month}/{start.year} - {end.day}/{end.month}/{end.year}"
+            tours = website.SearchTour(tour_id,tour_place,time)
+            
 
         if(tours!=None and tours!=[]):
                 return Div(

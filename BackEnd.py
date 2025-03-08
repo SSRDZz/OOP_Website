@@ -1,5 +1,6 @@
 #Mock Code for User's tour customizing and staff confirming
 from dataclasses import dataclass
+from datetime import datetime
 @dataclass
 class Website:
     # Singleton instance
@@ -81,6 +82,24 @@ class TourManager:
         else :
             while(1):
                 print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
+    
+    @staticmethod
+    def check_time(time_in,time_check):   # time format -> DD/MM/YY - DD/MM/YY
+        
+        #ค่าที่เราหา
+        in_start = datetime.strptime(time_in.split(" - ")[0], '%d/%m/%Y')
+        in_end = datetime.strptime(time_in.split(" - ")[1], '%d/%m/%Y')
+
+        #ตัวที่ต้องการจะไปเทียบ
+        check_start = datetime.strptime(time_check.split(" - ")[0], '%d/%m/%Y')
+        check_end = datetime.strptime(time_check.split(" - ")[1], '%d/%m/%Y')
+
+        if(in_start>=check_start and in_end<=check_end):
+            return True
+
+        return False           
+
+
 
     def search_tour(self,id="",place="",time=""):
         if(id!=""):
@@ -99,16 +118,14 @@ class TourManager:
         tours = []
 
         if(time!=""):
-            time_start = time.split(" - ")[0]
-            time_end = time.split(" - ")[1]
 
             if(place!=""):
                 for tour in self.__tour_program:
-                    if(time==tour.time and place.lower() in tour.place.lower()):
+                    if(self.check_time(time,tour.time) and place.lower() in tour.place.lower()):
                         tours.append(tour)
             else:
                 for tour in self.__tour_program:
-                    if(time==tour.time ):
+                    if(self.check_time(time,tour.time)):
                         tours.append(tour)
 
         elif(place!=""):
@@ -357,17 +374,19 @@ promotion = Promotion()
 def create_enviroment():
 
     
-    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai","1/2/2000 - 2/2/2000"))
-    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai","1/2/2000 - 2/2/2000"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","1/2/2000 - 2/2/2000"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai","1/2/2000 - 2/2/2000"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai","1/2/1000 - 2/2/3000"))
+    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai","1/2/1000 - 2/2/3000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","1/2/1000 - 2/2/3000"))
+    # website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai","1/2/2000 - 2/2/2000"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo","1/2/2000 - 2/2/3000"))
     website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia","1/2/2000 - 2/2/2000"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany","1/2/2020 - 3/4/2024"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai","1/2/2020 - 3/4/2024"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel","1/2/2020 - 3/4/2024"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai","1/2/2020 - 3/4/2024"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India","1/2/2020 - 3/4/2024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany","1/2/1020 - 3/4/3024"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai","1/2/2020 - 3/4/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel","1/2/2020 - 3/4/2026"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai","1/2/1020 - 3/4/5028"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India","1/2/2020 - 3/4/2029"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram",12,"Oiiaiioiiai","1/2/3020 - 3/4/4029"))
+    website.tour_manager.add_tour(TourProgram("minprogram",13,"barley_farm","1/1/1000 - 31/12/9999"))
 
 
     
