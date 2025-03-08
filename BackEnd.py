@@ -268,6 +268,9 @@ class Payment():
     def payment_method(self, method):
         self.__payment_method = method
     
+    def calculate_price(self, adults, children):
+        return (adults * 800) + (children * 200)
+    
     def Pay(self):
         return "Success"
     
