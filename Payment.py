@@ -27,11 +27,56 @@ def register_routes(rt):
         user_payment.Pay()
         
         page = Html(
-            Head(Title("Payment Complete")),
+            Head(
+                Title("Payment Complete"),
+                Style("""
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                    }
+                    .container {
+                        background-color: #fff;
+                        padding: 40px;
+                        border-radius: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        text-align: center;
+                    }
+                    .container h1 {
+                        color: #4CAF50;
+                        font-size: 36px;
+                        margin-bottom: 20px;
+                    }
+                    .container p {
+                        font-size: 18px;
+                        margin-bottom: 30px;
+                    }
+                    .container a {
+                        display: inline-block;
+                        padding: 10px 20px;
+                        color: #fff;
+                        background-color: #4CAF50;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        transition: background-color 0.3s;
+                    }
+                    .container a:hover {
+                        background-color: #45a049;
+                    }
+                """)
+            ),
             Body(
-                H1("Thank You!"),
-                P("Your payment has been successfully processed."),
-                A("Return to Home", href=f"/payment/{current_booked.booking_id}/update_status_done/")
+                Div(
+                    H1("Thank You!"),
+                    P("Your payment has been successfully processed."),
+                    A("Return to Home", href=f"/payment/{current_booked.booking_id}/update_status_done/"),
+                    _class="container"
+                )
             )
         )
         return page

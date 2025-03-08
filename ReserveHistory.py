@@ -31,18 +31,12 @@ def register_routes(rt):
         status = booked.status
         print(booked.booking_id)
         
-        return Body(
-            Card(
-                Grid(
-                    Div(f"{booked.tour_program.name}"),
-                    Div(f"{booked.tour_program.time}"),
-                    Div(updateStatus(booked, status)),  # ["pending", "payment", "done", "canceled"]
-                    Div(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'", style="background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
-                    Div(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'", style="background-color: #f44336; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
-                    style="display: grid; grid-template-columns: repeat(5, 2fr); text-align: center; align-items: center;"
-                ),
-                style="padding: 10px; margin: 5px; border: 1px solid #ddd;"
-            )
+        return Tr(
+            Td(f"{booked.tour_program.name}"),
+            Td(f"{booked.tour_program.time}"),
+            Td(updateStatus(booked, status)),  # ["pending", "payment", "done", "canceled"]
+            Td(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'", style="background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
+            Td(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'", style="background-color: #f44336; color: #fff; padding: 10px 20px; border: none; cursor: pointer;"))
         )
 
     @rt('/payment/{booking_id}/update_status_done/')
@@ -65,8 +59,14 @@ def register_routes(rt):
             Head(
                 Title("Tour Amateur"),
                 Style("""
+                    body {
+                        font-family: Arial, sans-serif;
+                        background-color: #f4f4f9;
+                        margin: 0;
+                        padding: 0;
+                    }
                     .back-button {
-                        background-color: #f0f0f0;
+                        background-color: #F5F7F8;
                         color: #000000;
                         font-weight: bold;
                         padding: 10px;
@@ -74,32 +74,70 @@ def register_routes(rt):
                         border: solid;
                         cursor: pointer;
                         text-align: center;
-                        position: absolute;
-                        top: 10px;
-                        right: 10px;
+                        border-radius: 5px;
+                        margin: 10px;
                     }
                     .back-button:hover {
                         background-color: #d0d0d0;
                     }
+                    .header {
+                        background-color: #e6c200;
+                        color: white;
+                        padding: 25px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    .header .title {
+                        font-size: 30px;
+                        font-weight: bold;
+                    }
+                    .content {
+                        padding: 20px;
+                    }
+                    .table-container {
+                        width: 100%;
+                        overflow-x: auto;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin: 20px 0;
+                    }
+                    th, td {
+                        padding: 12px;
+                        border: 1px solid #ddd;
+                        text-align: left;
+                    }
+                    th {
+                        background-color: #f2f2f2;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                    }
                 """)
             ),
             Div(
-                Button("Back to Main Page", Class="back-button", onclick="location.href='/MainPage'")
+                Div("History", Class="title"),
+                Button("Back to Main Page", Class="back-button", onclick="location.href='/MainPage'"),
+                Class="header"
             ),
             Div(
-                H1("Web Name"),
-                P("ประวัติการจอง"),
-                style="padding: 10px; "
+                Div(
+                    Table(
+                        Tr(
+                            Th("Tour"),
+                            Th("Date"),
+                            Th("Status"),
+                            Th("พิมพ์ตั๋ว"),
+                            Th("ยกเลิกการจอง")
+                        ),
+                        *[renderHistory(booked) for booked in user.bookingList]
+                    ),
+                    Class="table-container"
+                ),
+                style="margin: 15px; position: relative;"
             ),
-            Grid(
-                Card("Tour"),
-                Card("Date"),
-                Card("Status"),
-                Card("พิมพ์ตั๋ว"),
-                Card("ยกเลิกการจอง"),
-                style="text-align: center;"
-            ),
-            *[renderHistory(booked) for booked in user.bookingList],
-            style="margin: 15px; position: relative;"
+
         )
         return page

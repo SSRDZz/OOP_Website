@@ -52,6 +52,7 @@ def register_routes(rt):
                     .modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 50%; }
                     .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
                     .close:hover { color: black; }
+                    .payment-info { border: 1px solid #ddd; padding: 10px; border-radius: 5px; background-color: #f9f9f9; margin-top: 10px; }
                 """)
             ),
             Body(
