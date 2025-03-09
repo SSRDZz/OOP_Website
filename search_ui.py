@@ -106,10 +106,18 @@ def register_routes(rt):
         page = Div(
                         H3("Filters", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         H2("จำนวนวัน", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
-                        Label(CheckboxX(id = "day",hx_get="/filter-books",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "3-5 วัน" ),
+                        Label(
+                            #    Input(type="hidden",value = "False" , id = "day") ,
+                              Input(type="checkbox",  id = "day",value = "True" ,hx_get="/filter-books-day",target_id="filter_tour"), 
+                              "3-5 วัน", 
+                        ),
                         Br(),
                         H2("ฤดูกาล", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
-                        Label(CheckboxX(id = "sunny",hx_get="/filter-books",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "ฤดูร้อน"),
+                        Label(
+                            #  Input(type="hidden",value = "False" , id = "sunny") ,
+                            Input(type="checkbox",  id = "sunny",value = "True" ,hx_get="/filter-books-season",target_id="filter_tour"),
+                            "ฤดูร้อน"
+                        ),
                         Br(),
                         # Label(Input(type="checkbox",  id = "town",hx_post="/filter-books", hx_trigger="change",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "เมือง"),
                         # Br(),
@@ -126,7 +134,6 @@ def register_routes(rt):
                             overflow-y: auto;
                         """
                     )
-        
         return page
     
     def displayTourProgram(tours):
@@ -165,19 +172,25 @@ def register_routes(rt):
         )
     
 
-    @rt("/filter-books")
+    @rt("/filter-books-day")
     def get(request):
-        day = request.query_params.get('day')
-        sunny = request.query_params.get('sunny')
-
+        day = request.query_params.get('day') 
         
-        if(str(day)=="1"): 
+        if day : 
             filter_tour = website.filter.append_filter("3-5") # 3-5 วัน
         else: 
-            filter_tour = website.filter.remove_filter("3-5")
-        if(str(sunny)=="1"): 
-            filter_tour = website.filter.append_filter("sunny") # 3-5 วัน
-        else: 
+            filter_tour = website.filter.remove_filter("3-5")    
+
+    
+        return displayTourProgram(filter_tour)
+    
+    @rt("/filter-books-season")
+    def get(request):
+        sunny = request.query_params.get('sunny') 
+
+        if sunny: 
+            filter_tour = website.filter.append_filter("sunny") # ฤดูร้อน
+        else : 
             filter_tour = website.filter.remove_filter("sunny")
 
     

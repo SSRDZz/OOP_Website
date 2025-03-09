@@ -82,7 +82,7 @@ class Website:
         pass
 
     def generate_tour_id(self):
-        return int(len(self.pendingTour))+self.tour_manager.get_tour_count()
+        return int(len(self.pendingTour))+self.tour_manager.get_tour_count()+1
 
 class TourManager:
     def __init__(self):
@@ -409,13 +409,16 @@ class Filter:
         
         tours = []
         for tour in self.__tour_search:
+            count = 0
             in_start = datetime.strptime(tour.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
             in_end = datetime.strptime(tour.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
             time_count = in_end - in_start
 
             if("3-5" in self.__filter_list and 3<= time_count.days <=5):
-                tours.append(tour)
-            if("sunny" in self.__filter_list and (2<=in_end.months<=5 or 2<=in_start.months<=5)):
+               count+=1
+            if("sunny" in self.__filter_list and (2<=in_end.month<=5 or 2<=in_start.month<=5)):
+                count +=1
+            if(count == len(self.__filter_list)):
                 tours.append(tour)
 
         return tours
@@ -454,6 +457,7 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("tonwaiprogram","Ohio","11/1/2025 - 13/1/2025"))
     website.tour_manager.add_tour(TourProgram("tonwaiprogram","Nihongo","11/7/2025 - 13/7/2025"))
     website.tour_manager.add_tour(TourProgram("tonwaiprogram","Nihongo","28/11/2025 - 5/12/2025"))
+    website.tour_manager.add_tour(TourProgram("jojoprogram","Ponaleffland","24/11/2025 - 28/11/2025"))
 
 
     
