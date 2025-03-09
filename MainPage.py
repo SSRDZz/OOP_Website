@@ -14,7 +14,7 @@ def register_routes(rt):
                    Button("Create Tour", onclick="location.href='/CreatTourPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                    Button("History", onclick="location.href='/reserve-history'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                    Button("Search", onclick="location.href='/search-tour'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
-                   style="margin-left: 60% ;padding: 10px 10px;"),
+                   style="margin-left: 60vw ;padding: 1px 10px;"),
                    Titled("Tour Pro",
                           Div(
                             Form(H3("ค้นหาทัวร์สุดพิเศษ"),
