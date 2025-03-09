@@ -91,7 +91,7 @@ def register_routes(rt):
             return Div(Button("Back",onclick = "window.location.href='/MainPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                         *[Grid(*[Card(H3(book.tour_program.name), 
                                       P(book.tour_program.place) ,
-                                      Button("Confirm"),
+                                      Button("Confirm",hx_post=f"/acceptTour?tourId={book.booking_id}"),
                                       Button("Deny",hx_post=f"/denyTour?tourId={book.booking_id}")) for book in group]) for group in grouped_book]
                         )
 
@@ -112,7 +112,7 @@ def register_routes(rt):
             if adult!="" and fname!="" and lname!="" and email!="" and phone!="":
                 if(child=="" or child == None): child = "0"
                 data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,"{fname}")
+                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}")
             return Redirect("/MainPage")
 
         except ValueError:
@@ -121,4 +121,9 @@ def register_routes(rt):
     @rt('/denyTour', methods=["POST"])
     def post(tourId : str):
         website.DenyTour(str(tourId))
+        return Redirect('/CreatTourPage')
+    
+    @rt('/confirmTour', methods=["POST"])
+    def post(tourId : str):
+        website.ConfirmTour(str(tourId))
         return Redirect('/CreatTourPage')

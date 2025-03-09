@@ -40,7 +40,9 @@ class Website:
 
     def RequestCreateTour(self,name,location, data,fname):
         t = self.tour_manager.CreateCustomizedTour(name,location)
+        print(location)
         book = Booking(t,data,self.__currentUser,str(t.id)+"_"+str(fname))
+        print("name : ",t.name,"location :",t.place,data,"Id :",str(t.id)+"_"+str(fname))
         self.pendingTour.append(book)
 
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
@@ -60,10 +62,11 @@ class Website:
     
     def ConfirmTour(self,tourId):
         i = self.SearchPendingTour(tourId)
-        self.pendingTour[i].approve()
+        self.pendingTour[i].accept()
         del self.pendingTour[i]
 
     def DenyTour(self,tourId):
+        print("denying_Id :",tourId)
         i = self.SearchPendingTour(tourId)
         del self.pendingTour[i]
 
@@ -155,7 +158,7 @@ class TourManager:
         return tours
 
     def CreateCustomizedTour(self,name,location):
-        t = TourProgram(name,str(len(self.__tour_program)),location)
+        t = TourProgram(name,location)
         print("Created",name,"Id :",t.id)
         return t
     
@@ -204,9 +207,7 @@ class Account:
         if username == self.__username and password == self.__password:
             return True
         return False
-    
-    def RequestCreateTour(self,name,location):
-        pass
+
 
 class User(Account):
     @property
@@ -394,7 +395,7 @@ class Booking:
     def data(self):
         return self.__data 
     
-    def approve(self):
+    def accept(self):
         self.__owner.add_booking(self)
     
 class Filter:
