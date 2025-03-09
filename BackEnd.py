@@ -390,6 +390,9 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("owenprogram",11,"India","12/3/2025 - 14/3/2025"))
     website.tour_manager.add_tour(TourProgram("tonwaiprogram",12,"Oiiaiioiiai","11/3/2025 - 13/3/2025"))
     website.tour_manager.add_tour(TourProgram("minprogram",13,"barley_farm","1/1/1000 - 31/12/9999"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram",14,"Ohio","11/1/2025 - 13/1/2025"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram",15,"Nihongo","11/7/2025 - 13/7/2025"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram",16,"Nihongo","28/11/2025 - 5/12/2025"))
 
 
     
