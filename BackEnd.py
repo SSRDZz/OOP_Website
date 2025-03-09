@@ -23,7 +23,12 @@ class Website:
 
     def __init__(self):
         self.tour_manager = TourManager()
+        self.filter = ""
         self.__currentUser = User("testUser","123")
+
+    def AddFilter(self,filter):
+        self.filter = filter
+        return 
 
     def create_account(self, username, password):
         self.account.append(User(username, password))
@@ -58,6 +63,7 @@ class Website:
         i = self.SearchPendingTour(tourId)
         del self.pendingTour[i]
 
+
     def TryLogIn(self,username, password):
         for acc in self.account:
             if(acc.verify(username,password) == True):
@@ -82,6 +88,7 @@ class TourManager:
         else :
             while(1):
                 print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
+
     
     @staticmethod
     def check_time(time_in,time_check):   # time format -> DD/MM/YY - DD/MM/YY
@@ -371,6 +378,33 @@ class Booking:
     def data(self):
         return self.__data 
     
+class Filter:
+    def __init__(self,tour_search):
+        self.__tour_search = tour_search
+        self.__filter_list = []
+        
+
+    def filter_tour(self):  # filter ตาม filter ที่กรองไว้
+        tours = []
+        for tour in self.__tour_search:
+            in_start = datetime.strptime(tour.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
+            in_end = datetime.strptime(tour.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
+            time_count = in_end - in_start
+            if(3<= time_count.days <=5):
+                tours.append(tour)
+        return tours
+
+    def append_filter(self,type): # เพิ่ม filter
+        self.__filter_list.append(type)
+        return self.filter_tour()
+
+    def remove_filter(self,type): # ลบ filter
+        if(type not in self.__filter_list):
+            return self.__tour_search
+        else:
+            self.__filter_list.remove(type)
+            return self.__tour_search
+    
 website = Website()
 promotion = Promotion()
 
@@ -379,7 +413,7 @@ def create_enviroment():
     
     website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai","29/3/2025- 2/4/2025"))
     website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai","27/2/2025- 1/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","10/3/2025 - 15/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","10/3/2025 - 17/3/2025"))
     # website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai","1/2/2025 - 2/2/2025"))
     website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo","1/3/2025 - 30/3/2025"))
     website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia","10/3/2025 - 15/3/2025"))
