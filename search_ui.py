@@ -106,10 +106,11 @@ def register_routes(rt):
         page = Div(
                         H3("Filters", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         H2("จำนวนวัน", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
-                        Label(CheckboxX(id = "day",hx_get="/filter-books",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "3-5 วัน"),
+                        Label(CheckboxX(id = "day",hx_get="/filter-books",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "3-5 วัน" ),
                         Br(),
-                        # Label(Input(type="checkbox",  id = "month",hx_post="/filter-books", hx_trigger="change",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), " เดือน"),
-                        # Br(),
+                        H2("ฤดูกาล", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
+                        Label(CheckboxX(id = "sunny",hx_get="/filter-books",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "ฤดูร้อน"),
+                        Br(),
                         # Label(Input(type="checkbox",  id = "town",hx_post="/filter-books", hx_trigger="change",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "เมือง"),
                         # Br(),
                         
@@ -167,10 +168,17 @@ def register_routes(rt):
     @rt("/filter-books")
     def get(request):
         day = request.query_params.get('day')
+        sunny = request.query_params.get('sunny')
+
         
         if(str(day)=="1"): 
-            filter_tour = website.filter.append_filter(day) # 3-5 วัน
+            filter_tour = website.filter.append_filter("3-5") # 3-5 วัน
         else: 
-            filter_tour = website.filter.remove_filter(day)
+            filter_tour = website.filter.remove_filter("3-5")
+        if(str(sunny)=="1"): 
+            filter_tour = website.filter.append_filter("sunny") # 3-5 วัน
+        else: 
+            filter_tour = website.filter.remove_filter("sunny")
+
     
         return displayTourProgram(filter_tour)

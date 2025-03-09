@@ -385,14 +385,22 @@ class Filter:
         
 
     def filter_tour(self):  # filter ตาม filter ที่กรองไว้
+        if(self.__filter_list == []):
+            return self.__tour_search
+        
         tours = []
         for tour in self.__tour_search:
             in_start = datetime.strptime(tour.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
             in_end = datetime.strptime(tour.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
             time_count = in_end - in_start
-            if(3<= time_count.days <=5):
+
+            if("3-5" in self.__filter_list and 3<= time_count.days <=5):
                 tours.append(tour)
+            if("sunny" in self.__filter_list and (2<=in_end.months<=5 or 2<=in_start.months<=5)):
+                tours.append(tour)
+
         return tours
+    
 
     def append_filter(self,type): # เพิ่ม filter
         self.__filter_list.append(type)
@@ -400,10 +408,10 @@ class Filter:
 
     def remove_filter(self,type): # ลบ filter
         if(type not in self.__filter_list):
-            return self.__tour_search
+            return self.filter_tour()
         else:
             self.__filter_list.remove(type)
-            return self.__tour_search
+            return self.filter_tour()
     
 website = Website()
 promotion = Promotion()
