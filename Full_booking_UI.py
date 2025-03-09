@@ -161,7 +161,7 @@ def register_routes(rt):
             data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
             # print(data_user)
             id = f"{tour_id}_{fname}"
-            website.booking_tour(website.SearchTour(id=tour_id), data_user, id)
+            website.book_tour(website.SearchTour(id=tour_id), data_user, id)
             return Script(f"""
                           alert('Success');
                           window.location.href='/MainPage';

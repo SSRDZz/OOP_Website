@@ -38,26 +38,30 @@ class Website:
         self.account.append(Staff(username, password))
         return
 
-    def RequestCreateTour(self,name,location):
-        self.pendingTour.append(self.tour_manager.CreateCustomizedTour(name,location))
+    def RequestCreateTour(self,name,location, data,fname):
+        t = self.tour_manager.CreateCustomizedTour(name,location)
+        book = Booking(t,data,self.__currentUser,str(t.id)+"_"+str(fname))
+        self.pendingTour.append(book)
 
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.tour_manager.search_tour(id,place,time)
     
-    def booking_tour(self, tour_program, data,id):
-        return self.__currentUser.create_booking_tour(tour_program, data,id)
+    def book_tour(self, tour_program, data,id):
+        self.__currentUser.create_booking_tour(tour_program, data,id)
     
     def SearchPendingTour(self,tourId):
         print("Search received :",tourId)
         for i in range(len(self.pendingTour)):
-            if(self.pendingTour[i].id == tourId):
+            if(self.pendingTour[i].booking_id == tourId):
                 print("Found pending")
                 return i
             else:
                 continue
     
-    def ConfirmTour(self):
-        pass
+    def ConfirmTour(self,tourId):
+        i = self.SearchPendingTour(tourId)
+        self.pendingTour[i].approve()
+        del self.pendingTour[i]
 
     def DenyTour(self,tourId):
         i = self.SearchPendingTour(tourId)
@@ -77,6 +81,8 @@ class Website:
     def search_user(self,user_id):
         pass
 
+    def generate_tour_id(self):
+        return int(len(self.pendingTour))+self.tour_manager.get_tour_count()
 
 class TourManager:
     def __init__(self):
@@ -88,6 +94,9 @@ class TourManager:
         else :
             while(1):
                 print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
+
+    def get_tour_count(self):
+        return int(len(self.__tour_program))
 
     
     @staticmethod
@@ -156,9 +165,9 @@ class TourManager:
 class TourProgram:
     
     Travelling = []
-    def __init__(self,name,id,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
+    def __init__(self,name,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
         self.__name = name
-        self.__id = id
+        self.__id = website.generate_tour_id()
         self.__place = place
         self.__time = time # time formaat -> DD/MM/YY - DD/MM/YY
     
@@ -200,6 +209,14 @@ class Account:
         pass
 
 class User(Account):
+    @property
+    def bookingList(self):
+        return self.__booking
+    
+    @property
+    def payment_list(self):
+        return self.__payment
+    
     def __init__(self,name,password):
         self.__booking = []
         self.__payment = []
@@ -216,9 +233,13 @@ class User(Account):
         self.__payment.append(Payment(transaction_id, booked))
 
     def create_booking_tour(self,tour_program : TourProgram, data:str,id:str):
-        new_booked = Booking(tour_program, data,id)
+        new_booked = Booking(tour_program, data,id,self)
         self.__booking.append(new_booked)
         self.create_payment(new_booked.booking_id, new_booked)
+
+    def add_booking(self,booking): # type: ignore
+        self.__booking.append(booking)
+        self.create_payment(booking.booking_id, booking)
     
     def search_booking(self,id):
         for booking in self.__booking:
@@ -232,14 +253,6 @@ class User(Account):
                 return payment
         return None
     
-    @property
-    def bookingList(self):
-        return self.__booking
-    
-    @property
-    def payment_list(self):
-        return self.__payment
-    
 
 class Staff(Account):
     def __init__(self,name,password):
@@ -251,6 +264,7 @@ class Staff(Account):
 
     def ConfirmTour(self,tourInstance):
         pass
+
 
 class Payment():
     def __init__(self, transaction_id:str, booking:'Booking'):
@@ -281,6 +295,7 @@ class Payment():
     def Pay(self):
         return "Success"
     
+
 class Promotion:
     def __init__(self):
         self.__summer_tour = []
@@ -302,7 +317,6 @@ class Promotion:
                 return "Error: cannot add tour to discount"
         return "Discount added"
 
-    
     def get_discount(self, tour:TourProgram):
         for program in self.__summer_tour:
             if tour == program:
@@ -351,12 +365,14 @@ class Article:
             "content": self.__content
         }
     
+
 class Booking:
-    def __init__(self,tour_program, data:str, id_booking:str):
+    def __init__(self,tour_program, data:str, id_booking:str,owner:User):
         self.__tour_program = tour_program
         self.__status : str = 'payment'    #pending payment done
         self.__data = data        # data -> "fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}" adult มากกว่า 0 คนเสมอ ราคา adult->8xx child 2xx
         self.__id = id_booking      # id -> {tour_id}+{fname} *firstname
+        self.__owner = owner
 
     @property
     def tour_program(self):
@@ -377,6 +393,9 @@ class Booking:
     @property
     def data(self):
         return self.__data 
+    
+    def approve(self):
+        self.__owner.add_booking(self)
     
 class Filter:
     def __init__(self,tour_search):
@@ -419,29 +438,29 @@ promotion = Promotion()
 def create_enviroment():
 
     
-    website.tour_manager.add_tour(TourProgram("minprogram",1,"Thai","29/3/2025- 2/4/2025"))
-    website.tour_manager.add_tour(TourProgram("zardprogram",2,"Thai","27/2/2025- 1/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",3,"Thai","10/3/2025 - 17/3/2025"))
+    website.tour_manager.add_tour(TourProgram("minprogram","Thai","29/3/2025- 2/4/2025"))
+    website.tour_manager.add_tour(TourProgram("zardprogram","Thai","27/2/2025- 1/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Thai","10/3/2025 - 17/3/2025"))
     # website.tour_manager.add_tour(TourProgram("owenprogram",4,"Thai","1/2/2025 - 2/2/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",5,"Nihongo","1/3/2025 - 30/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",6,"Russia","10/3/2025 - 15/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",7,"Germany","1/3/2025 - 3/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",8,"Thai","10/3/2025 - 20/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",9,"Israel","11/3/2025 - 18/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",10,"Thai","12/3/2025 - 15/3/2025"))
-    website.tour_manager.add_tour(TourProgram("owenprogram",11,"India","12/3/2025 - 14/3/2025"))
-    website.tour_manager.add_tour(TourProgram("tonwaiprogram",12,"Oiiaiioiiai","11/3/2025 - 13/3/2025"))
-    website.tour_manager.add_tour(TourProgram("minprogram",13,"barley_farm","1/1/1000 - 31/12/9999"))
-    website.tour_manager.add_tour(TourProgram("tonwaiprogram",14,"Ohio","11/1/2025 - 13/1/2025"))
-    website.tour_manager.add_tour(TourProgram("tonwaiprogram",15,"Nihongo","11/7/2025 - 13/7/2025"))
-    website.tour_manager.add_tour(TourProgram("tonwaiprogram",16,"Nihongo","28/11/2025 - 5/12/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Nihongo","1/3/2025 - 30/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Russia","10/3/2025 - 15/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Germany","1/3/2025 - 3/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Thai","10/3/2025 - 20/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Israel","11/3/2025 - 18/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","Thai","12/3/2025 - 15/3/2025"))
+    website.tour_manager.add_tour(TourProgram("owenprogram","India","12/3/2025 - 14/3/2025"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram","Oiiaiioiiai","11/3/2025 - 13/3/2025"))
+    website.tour_manager.add_tour(TourProgram("minprogram","barley_farm","1/1/1000 - 31/12/9999"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram","Ohio","11/1/2025 - 13/1/2025"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram","Nihongo","11/7/2025 - 13/7/2025"))
+    website.tour_manager.add_tour(TourProgram("tonwaiprogram","Nihongo","28/11/2025 - 5/12/2025"))
 
 
     
     website.create_account("testUser","123")
     website.TryLogIn("testUser","123")
     
-    website.booking_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
+    website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
     
     print(website.SearchTour(id=1).name)
 
