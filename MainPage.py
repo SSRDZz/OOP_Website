@@ -9,11 +9,12 @@ def register_routes(rt):
         tour_list = website.tour_manager.get_all_tour()
         grouped_tours = [tour_list[i:i+3] for i in range(0, len(tour_list), 3)]
         
-        return Div(Button("profile", onclick="location.href='/'"),
-                   Button("article", onclick="location.href='/Article'"),
-                   Button("Create Tour", onclick="location.href='/CreatTourPage'"),
-                   Button("History", onclick="location.href='/reserve-history'"),
-                   Button("Search", onclick="location.href='/search-tour'"),
+        return Div(Div(Button("profile", onclick="location.href='/'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                   Button("article", onclick="location.href='/Article'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                   Button("Create Tour", onclick="location.href='/CreatTourPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                   Button("History", onclick="location.href='/reserve-history'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                   Button("Search", onclick="location.href='/search-tour'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                   style="margin-left: 60% ;padding: 10px 10px;"),
                    Titled("MainPage",
                           Div(
                             Form(H3("ค้นหาทัวร์สุดพิเศษ"),
@@ -29,13 +30,13 @@ def register_routes(rt):
 
                                 style="max-width: 75%; margin: 0 auto;",
                             ),
-                            Button("Search"),
+                            Button("Search",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                             method="GET",action="/tour-results",
-                            style="margin-top: ",
+                            style="margin-top: ;background-color: #F5F7F8; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); text-align: left;",
                         ),
                         style = "margin:20px;"),
                           Div(
-                              *[Grid(*[Card(P(tour.name), P(tour.place),
+                              *[Grid(*[Card(P("ชื่อทัวร์ : "+tour.name), P("ปลายทาง : "+tour.place),
                                     style="""
                                         transition: all 0.3s;
                                         cursor: pointer;
