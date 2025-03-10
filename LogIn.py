@@ -36,8 +36,8 @@ def register_routes(rt):
                     Label(Input(id="newUserName", type="text", placeholder="Enter username",style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),  # type="text" for username
                     P("PassWord"),
                     Label(Input(id="newPassword", type="password", placeholder="Enter password",style="width: 100%; padding: 10px; border: 1px solid #FFD700; border-radius: 5px;")),  # type="password" for password
-                    Button("Sign Up as User", type="button", hx_post="/SignUpUser",onclick="location.href='/'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
-                    Button("Sign Up as Staff", type="button", hx_post="/SignUpStaff",onclick="location.href='/'",style="background-color: #FFD700; color: black; padding: 10px 20px;margin-left: 10px; border: none; border-radius: 5px;"),
+                    Button("Sign Up as User", type="button", hx_post="/SignUpUser",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
+                    Button("Sign Up as Staff", type="button", hx_post="/SignUpStaff",style="background-color: #FFD700; color: black; padding: 10px 20px;margin-left: 10px; border: none; border-radius: 5px;"),
                     method="post",
                     onkeydown="if(event.key==='Enter'){event.preventDefault();}"
                     ,style="background-color: #F5F7F8; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); max-width: 500px; margin: 20px auto; text-align: center;"))
@@ -51,12 +51,18 @@ def register_routes(rt):
 
     @rt('/SignUpUser', methods=["POST"])
     def post(newUserName : str, newPassword : str):
-        website.create_account(newUserName, newPassword)
-        return "Sign up success"
+        if(newUserName == "" or newPassword == ""):
+            return Redirect("/SignUpPage")
+        else:
+            website.create_account(newUserName, newPassword)
+            return Redirect("/")
     
     @rt('/SignUpStaff', methods=["POST"])
     def post(newUserName : str, newPassword : str):
-        website.create_staff_account(newUserName, newPassword)
-        return "Sign up success"
+        if(newUserName == "" or newPassword == ""):
+            return Redirect("/SignUpPage")
+        else:
+            website.create_staff_account(newUserName, newPassword)
+            return Redirect("/")
 
 
