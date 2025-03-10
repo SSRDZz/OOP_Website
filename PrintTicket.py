@@ -6,7 +6,7 @@ user = website.currentUser
 def register_routes(rt):
 
     def show_payment_information(current_booked, payment):
-        name = current_booked.tour_program.name
+        name = current_booked.data.split('|')[0].split(':')[1] + " " + current_booked.data.split('|')[1].split(':')[1]
         place = current_booked.tour_program.place
         date = current_booked.tour_program.time
         adults = current_booked.data.split('|')[4].split(':')[1]
@@ -28,7 +28,8 @@ def register_routes(rt):
 
     @rt("/ticket/{booking_id}")
     def get(booking_id: str):
-        current_booked = website.currentUser.search_booking(booking_id)
+        user = website.currentUser
+        current_booked = user.search_booking(booking_id)
         payment = user.search_payment(booking_id) 
         
         transaction_id = current_booked.booking_id

@@ -35,19 +35,19 @@ def register_routes(rt):
             Td(f"{booked.tour_program.time}"),
             Td(updateStatus(booked, status)),  # ["pending", "payment", "done", "canceled"]
             Td(Button("พิมพ์ตั๋ว", disabled=status != "done", onclick=f"location.href='/ticket/{booked.booking_id}'", style="background-color: #4CAF50; color: #fff; padding: 10px 20px; border: none; cursor: pointer;")),
-            Td(Button("ยกเลิก", disabled=status in ["canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'", style="background-color: #f44336; color: #fff; padding: 10px 20px; border: none; cursor: pointer;"))
+            Td(Button("ยกเลิก", disabled=status in ["pending","canceled", "done"], onclick=f"location.href='/cancel-resevation/{booked.booking_id}'", style="background-color: #f44336; color: #fff; padding: 10px 20px; border: none; cursor: pointer;"))
         )
 
     @rt('/payment/{booking_id}/update_status_done/')
     def get(booking_id: str):
-        
+        user = website.currentUser
         current_booked = user.search_booking(booking_id)    
         current_booked.update_status = "done" 
         return Redirect("/reserve-history")
 
     @rt('/cancel-resevation/{booking_id}/update_status_cancel/')
     def get(booking_id: str):
-
+        user = website.currentUser
         current_booked = user.search_booking(booking_id)
         current_booked.update_status = "canceled" 
         return Redirect("/reserve-history")
