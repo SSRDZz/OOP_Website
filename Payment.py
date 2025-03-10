@@ -199,6 +199,7 @@ def register_routes(rt):
     def get(booking_id: str):  
         global payment_status
         global user_payment
+        global user
         current_booked = user.search_booking(booking_id)
         user_payment = user.search_payment(booking_id)
         
