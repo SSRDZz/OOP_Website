@@ -16,7 +16,10 @@ def register_routes(rt):
         global selected_payment_method
         
         selected_payment_method = method
-        payment_status = "complete" if method == "Credit/Debit" else "failed"
+        if method in ["Credit/Debit", "PromptPay"]:
+            payment_status = "complete"
+        else:
+            payment_status = "failed"
 
     @rt("/payment/{booking_id}/payment_complete/")
     def get(booking_id: str):
@@ -81,7 +84,7 @@ def register_routes(rt):
         )
         return page
 
-    @rt("/payment_failed")
+    @rt("/payment/{booking_id}/payment_failed")
     def get():
         page = Html(
             Head(
@@ -131,7 +134,7 @@ def register_routes(rt):
                 Div(
                     H1("Payment Failed"),
                     P("Unfortunately, there was an issue processing your payment."),
-                    A("Try Again", href=f"/MainPage"),
+                    A("Try Again", onclick = 'window.history.back()'),
                     _class="container"
                 )
             )
@@ -197,9 +200,11 @@ def register_routes(rt):
 
     @rt("/payment/{booking_id}")
     def get(booking_id: str):  
+        
         global payment_status
         global user_payment
         global user
+        
         user = website.currentUser
         current_booked = user.search_booking(booking_id)
         user_payment = user.search_payment(booking_id)
@@ -265,8 +270,10 @@ def register_routes(rt):
                             if (validateCardForm()) {
                                 location.href = '/payment/' + bookingId + '/payment_complete/';
                             }
-                        } else {
+                        } else if (selectedMethod === "PromptPay") {
                             location.href = '/payment/' + bookingId + '/payment_complete/';
+                        } else {
+                            location.href = '/payment/' + bookingId + '/payment_failed/';
                         }
                     }
 
