@@ -339,63 +339,6 @@ class Promotion:
                 return float(10)
         return float(0)
     
-    
-class Article:
-    __articles = []  
-
-    def __init__(self, title, href, image, description, content="", rating=0):
-        self.__title = title
-        self.__href = href
-        self.__image = image  # Path to the image
-        self.__description = description
-        self.__content = content  # Full article content
-        self.__rating = rating  # Star rating (1 to 5)
-
-    @staticmethod
-    def add_article(title, href, image_path, description, content, rating):
-        """ Add a new article to the storage """
-        sanitized_href = href.lower().replace(" ", "-")  # Ensure URL safety
-        new_article = Article(title, sanitized_href, image_path, description, content, rating)
-        Article.__articles.append(new_article)
-
-    @staticmethod
-    def get_articles():
-        """ Return all articles stored """
-        return Article.__articles
-
-    @staticmethod
-    def find_article_by_href(href):
-        """ Find an article by its href """
-        href = href.lower()  # Ensure lowercase comparison
-        return next((article for article in Article.__articles if article.get_href() == href), None)
-
-    def get_title(self):
-        return self.__title
-
-    def get_href(self):
-        return self.__href
-
-    def get_image(self):
-        return self.__image
-
-    def get_description(self):
-        return self.__description
-
-    def get_content(self):
-        return self.__content
-
-    def get_rating(self):
-        return self.__rating
-
-    def to_dict(self):
-        return {
-            "title": self.__title,
-            "href": self.__href,
-            "image": self.__image,
-            "description": self.__description,
-            "content": self.__content,
-            "rating": self.__rating
-        }
 
 class Booking:
     def __init__(self,tour_program, data:str, id_booking:str,owner:User):
