@@ -3,22 +3,13 @@ from datetime import datetime
 from BackEnd import *
 import os
 
+# Encapsulate constants
 __UPLOAD_FOLDER = "./Articleimage/"
 os.makedirs(__UPLOAD_FOLDER, exist_ok=True)
 
-__articles = [
-    Article("Exploring the Alps", "alps", "/Articleimage/Alps.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4),
-    Article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5)
-]
-
-def __get_articles():
-    return __articles
-
-# Function to add a new article
-def __add_article(title, href, image_path, description, content, rating):
-    sanitized_href = href.lower().replace(" ", "-")  # Ensure URL safety
-    new_article = Article(title, sanitized_href, image_path, description, content, rating)
-    __articles.append(new_article)
+# Preload some articles
+Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4)
+Article.add_article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5)
 
 def register_routes(rt):
     @rt('/Articleimage/<filename>')
@@ -68,7 +59,7 @@ def register_routes(rt):
                         ),
                         style="width: 24%; display: inline-block; vertical-align: top;"
                     )
-                    for article in __get_articles()
+                    for article in Article.get_articles()
                 ],
                 id="article-list",
                 style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between;"
@@ -120,8 +111,7 @@ def register_routes(rt):
     @rt('/Article/{href}')
     def get(req, href: str):
         """ Display full article details """
-        href = href.lower()  # Ensure lowercase comparison
-        article = next((a for a in __get_articles() if a.get_href() == href), None)
+        article = Article.find_article_by_href(href)
 
         if not article:
             return P("บทความไม่พบ", style="color: red;")
@@ -146,7 +136,7 @@ def register_routes(rt):
         if not query:
             return P("กรุณากรอกข้อความค้นหา")
         matched_articles = [
-            article for article in __get_articles()
+            article for article in Article.get_articles()
             if query in article.get_title().lower() or query in article.get_description().lower()
         ]
         return Div(
@@ -185,11 +175,14 @@ def register_routes(rt):
             with open(image_path, "wb") as f:
                 f.write(await uploaded_image.read())
             image_url = f"/Articleimage/{image_filename}"
-            __add_article(title, href, image_url, description, content, rating) 
+            Article.add_article(title, href, image_url, description, content, rating)  # Pass the rating to the new article
             return P("บทความถูกเพิ่มแล้ว!", style="color: green;")
         except Exception as e:
             return P("เกิดข้อผิดพลาดในการบันทึกไฟล์", style="color: red;")
 
     @rt('/updates')
     def get():
-        return P(f"อัปเดตล่าสุด: {datetime.now().strftime('%H:%M:%S')}")
+        return Titled(
+            "Updates",
+            P("อัพเดตล่าสุด: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        )
