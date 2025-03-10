@@ -1,6 +1,8 @@
 #Mock Code for User's tour customizing and staff confirming
 from dataclasses import dataclass
 from datetime import datetime
+from abc import ABC
+
 @dataclass
 class Website:
     # Singleton instance
@@ -10,7 +12,7 @@ class Website:
     pendingTour = []
     tour_manager = None
 
-    # Store account
+    # Store account -> List[User,Staff]
     account = []
 
     @property
@@ -97,10 +99,7 @@ class TourManager:
 
     def add_tour(self,tour):
         if isinstance(tour, TourProgram):
-            return self.__tour_program.append(tour)
-        else :
-            while(1):
-                print("why do you do this bro") # smoothie อย่าลืมเเก้ตอนส่ง
+            self.__tour_program.append(tour)
 
     def get_tour_count(self):
         return int(len(self.__tour_program))
@@ -127,8 +126,7 @@ class TourManager:
     def search_tour(self,id="",place="",time=""):
         if(id!=""):
             for tour in self.__tour_program: #return only one instance
-                if(str(id)==str(tour.id)): # น่าจะต้อง encap____________________
-                    
+                if(tour.check_id(id)):
                     return tour
             else:
                 return None # ไม่เจอ 
@@ -141,7 +139,6 @@ class TourManager:
         tours = []
 
         if(time!=""):
-
             if(place!=""):
                 for tour in self.__tour_program:
                     if(self.check_time(time,tour.time) and place.lower() in tour.place.lower()):
@@ -166,7 +163,7 @@ class TourManager:
         print("Created",name,"Id :",t.id)
         return t
     
-    def get_all_tour(self):
+    def get_all_tour(self): # return all the tour
         return self.__tour_program
 
 class TourProgram:
@@ -190,6 +187,10 @@ class TourProgram:
     @property
     def time(self):
         return self.__time
+    
+    def check_id(self,id:str):
+        return self.__id == id
+    
 
 class Travelling:
     startLoacation = None
@@ -197,7 +198,7 @@ class Travelling:
     def __init__(self):
         pass
 
-class Account:
+class Account(ABC):
     @property
     def username(self):return self.__username
     @property
@@ -231,18 +232,15 @@ class User(Account):
     def RequestCreateTour(self,name,location):
         website.RequestCreatTour(self,name,location)
 
-    def talk(self):
-        print("Created User")
-
     def create_payment(self, transaction_id:str, booked:'Booking'):
         self.__payment.append(Payment(transaction_id, booked))
 
-    def create_booking_tour(self,tour_program : TourProgram, data:str,id:str):
+    def create_booking_tour(self,tour_program : TourProgram, data:str,id:str): 
         new_booked = Booking(tour_program, data,id,self)
         self.__booking.append(new_booked)
         self.create_payment(new_booked.booking_id, new_booked)
 
-    def add_booking(self,booking): # type: ignore
+    def add_booking(self,booking): # type: ignore # ตกลงทำไมไม่ย้าย func นี้ไปทำใน create_booking_tour ด้วย
         self.__booking.append(booking)
         self.create_payment(booking.booking_id, booking)
         for b in self.__booking:
