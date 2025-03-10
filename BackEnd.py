@@ -43,6 +43,8 @@ class Website:
         print(location)
         book = Booking(t,data,str(t.id)+"_"+str(fname),self.__currentUser)
         print("name : ",t.name,"location :",t.place,data,"Id :",str(t.id)+"_"+str(fname))
+        book.update_status = 'pending'
+        self.currentUser.add_booking(book)
         self.pendingTour.append(book)
 
     def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
@@ -424,7 +426,7 @@ class Booking:
         return self.__data 
     
     def accept(self):
-        self.__owner.add_booking(self)
+        self.update_status = 'payment'
     
     def deny(self):
         del self
