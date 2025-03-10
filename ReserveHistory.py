@@ -68,7 +68,7 @@ def register_routes(rt):
                         font-family: Arial, sans-serif;
                     }
                     .back-button {
-                        background-color: #F5F7F8;
+                        background-color: #FFD700;
                         color: #000000;
                         font-weight: bold;
                         padding: 10px;
@@ -80,7 +80,7 @@ def register_routes(rt):
                         margin: 10px;
                     }
                     .back-button:hover {
-                        background-color: #d0d0d0;
+                        background-color: #ccac00;
                     }
                     .header {
                         color: black;
