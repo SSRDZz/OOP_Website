@@ -41,7 +41,7 @@ class Website:
     def RequestCreateTour(self,name,location, data,fname):
         t = self.tour_manager.CreateCustomizedTour(name,location)
         print(location)
-        book = Booking(t,data,self.__currentUser,str(t.id)+"_"+str(fname))
+        book = Booking(t,data,str(t.id)+"_"+str(fname),self.__currentUser)
         print("name : ",t.name,"location :",t.place,data,"Id :",str(t.id)+"_"+str(fname))
         self.pendingTour.append(book)
 
@@ -64,12 +64,14 @@ class Website:
         i = self.SearchPendingTour(tourId)
         self.pendingTour[i].accept()
         del self.pendingTour[i]
+        
 
     def DenyTour(self,tourId):
         print("denying_Id :",tourId)
         i = self.SearchPendingTour(tourId)
+        self.pendingTour[i].deny()
         del self.pendingTour[i]
-
+        
 
     def TryLogIn(self,username, password):
         for acc in self.account:
@@ -397,6 +399,9 @@ class Booking:
     
     def accept(self):
         self.__owner.add_booking(self)
+    
+    def deny(self):
+        del self
     
 class Filter:
     def __init__(self,tour_search):
