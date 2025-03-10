@@ -339,12 +339,13 @@ class Promotion:
     
     
 class Article:
-    def __init__(self, title, href, image, description, content=""):
+    def __init__(self, title, href, image, description, content="", rating=0):
         self.__title = title
         self.__href = href
         self.__image = image  # Path to the image
         self.__description = description
         self.__content = content  # Full article content
+        self.__rating = rating  # Star rating (1 to 5)
 
     def get_title(self):
         return self.__title
@@ -361,15 +362,19 @@ class Article:
     def get_content(self):
         return self.__content
 
+    def get_rating(self):
+        return self.__rating
+
     def to_dict(self):
         return {
             "title": self.__title,
             "href": self.__href,
             "image": self.__image,
             "description": self.__description,
-            "content": self.__content
+            "content": self.__content,
+            "rating": self.__rating
         }
-    
+
 
 class Booking:
     def __init__(self,tour_program, data:str, id_booking:str,owner:User):
