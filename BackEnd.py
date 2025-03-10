@@ -243,6 +243,8 @@ class User(Account):
     def add_booking(self,booking): # type: ignore
         self.__booking.append(booking)
         self.create_payment(booking.booking_id, booking)
+        for b in self.__booking:
+            print("now have :",b.booking_id)
     
     def search_booking(self,id):
         for booking in self.__booking:
@@ -466,12 +468,11 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("jojoprogram","Ponaleffland","24/11/2025 - 28/11/2025"))
 
 
+    #website.create_account("testUser","123")
+    #website.TryLogIn("testUser","123")
     
-    website.create_account("testUser","123")
-    website.TryLogIn("testUser","123")
+    #website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
     
-    website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
-    
-    print(website.SearchTour(id=1).name)
+    #print(website.SearchTour(id=1).name)
 
 create_enviroment()

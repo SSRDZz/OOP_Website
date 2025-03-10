@@ -91,7 +91,7 @@ def register_routes(rt):
             return Div(Button("Back",onclick = "window.location.href='/MainPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                         *[Grid(*[Card(H3(book.tour_program.name), 
                                       P(book.tour_program.place) ,
-                                      Button("Confirm",hx_post=f"/acceptTour?tourId={book.booking_id}"),
+                                      Button("Confirm",hx_post=f"/confirmTour?tourId={book.booking_id}"),
                                       Button("Deny",hx_post=f"/denyTour?tourId={book.booking_id}")) for book in group]) for group in grouped_book]
                         )
 
