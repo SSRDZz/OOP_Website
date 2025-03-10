@@ -63,7 +63,7 @@ def register_routes(rt):
                         height: 100%;
                         margin: 0;
                         padding: 0;
-                        background-color: #333; /* Change this to your desired background color */
+                        background-color: #ffffff;
                         color: #fff; /* Change text color to white for better contrast */
                         font-family: Arial, sans-serif;
                     }
@@ -83,7 +83,7 @@ def register_routes(rt):
                         background-color: #d0d0d0;
                     }
                     .header {
-                        color: white;
+                        color: black;
                         padding: 25px;
                         display: flex;
                         justify-content: space-between;
