@@ -11,8 +11,7 @@ def register_routes(rt):
     register_ticket(rt)
     register_cancel(rt)
 
-    user = website.currentUser  #easier to access
-    
+    user = website.currentUser  # easier to access
     
     def updateStatus(booked, status):
         if status == "pending":
@@ -55,15 +54,18 @@ def register_routes(rt):
 
     @rt('/reserve-history')
     def get():
+        user = website.currentUser  # Ensure the current user is fetched here
         page = Div(
             Head(
                 Title("Tour Amateur"),
                 Style("""
-                    body {
-                        font-family: Arial, sans-serif;
-                        background-color: #f4f4f9;
+                    html, body {
+                        height: 100%;
                         margin: 0;
                         padding: 0;
+                        background-color: #333; /* Change this to your desired background color */
+                        color: #fff; /* Change text color to white for better contrast */
+                        font-family: Arial, sans-serif;
                     }
                     .back-button {
                         background-color: #F5F7F8;
@@ -81,7 +83,6 @@ def register_routes(rt):
                         background-color: #d0d0d0;
                     }
                     .header {
-                        background-color: #e6c200;
                         color: white;
                         padding: 25px;
                         display: flex;
@@ -138,6 +139,7 @@ def register_routes(rt):
                 ),
                 style="margin: 15px; position: relative;"
             ),
+            style="height : 100vh"
         
         )
         return page
