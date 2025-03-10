@@ -112,7 +112,7 @@ def register_routes(rt):
             if adult!="" and fname!="" and lname!="" and email!="" and phone!="":
                 if(child=="" or child == None): child = "0"
                 data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}")
+                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}",str(start_date)+" - "+str(start_date))
             return Redirect("/MainPage")
 
         except ValueError:
