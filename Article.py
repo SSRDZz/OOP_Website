@@ -11,7 +11,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Predefined locations
 predefined_locations = [
     Location("Paris", "The capital city of France, known for its art, fashion, and culture."),
-    Location("New York", "The largest city in the USA, known for its skyscrapers and cultural diversity."),
+    Location("NewYork", "The largest city in the USA, known for its skyscrapers and cultural diversity."),
     Location("Tokyo", "The capital city of Japan, known for its modernity and traditional temples."),
     Location("Sydney", "The largest city in Australia, known for its Sydney Opera House and Harbour Bridge."),
     Location("Rome", "The capital city of Italy, known for its ancient history and architecture.")
