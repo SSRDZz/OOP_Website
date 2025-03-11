@@ -11,7 +11,7 @@ class Website:
     # Class-level variables
     pendingTour = []
     tour_manager = None
-
+    promotion = None
     # Store account -> List[User,Staff]
     account = []
 
@@ -27,6 +27,7 @@ class Website:
         self.tour_manager = TourManager()
         self.filter = ""
         self.__currentUser = User("testUser","123")
+        self.promotion = Promotion()
 
     def AddFilter(self,filter):
         self.filter = filter
@@ -308,7 +309,10 @@ class Promotion:
         self.__fall_tour = []
         self.__autumn_tour = []
     
-    def add_tour(self, tour: TourProgram, season: str):
+    def add_tour(self, tour_id: str, season: str):
+        
+        tour = website.SearchTour(tour_id)
+        
         match season:
             case "summer":
                 self.__summer_tour.append(tour)
@@ -411,7 +415,6 @@ class Filter:
             return self.filter_tour()
     
 website = Website()
-promotion = Promotion()
 
 def create_enviroment():
 
@@ -435,7 +438,7 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("jojoprogram","Ponaleffland","24/11/2025 - 28/11/2025"))
 
 
-    
+    website.promotion.add_tour('1', 'summer')
     #website.create_account("testUser","123")
     #website.TryLogIn("testUser","123")
     
