@@ -304,39 +304,17 @@ class Payment():
 
 class Promotion:
     def __init__(self):
-        self.__summer_tour = []
-        self.__winter_tour = []
-        self.__fall_tour = []
-        self.__autumn_tour = []
-    
-    def add_tour(self, tour_id: str, season: str):
+        self.__discounted_tour = []
+        
+    def add_tour(self, tour_id: str):
         
         tour = website.SearchTour(tour_id)
-        
-        match season:
-            case "summer":
-                self.__summer_tour.append(tour)
-            case "winter":
-                self.__winter_tour.append(tour)
-            case "fall":
-                self.__fall_tour.append(tour)
-            case "autumn":
-                self.__autumn_tour.append(tour)
-            case _:
-                return "Error: cannot add tour to discount"
+        self.__discounted_tour.append(tour)
+
         return "Discount added"
 
     def get_discount(self, tour:TourProgram):
-        for program in self.__summer_tour:
-            if tour == program:
-                return float(10)
-        for program in self.__winter_tour:
-            if tour == program:
-                return float(10)
-        for program in self.__fall_tour:
-            if tour == program:
-                return float(10)
-        for program in self.__autumn_tour:
+        for program in self.__discounted_tour:
             if tour == program:
                 return float(10)
         return float(0)
@@ -438,7 +416,7 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("jojoprogram","Ponaleffland","24/11/2025 - 28/11/2025"))
 
 
-    website.promotion.add_tour('1', 'summer')
+    website.promotion.add_tour('1')
     #website.create_account("testUser","123")
     #website.TryLogIn("testUser","123")
     
