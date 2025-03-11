@@ -30,7 +30,7 @@ class Website:
         self.__currentUser = User("testUser","123")     #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
         self.promotion = Promotion()
 
-    def AddFilter(self,filter):
+    def add_filter(self,filter):
         self.filter = filter
         return 
 
