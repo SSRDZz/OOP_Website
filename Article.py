@@ -145,9 +145,7 @@ def register_routes(rt):
                 ),
                 Div(
                     Label("Select Locations: "),
-                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%;"),
-                    *[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations],
-                    
+                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
                 ),
                 Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data")
             ) if not isinstance(website.currentUser, Staff) else None),
