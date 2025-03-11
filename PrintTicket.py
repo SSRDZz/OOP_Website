@@ -44,7 +44,7 @@ def register_routes(rt):
                     .ticket-info { margin-top: 20px; }
                     .highlight { font-weight: bold; color: red; }
                     .payment { margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px; }
-                    .button { padding: 10px; font-size: 16px; border: solid; cursor: pointer; text-align: center; }
+                    .button { padding: 10px; font-size: 16px; border: 1px solid;cursor: pointer; text-align: center; }
                     .print-button { background-color: #ffffff; color: orange; font-weight: bold; }
                     .print-button:hover { background-color: orange; color: #ffffff; }
                     .back-button { background-color: #f0f0f0; color: #000000; font-weight: bold; }

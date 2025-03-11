@@ -295,7 +295,7 @@ def register_routes(rt):
             Body(
                 Container(
                     Div(
-                        Div("Tour Amateur", style="font-size: 30px; font-weight: bold; margin-top: 10px"),
+                        Div("Payment Session", style="font-size: 30px; font-weight: bold; margin-top: 10px"),
                         Div(f"{user.username}", style="display: flex; align-items: center;"),
                         style="display: flex; justify-content: space-between;"
                     )   
