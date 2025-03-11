@@ -26,7 +26,7 @@ class Website:
     def __init__(self):
         self.tour_manager = TourManager()
         self.filter = ""
-        self.__currentUser = User("testUser","123")
+        self.__currentUser = User("testUser","123")     #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
         self.promotion = Promotion()
 
     def AddFilter(self,filter):
@@ -233,17 +233,17 @@ class User(Account):
     def RequestCreateTour(self,name,location):
         website.RequestCreatTour(self,name,location)
 
-    def create_payment(self, transaction_id:str, booked:'Booking'):
-        self.__payment.append(Payment(transaction_id, booked))
+    def create_payment(self, transaction_id:str):
+        self.__payment.append(Payment(transaction_id))
 
     def create_booking_tour(self,tour_program : TourProgram, data:str,id:str): 
         new_booked = Booking(tour_program, data,id,self)
         self.__booking.append(new_booked)
-        self.create_payment(new_booked.booking_id, new_booked)
+        self.create_payment(new_booked.booking_id)
 
     def add_booking(self,booking): # type: ignore # ตกลงทำไมไม่ย้าย func นี้ไปทำใน create_booking_tour ด้วย
         self.__booking.append(booking)
-        self.create_payment(booking.booking_id, booking)
+        self.create_payment(booking.booking_id)
         for b in self.__booking:
             print("now have :",b.booking_id)
     
@@ -273,7 +273,7 @@ class Staff(Account):
 
 
 class Payment():
-    def __init__(self, transaction_id:str, booking:'Booking'):
+    def __init__(self, transaction_id:str):
         self.__triansaction_id = transaction_id
         self.__payment_method = None #str
         self.__net_price = 0

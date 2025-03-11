@@ -70,13 +70,10 @@ def register_routes(rt):
                     .back-button {
                         background-color: #FFD700;
                         color: #000000;
-                        font-weight: bold;
                         padding: 10px;
                         font-size: 16px;
-                        border: solid;
                         cursor: pointer;
                         text-align: center;
-                        border-radius: 5px;
                         margin: 10px;
                     }
                     .back-button:hover {
