@@ -165,7 +165,7 @@ def register_routes(rt):
                                 
                                 # Hover Effect
                                 onmouseover="this.style.backgroundColor='#FFFACD';this.style.transform='scale(1.05)';",
-                                onmouseout="this.style.backgroundColor='white';this.style.transform='scale(1)';",
+                                onmouseout="this.style.backgroundColor='#FFFACD';this.style.transform='scale(1)';",
                                 
                                 # คลิกเพื่อดูรายละเอียด
                                 onclick=f"window.location.href='/tour-information/{tour.id}'"

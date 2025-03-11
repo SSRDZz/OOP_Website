@@ -8,7 +8,7 @@ def register_routes(rt):
         # tour_id = 1
         tour = website.SearchTour(id=tour_id)
 
-        return Head(Title("Tour ame"),
+        return Head(Title("Tour Amateur"),
             Body(
                     Div(
                         Div(
@@ -37,20 +37,44 @@ def register_routes(rt):
                             style="width:350px"
                         ),
                             # ปุ่มจองทัวร์
-                        Button("จองทัวร์",style="width: 150px; margin-top: 10px;", onclick=f"location.href='/tour-book/{tour_id}'"),
+                        Button("จองทัวร์",
+                               style="width: 150px; margin-top: 10px; background-color: #007BFF;", 
+                               onclick=f"location.href='/tour-book/{tour_id}'",
+                                onmouseover="this.style.backgroundColor='#007BFF';this.style.transform='scale(1.05)';",
+                                onmouseout="this.style.backgroundColor='#007BFF';this.style.transform='scale(1)';",
+                         
+                               ),
                         # method="GET",action="/tour-book",
+                        Button(
+                                "Go Back",
+                                style="""
+                                background-color: #FFD700; 
+                                color: black;
+                                padding: 10px 20px;
+                                text-align: center;
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                margin-left: 10px;
+                                """,
+                                id="go-back-button",
+                                onclick="history.back()",
+                                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
+                                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
+                        ),
                         style = "margin-right:20px ; text-align:center " 
-                        )
-                    ,
+                        ),
+                        
+                    
                     Div(
                         # กล่องแรก: รายละเอียด
                         Card(
                             H4("รายละเอียด"),
                             Div(
                                 # ผู้ใหญ่
-                                Label("ผู้ใหญ่ 8xx บาท"),
+                                Label("ผู้ใหญ่ 800 บาท"),
 
-                                Label("เด็ก 2xx บาท"),
+                                Label("เด็ก 200 บาท"),
    
                             ),
                             style="margin-bottom: 20px; margin-right:60px"
@@ -68,7 +92,7 @@ def register_routes(rt):
     def get(tour_id:str):
         tour = website.SearchTour(id=tour_id)
 
-        return Head(Title("Tour ame"),
+        return Head(Title("Tour Amateur"),
             Body(
                     Div(
                         
@@ -94,7 +118,25 @@ def register_routes(rt):
 
                             style="width:350px"
                             ),
+                            Button(
+                                "Go Back",
+                                style="""
+                                background-color: #FFD700; 
+                                color: black;
+                                padding: 10px 20px;
+                                text-align: center;
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                margin-left: 10px;
+                                """,
+                                id="go-back-button",
+                                onclick="history.back()",
+                                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
+                                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
+                            ),
                         style = "margin-right :20px"
+                        
                         )
                     ,
                     Form(
@@ -103,15 +145,15 @@ def register_routes(rt):
                             H3("จำนวนผู้เดินทาง"),
                             Div(
                                 # ผู้ใหญ่
-                                Label("ผู้ใหญ่ 8xx บาท"),
+                                Label("ผู้ใหญ่ 800 บาท"),
                                 Input(id="adult",type="number",min="0",max="100",placeholder="จำนวน"),
                                 Br(),
                                 # เด็ก
-                                Label("เด็ก 2xx บาท"),
+                                Label("เด็ก 200 บาท"),
                                 Input(id="child",type="number",min="0",max="100",placeholder="จำนวน"),
                                 Br(),
                                 # ราคารวม
-                                P("รวม: 1xxx บาท"),
+                                # P("รวม: 1000 บาท"),
                                 style="margin: 10px 0;"
                             ),
                             style="margin-bottom: 20px;"
