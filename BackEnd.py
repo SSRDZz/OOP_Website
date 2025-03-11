@@ -276,7 +276,6 @@ class Payment():
     def __init__(self, transaction_id:str, booking:'Booking'):
         self.__triansaction_id = transaction_id
         self.__payment_method = None #str
-        self.__booking = booking
         self.__net_price = 0
     
     @property
@@ -326,7 +325,6 @@ class Booking:
         self.__status : str = 'payment'    #pending payment done
         self.__data = data        # data -> "fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}" adult มากกว่า 0 คนเสมอ ราคา adult->8xx child 2xx
         self.__id = id_booking      # id -> {tour_id}+{fname} *firstname
-        self.__owner = owner
 
     @property
     def tour_program(self):
