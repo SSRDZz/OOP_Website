@@ -91,7 +91,7 @@ class Website:
         pass
 
     def generate_tour_id(self):
-        return int(len(self.pendingTour))+self.tour_manager.get_tour_count()+1
+        return str(int(len(self.pendingTour))+self.tour_manager.get_tour_count()+1)
 
 class TourManager:
     def __init__(self):
@@ -435,6 +435,7 @@ def create_enviroment():
     website.tour_manager.add_tour(TourProgram("jojoprogram","Ponaleffland","24/11/2025 - 28/11/2025"))
 
 
+    
     #website.create_account("testUser","123")
     #website.TryLogIn("testUser","123")
     
