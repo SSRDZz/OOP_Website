@@ -26,7 +26,7 @@ class Website:
     def __init__(self):
         self.tour_manager = TourManager()
         self.filter = ""
-        self.__currentUser = User("testUser","123")
+        self.__currentUser = User("testUser","123")     #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
         self.promotion = Promotion()
 
     def AddFilter(self,filter):
