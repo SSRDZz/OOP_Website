@@ -213,13 +213,15 @@ def register_routes(rt):
         
         if booking_data is not None:
                 
-            name = booking_data[0].split(':')[1]
+            name = booking_data[0].split(':')[1] + " " +booking_data[1].split(':')[1] 
             email = booking_data[2].split(':')[1]
             phone = booking_data[3].split(':')[1]
             adults = int(booking_data[4].split(':')[1])
             children = int(booking_data[5].split(':')[1])
-  
-            total_price = user_payment.calculate_price(adults, children) - promotion.get_discount(current_booked.tour_program)
+            discount = website.promotion.get_discount(current_booked.tour_program)
+
+            
+            total_price = user_payment.calculate_price(adults, children) - discount
             user_payment.net_price = total_price
             
         else:
@@ -323,36 +325,25 @@ def register_routes(rt):
                             style="background-color: #FFD700; padding: 10px; text-align: center; font-weight: bold; font-size: 18px"
                         ),
                         Div(
-                            f"Location : {current_booked.tour_program.place}",
+                            P(f"Location : {current_booked.tour_program.place}"),
+                            P(f"Date : {current_booked.tour_program.time}"),
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            f"Date : {current_booked.tour_program.time}",
+                            P(f"Name: {name}"),
+                            P(f"Email: {email}"),
+                            P(f"Phone: {phone}"),
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
-                            f"Name: {name}",
-                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
-                        ),
-                        Div(
-                            f"Email: {email}",
-                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
-                        ),
-                        Div(
-                            f"Phone: {phone}",
-                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
-                        ),
-                        Div(
-                            f"Adults: {adults}",
-                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
-                        ),
-                        Div(
-                            f"Children: {children}",
+                            P(f"Adults: {adults}"),
+                            P(f"Children: {children}"),
+                            P(f"Discount: {discount:,.2f}%"),
                             style="border: 1px solid #ccc; padding: 20px; margin-top: 20px;"
                         ),
                         Div(
                             f"Total Price: {total_price:,.2f} THB",
-                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px; background-color: #333; color: #fff; font-weight: bold; font-size: 16px;"
+                            style="border: 1px solid #ccc; padding: 20px; margin-top: 20px; background-color: #333; color: white; font-weight: bold; font-size: 16px;"
                         ),
                         Div(
                             Button(
