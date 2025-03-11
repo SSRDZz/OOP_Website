@@ -397,6 +397,8 @@ class Filter:
                count+=1
             if("sunny" in self.__filter_list and (2<=in_end.month<=5 or 2<=in_start.month<=5)):
                 count +=1
+            if("pro" in self.__filter_list and website.promotion.get_discount(tour) == float(10)):
+                count +=1
             if(count == len(self.__filter_list)):
                 tours.append(tour)
 

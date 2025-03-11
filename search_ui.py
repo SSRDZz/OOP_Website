@@ -82,7 +82,7 @@ def register_routes(rt):
                 # ใช้ Flexbox + Grid ช่วยจัดเรียงการ์ดให้ดูดี
                 Div(
                     
-                    displayFilterBox(tour_id,tour_place,time),
+                    displayFilterBox(),
                     displayTourProgram(tours),
                     
                     style="display: flex; justify-content: center; gap: 20px; "
@@ -102,26 +102,31 @@ def register_routes(rt):
                           """
                           )
         
-    def displayFilterBox(tour_id,tour_place,time):
+    def displayFilterBox():
         page = Div(
                         H3("Filters", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         H2("จำนวนวัน", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         Label(
-                            #    Input(type="hidden",value = "False" , id = "day") ,
+
                               Input(type="checkbox",  id = "day",value = "True" ,hx_get="/filter-books-day",target_id="filter_tour"), 
                               "3-5 วัน", 
                         ),
                         Br(),
                         H2("ฤดูกาล", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         Label(
-                            #  Input(type="hidden",value = "False" , id = "sunny") ,
+
                             Input(type="checkbox",  id = "sunny",value = "True" ,hx_get="/filter-books-season",target_id="filter_tour"),
                             "ฤดูร้อน"
                         ),
                         Br(),
-                        # Label(Input(type="checkbox",  id = "town",hx_post="/filter-books", hx_trigger="change",target_id="filter_tour",hx_vals=json.dumps({'tour_id' : tour_id , 'tour_place' : tour_place , 'tour_time' : time })), "เมือง"),
-                        # Br(),
-                        
+                        H2("โปรโมชั่น", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
+                        Label(
+
+                            Input(type="checkbox",  id = "promotion",value = "True" ,hx_get="/filter-books-promotion",target_id="filter_tour"),
+                            "โปรโมชั่น"
+                        ),
+                        Br(),
+                       
                         style="""
                             background-color: #F5F7F8; 
                             padding: 20px; 
@@ -192,6 +197,18 @@ def register_routes(rt):
             filter_tour = website.filter.append_filter("sunny") # ฤดูร้อน
         else : 
             filter_tour = website.filter.remove_filter("sunny")
+
+    
+        return displayTourProgram(filter_tour)
+
+    @rt("/filter-books-promotion")
+    def get(request):
+        pro = request.query_params.get('promotion') 
+
+        if pro: 
+            filter_tour = website.filter.append_filter("pro") # ฤดูร้อน
+        else : 
+            filter_tour = website.filter.remove_filter("pro")
 
     
         return displayTourProgram(filter_tour)
