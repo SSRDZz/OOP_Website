@@ -88,9 +88,6 @@ class Website:
             else:
                 continue
         return False
-    
-    def search_user(self,user_id):
-        pass
 
     def generate_tour_id(self):
         return str(int(len(self.pendingTour))+self.tour_manager.get_tour_count()+1)
@@ -205,13 +202,7 @@ class TourProgram:
     def compare_day(self,day_in,day_out):
         in_start,in_end = self.change_time_to_datetime()
         return day_in <= in_end-in_start <= day_out
-    
 
-class Travelling:
-    startLoacation = None
-    endLocation = None
-    def __init__(self):
-        pass
 
 class Account(ABC):
     @property
