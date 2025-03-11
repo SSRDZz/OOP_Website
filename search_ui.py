@@ -70,6 +70,8 @@ def register_routes(rt):
             
 
         tours = website.SearchTour(tour_id,tour_place,time)
+        if(isinstance(tours,TourProgram)):
+            tours = [tours]
         website.AddFilter(Filter(tours))     
         # return list of tourprogram
         if(tours!=None and tours!=[]):
@@ -142,43 +144,8 @@ def register_routes(rt):
         return page
     
     def displayTourProgram(tours):
-        if(isinstance(tours,TourProgram)):
-            return Div(
-                        *[
-                            Card(
-                                H3(tours.id, style="color: #FFD700; font-size: 22px;"),  # ใช้สีเหลืองทอง
-                                P(tours.name, style="color: #444; font-size: 18px; font-weight: bold;"),
-                                P(f"สถานที่: {tours.place}", style="color: #666; font-size: 16px;"),
-                                P(f"เวลาเดินทาง: {tours.time}", style="color: #666; font-size: 16px;"),
-                                
-                                # Style ของ Card
-                                style="""
-                                    background-color: white;
-                                    border-radius: 10px;
-                                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-                                    padding: 20px;
-                                    text-align: center;
-                                    transition: all 0.3s;
-                                    cursor: pointer;
-                                    width: 250px;
-                                    
-                                """,
-                                
-                                # Hover Effect
-                                onmouseover="this.style.backgroundColor='#FFFACD';this.style.transform='scale(1.05)';",
-                                onmouseout="this.style.backgroundColor='white';this.style.transform='scale(1)';",
-                                
-                                # คลิกเพื่อดูรายละเอียด
-                                onclick=f"window.location.href='/tour-information/{tours.id}'"
-                            ) 
-                        ],id = "filter_tour",
-                        
-                        # Grid Layout ให้การ์ดเรียงสวย
-                        style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px;"
-                )
-
-        else:
-            return Div(
+        
+        return Div(
                         *[
                             Card(
                                 H3(tour.id, style="color: #FFD700; font-size: 22px;"),  # ใช้สีเหลืองทอง
