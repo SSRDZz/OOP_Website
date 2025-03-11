@@ -188,10 +188,10 @@ def register_routes(rt):
             H3("PromptPay Details"),
             Div(
                 Br(),
-                Img(src="https://via.placeholder.com/300x300?text=PromptPay+QR", alt="PromptPay QR Code", style="margin-top: 10px;"),
+                Img(src="/uploads/QR.png", alt="PromptPay QR Code", style="margin-top: 10px;"),
             ),
             id="promptpay-details",
-            style="border: 1px solid #ccc; padding: 35px; width: 45%; margin-top: 20px;"
+            style="border: 1px solid #ccc; padding: 35px; width: 30%; margin-top: 20px;"
         )
         return page
 
