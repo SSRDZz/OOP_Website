@@ -57,7 +57,7 @@ def register_routes(rt):
         user = website.currentUser  # Ensure the current user is fetched here
         page = Div(
             Head(
-                Title("Tour Amateur"),
+                Title("History Page"),
                 Style("""
                     html, body {
                         height: 100%;
