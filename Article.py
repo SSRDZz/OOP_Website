@@ -2,6 +2,7 @@ from fasthtml.common import *
 from datetime import datetime
 from BackEnd import *
 import os
+import json
 
 # Constants
 UPLOAD_FOLDER = "./Articleimage/"
@@ -59,7 +60,7 @@ class Article:
     @staticmethod
     def find_article_by_href(href):
         href = href.lower()
-        return next((article for article in website.__articles if article.get_href() == href), None)
+        return next((article for article in website.articles if article.get_href() == href), None)
 
     def get_title(self):
         return self.__title
@@ -117,7 +118,24 @@ def register_routes(rt):
 
     @rt('/Article')
     def get():
-        return Titled("Article",
+        return Div(Titled("Article",
+            Button(
+                                "Go Back",
+                                style="""
+                                background-color: #FFD700; 
+                                color: black;
+                                padding: 10px 20px;
+                                text-align: center;         
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                float: right;
+                                """,
+                                id="go-back-button",
+                                onclick="history.back()",
+                                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
+                                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
+                        ),
             Form(
                 Input(
                     name="query",
@@ -136,16 +154,10 @@ def register_routes(rt):
                 Input(name="description", placeholder="Description"),
                 Textarea(name="content", placeholder="Full Content"),
                 Div(
-                    Label("Star Rating: "),
-                    Div(id="star-rating", style="display: flex;"),
-                    Input(type="hidden", name="rating", id="rating-input"),
-                    style="margin-top: 10px;"
-                ),
-                Div(
                     Label("Select Locations: "),
                     Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
                 ),
-                Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data")
+                Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="/Article")
             ) if not isinstance(website.currentUser, Staff) else None),
             Div(
                 *[Div(
@@ -153,7 +165,7 @@ def register_routes(rt):
                         Img(src=article.get_image()),
                         H3(A(article.get_title(), href=f"/Article/{article.get_href()}", style="color: #1976d2;")),
                         P(article.get_description()),
-                        P(f"Rating: {'★' * article.get_rating()}"),
+                        
                         style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                     ),
                     style="width: 24%; display: inline-block; vertical-align: top;"
@@ -220,7 +232,7 @@ def register_routes(rt):
                     background-color: #f1f1f1;
                 }
             """)
-        )
+        ))
 
     @rt('/Article/{href}')
     def get(req, href: str):
@@ -230,6 +242,23 @@ def register_routes(rt):
 
         return Titled(
             article.get_title(),
+            Button(
+                                "Go Back",
+                                style="""
+                                background-color: #FFD700; 
+                                color: black;
+                                padding: 10px 20px;
+                                text-align: center;         
+                                margin-top: 20px;
+                                cursor: pointer;
+                                transition: background-color 0.3s, transform 0.3s;
+                                float: right;
+                                """,
+                                id="go-back-button",
+                                onclick="history.back()",
+                                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
+                                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
+                        ),
             Div(
                 Img(src=article.get_image(), style="width: 70%; height: 75%; display: inline-block; vertical-align: top;"),
                 style="text-align: center; margin-bottom: 20px;"
@@ -237,7 +266,6 @@ def register_routes(rt):
             Div(
                 P(article.get_description(), style="font-weight: bold; margin-bottom: 20px;"),
                 P(article.get_content(), style="line-height: 1.6;"),
-                P(f"Rating: {'★' * article.get_rating()} ({article.get_rating()} stars)", style="font-size: 1.2em; color: #ff9800;")
             ),
             Div(
                 H3("Locations"),
@@ -249,51 +277,81 @@ def register_routes(rt):
                         Input(type="hidden", name="location_name", value=location.get_name()),
                         Div(
                             Label("Rate this location: "),
-                            Div(id=f"location-star-rating-{location.get_name()}", style="display: flex;"),
+                            Div(id=f"location-star-rating-{location.get_name()}", style="display: flex; gap: 5px;"),
                             Input(type="hidden", name="location_rating", id=f"location-rating-input-{location.get_name()}"),
                             style="margin-top: 10px;"
                         ),
-                        Button("Submit Rating", hx_post=f"/rate_location/{href}", hx_encoding="multipart/form-data")
-                    ),
+                        Button("Submit Rating", hx_post=f"/rate_location/{href}", hx_encoding="multipart/form-data", hx_target="this", hx_swap="outerHTML", onclick="redirectToSamePage()"),                    ),
                     style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; margin: 10px;"
                 ) for location in article.get_locations()]
             ),
-            Script("""
-                function selectLocationStarRating(starElement, locationName) {
-                    var stars = document.querySelectorAll(`#location-star-rating-${locationName} .star`);
-                    var ratingInput = document.getElementById(`location-rating-input-${locationName}`);
+    
+            Script(f"""
+                function selectLocationStarRating(starElement, locationName) {{
+                    var stars = document.querySelectorAll(`#location-star-rating-` + locationName + ` .star`);
+                    var ratingInput = document.getElementById(`location-rating-input-` + locationName);
                     var ratingValue = starElement.getAttribute('data-value');
-
-                    stars.forEach(function(star) {
+                    
+                    // Reset all stars' color
+                    stars.forEach(function(star) {{
+                        star.style.color = '#ccc';  // Reset to default color
                         star.classList.remove('selected');
-                    });
-
-                    for (var i = 0; i < ratingValue; i++) {
+                    }});
+            
+                    // Highlight selected stars
+                    for (var i = 0; i < ratingValue; i++) {{
+                        stars[i].style.color = 'gold';  // Set selected color
                         stars[i].classList.add('selected');
-                    }
-
+                    }}
+                    
+                    // Set hidden input value
                     ratingInput.value = ratingValue;
-                }
+                }}
+                   
+                function redirectToSamePage() {{
+                    setTimeout(function() {{
+                        window.location.reload();
+                    }}, 1000); // Adjust the delay as needed
+                }}
 
-                document.addEventListener('DOMContentLoaded', function () {
-                    var locations = ${JSON.stringify([location.get_name() for location in article.get_locations()])};
-                    locations.forEach(function(locationName) {
-                        var starRatingDiv = document.getElementById(`location-star-rating-${locationName}`);
-                        for (var i = 1; i <= 5; i++) {
+                document.addEventListener('DOMContentLoaded', function () {{
+                    var locations = {json.dumps([location.get_name() for location in article.get_locations()])};
+                    locations.forEach(function(locationName) {{
+                        var starRatingDiv = document.getElementById(`location-star-rating-` + locationName);
+                        for (var i = 1; i <= 5; i++) {{
                             var star = document.createElement('span');
                             star.classList.add('star');
                             star.setAttribute('data-value', i);
                             star.innerHTML = '★';
-                            star.addEventListener('click', function() {
+                            star.style.cursor = 'pointer';
+                            star.style.fontSize = '24px';
+                            star.style.color = '#ccc';  // Default star color
+                            star.addEventListener('click', function() {{
                                 selectLocationStarRating(this, locationName);
-                            });
+                            }});
                             starRatingDiv.appendChild(star);
-                        }
-                    });
-                });
+                        }}
+                    }});
+                }});
             """),
+
+    
+            Style("""
+                .star {
+                    font-size: 2rem;
+                    cursor: pointer;
+                    color: #ccc;
+                    transition: color 0.2s ease-in-out;
+                }
+                .star.selected {
+                    color: gold;
+                }
+            """)
+            ,
+    
             style="padding: 20px; max-width: 800px; margin: auto;"
         )
+    
 
     @rt('/search')
     def get(req):
