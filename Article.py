@@ -37,7 +37,7 @@ class Location:
         }
 
 class Article:
-    __articles = []
+
 
     def __init__(self, title, href, image, description, content="", rating=0, locations=None):
         self.__title = title
@@ -52,16 +52,14 @@ class Article:
     def add_article(title, href, image_path, description, content, rating, locations=None):
         sanitized_href = href.lower().replace(" ", "-")
         new_article = Article(title, sanitized_href, image_path, description, content, rating, locations)
-        Article.__articles.append(new_article)
+        website.articles.append(new_article)
 
-    @staticmethod
-    def get_articles():
-        return Article.__articles
+    
 
     @staticmethod
     def find_article_by_href(href):
         href = href.lower()
-        return next((article for article in Article.__articles if article.get_href() == href), None)
+        return next((article for article in website.__articles if article.get_href() == href), None)
 
     def get_title(self):
         return self.__title
@@ -159,7 +157,7 @@ def register_routes(rt):
                         style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                     ),
                     style="width: 24%; display: inline-block; vertical-align: top;"
-                ) for article in Article.get_articles()],
+                ) for article in website.articles],
                 id="article-list",
                 style="width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between;"
             ),
@@ -303,7 +301,7 @@ def register_routes(rt):
         if not query:
             return P("กรุณากรอกข้อความค้นหา")
         matched_articles = [
-            article for article in Article.get_articles()
+            article for article in website.articles
             if query in article.get_title().lower() or query in article.get_description().lower()
         ]
         return Div(

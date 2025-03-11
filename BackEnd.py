@@ -12,6 +12,7 @@ class Website:
     pendingTour = []
     tour_manager = None
     promotion = None
+    articles = []
     # Store account -> List[User,Staff]
     account = []
 
