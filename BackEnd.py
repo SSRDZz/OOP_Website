@@ -193,6 +193,17 @@ class TourProgram:
     def check_id(self,id:str):
         return self.__id == id
     
+    def delta_time(self):
+        in_start = datetime.strptime(self.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
+        in_end = datetime.strptime(self.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
+        return in_end - in_start
+
+    def compare_month(self,month_in,month_out):
+        in_start = datetime.strptime(self.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
+        in_end = datetime.strptime(self.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
+        return month_in <= in_start.month <= month_out or month_in <= in_end.month <= month_out
+
+    
 
 class Travelling:
     startLoacation = None
@@ -266,11 +277,6 @@ class Staff(Account):
         super().__init__(name,password)
         print("Staff created",self.username)
 
-    def SearchPendingTour(self,tourName):
-        pass
-
-    def ConfirmTour(self,tourInstance):
-        pass
 
 
 class Payment():
@@ -366,13 +372,12 @@ class Filter:
         tours = []
         for tour in self.__tour_search:
             count = 0
-            in_start = datetime.strptime(tour.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
-            in_end = datetime.strptime(tour.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
-            time_count = in_end - in_start
+            time_count = tour.delta_time()
+            
 
             if("3-5" in self.__filter_list and 3<= time_count.days <=5):
                count+=1
-            if("sunny" in self.__filter_list and (2<=in_end.month<=5 or 2<=in_start.month<=5)):
+            if("sunny" in self.__filter_list and tour.compare_month(2,5)):
                 count +=1
             if("pro" in self.__filter_list and website.promotion.get_discount(tour) == float(10)):
                 count +=1
