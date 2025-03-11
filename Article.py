@@ -157,8 +157,8 @@ def register_routes(rt):
                     Label("Select Locations: "),
                     Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
                 ),
-                Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="/Article")
-            ) if not isinstance(website.currentUser, Staff) else None),
+                Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="redirectToSamePage()")
+            ) if isinstance(website.currentUser, Staff) else None),
             Div(
                 *[Div(
                     Card(
@@ -189,6 +189,12 @@ def register_routes(rt):
 
                     ratingInput.value = ratingValue;
                 }
+
+                function redirectToSamePage() {{
+                    setTimeout(function() {{
+                        window.location.reload();
+                    }}, 1000); // Adjust the delay as needed
+                }}
 
                 document.addEventListener('DOMContentLoaded', function () {
                     var starRatingDiv = document.getElementById('star-rating');
