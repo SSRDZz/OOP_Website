@@ -7,9 +7,6 @@ payment_status = 'complete'
 user_payment = None
 
 def register_routes(rt):
-    
-    def assignPaymentMethod(method):
-        user_payment.payment_method = method
 
     def updatePaymentMethod(method):
         global payment_status
@@ -25,7 +22,7 @@ def register_routes(rt):
     def get(booking_id: str):
         global user_payment
         current_booked = user.search_booking(booking_id)
-        assignPaymentMethod(selected_payment_method)
+        user_payment.payment_method = selected_payment_method
         
         user_payment.Pay()
         
