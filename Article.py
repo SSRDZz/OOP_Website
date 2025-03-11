@@ -11,7 +11,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Predefined locations
 predefined_locations = [
     Location("Paris", "The capital city of France, known for its art, fashion, and culture."),
-    Location("NewYork", "The largest city in the USA, known for its skyscrapers and cultural diversity."),
+    Location("New York", "The largest city in the USA, known for its skyscrapers and cultural diversity."),
     Location("Tokyo", "The capital city of Japan, known for its modernity and traditional temples."),
     Location("Sydney", "The largest city in Australia, known for its Sydney Opera House and Harbour Bridge."),
     Location("Rome", "The capital city of Italy, known for its ancient history and architecture.")
@@ -198,8 +198,8 @@ def register_routes(rt):
                         Input(type="hidden", name="location_name", value=location.get_name()),
                         Div(
                             Label("Rate this location: "),
-                            Div(id=f"location-star-rating-{location.get_name()}", style="display: flex; gap: 5px;"),
-                            Input(type="hidden", name="location_rating", id=f"location-rating-input-{location.get_name()}"),
+                            Div(id=f"location-star-rating-{location.get_name().replace(' ', '_')}", style="display: flex; gap: 5px;"),
+                            Input(type="hidden", name="location_rating", id=f"location-rating-input-{location.get_name().replace(' ', '_')}"),
                             style="margin-top: 10px;"
                         ),
                         Button("Submit Rating", hx_post=f"/rate_location/{href}", hx_encoding="multipart/form-data", hx_target="this", hx_swap="outerHTML", onclick="redirectToSamePage()"),                    ),
@@ -209,8 +209,8 @@ def register_routes(rt):
     
             Script(f"""
                 function selectLocationStarRating(starElement, locationName) {{
-                    var stars = document.querySelectorAll(`#location-star-rating-` + locationName + ` .star`);
-                    var ratingInput = document.getElementById(`location-rating-input-` + locationName);
+                    var stars = document.querySelectorAll(`#location-star-rating-` + locationName.replace(/\\s+/g, '_') + ` .star`);
+                    var ratingInput = document.getElementById(`location-rating-input-` + locationName.replace(/\\s+/g, '_'));
                     var ratingValue = starElement.getAttribute('data-value');
                     
                     // Reset all stars' color
@@ -238,7 +238,7 @@ def register_routes(rt):
                 document.addEventListener('DOMContentLoaded', function () {{
                     var locations = {json.dumps([location.get_name() for location in article.get_locations()])};
                     locations.forEach(function(locationName) {{
-                        var starRatingDiv = document.getElementById(`location-star-rating-` + locationName);
+                        var starRatingDiv = document.getElementById(`location-star-rating-` + locationName.replace(/\\s+/g, '_'));
                         for (var i = 1; i <= 5; i++) {{
                             var star = document.createElement('span');
                             star.classList.add('star');
