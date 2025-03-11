@@ -8,97 +8,6 @@ import json
 UPLOAD_FOLDER = "./Articleimage/"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
-class Location:
-    def __init__(self, name, description):
-        self.__name = name
-        self.__description = description
-        self.__ratings = []
-
-    def get_name(self):
-        return self.__name
-
-    def get_description(self):
-        return self.__description
-
-    def add_rating(self, rating):
-        if 1 <= rating <= 5:
-            self.__ratings.append(rating)
-
-    def get_average_rating(self):
-        if not self.__ratings:
-            return 0
-        return sum(self.__ratings) / len(self.__ratings)
-
-    def to_dict(self):
-        return {
-            "name": self.__name,
-            "description": self.__description,
-            "average_rating": self.get_average_rating()
-        }
-
-class Article:
-
-
-    def __init__(self, title, href, image, description, content="", rating=0, locations=None):
-        self.__title = title
-        self.__href = href
-        self.__image = image
-        self.__description = description
-        self.__content = content
-        self.__rating = rating
-        self.__locations = locations if locations else []
-
-    @staticmethod
-    def add_article(title, href, image_path, description, content, rating, locations=None):
-        sanitized_href = href.lower().replace(" ", "-")
-        new_article = Article(title, sanitized_href, image_path, description, content, rating, locations)
-        website.articles.append(new_article)
-
-    
-
-    @staticmethod
-    def find_article_by_href(href):
-        href = href.lower()
-        return next((article for article in website.articles if article.get_href() == href), None)
-
-    def get_title(self):
-        return self.__title
-
-    def get_href(self):
-        return self.__href
-
-    def get_image(self):
-        return self.__image
-
-    def get_description(self):
-        return self.__description
-
-    def get_content(self):
-        return self.__content
-
-    def get_rating(self):
-        return self.__rating
-
-    def get_locations(self):
-        return self.__locations
-
-    def to_dict(self):
-        return {
-            "title": self.__title,
-            "href": self.__href,
-            "image": self.__image,
-            "description": self.__description,
-            "content": self.__content,
-            "rating": self.__rating,
-            "locations": [location.to_dict() for location in self.__locations]
-        }
-
-# Preload some articles
-Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4)
-Article.add_article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5)
-
-
 # Predefined locations
 predefined_locations = [
     Location("Paris", "The capital city of France, known for its art, fashion, and culture."),
@@ -155,10 +64,16 @@ def register_routes(rt):
                 Textarea(name="content", placeholder="Full Content"),
                 Div(
                     Label("Select Locations: "),
-                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
+                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%; overflow-y: scroll;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
                 ),
                 Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="redirectToSamePage()")
             ) if isinstance(website.currentUser, Staff) else None),
+            Form(
+                H3("เพิ่มสถานที่ใหม่"),
+                Input(name="location_name", placeholder="Location Name"),
+                Textarea(name="location_description", placeholder="Location Description"),
+                Button("Add Location", hx_post="/add_location", onclick="redirectToSamePage()")
+            ) if isinstance(website.currentUser, Staff) else None,
             Div(
                 *[Div(
                     Card(
@@ -424,6 +339,18 @@ def register_routes(rt):
 
         location.add_rating(location_rating)
         return P("คะแนนถูกบันทึกแล้ว!", style="color: green;")
+    @rt('/add_location')
+    async def post(req):
+        form_data = await req.form()
+        location_name = form_data.get("location_name", "").strip()
+        location_description = form_data.get("location_description", "").strip()
+    
+        if not location_name or not location_description:
+            return P("กรุณากรอกชื่อและคำอธิบายของสถานที่", style="color: red;")
+    
+        new_location = Location(location_name, location_description)
+        predefined_locations.append(new_location)
+        return P("สถานที่ถูกเพิ่มแล้ว!", style="color: green;")
 
     @rt('/updates')
     def get():

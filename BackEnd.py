@@ -27,7 +27,7 @@ class Website:
     def __init__(self):
         self.tour_manager = TourManager()
         self.filter = ""
-        self.__currentUser = None     #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
+        self.__currentUser = User("testUser","123")     #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
         self.promotion = Promotion()
 
     def AddFilter(self,filter):
@@ -392,6 +392,93 @@ class Filter:
         else:
             self.__filter_list.remove(type)
             return self.filter_tour()
+
+class Location:
+    def __init__(self, name, description):
+        self.__name = name
+        self.__description = description
+        self.__ratings = []
+
+    def get_name(self):
+        return self.__name
+
+    def get_description(self):
+        return self.__description
+
+    def add_rating(self, rating):
+        if 1 <= rating <= 5:
+            self.__ratings.append(rating)
+
+    def get_average_rating(self):
+        if not self.__ratings:
+            return 0
+        return sum(self.__ratings) / len(self.__ratings)
+
+    def to_dict(self):
+        return {
+            "name": self.__name,
+            "description": self.__description,
+            "average_rating": self.get_average_rating()
+        }
+
+class Article:
+
+
+    def __init__(self, title, href, image, description, content="", rating=0, locations=None):
+        self.__title = title
+        self.__href = href
+        self.__image = image
+        self.__description = description
+        self.__content = content
+        self.__rating = rating
+        self.__locations = locations if locations else []
+
+    @staticmethod
+    def add_article(title, href, image_path, description, content, rating, locations=None):
+        sanitized_href = href.lower().replace(" ", "-")
+        new_article = Article(title, sanitized_href, image_path, description, content, rating, locations)
+        website.articles.append(new_article)
+
+    
+
+    @staticmethod
+    def find_article_by_href(href):
+        href = href.lower()
+        return next((article for article in website.articles if article.get_href() == href), None)
+
+    def get_title(self):
+        return self.__title
+
+    def get_href(self):
+        return self.__href
+
+    def get_image(self):
+        return self.__image
+
+    def get_description(self):
+        return self.__description
+
+    def get_content(self):
+        return self.__content
+
+    def get_rating(self):
+        return self.__rating
+
+    def get_locations(self):
+        if(isinstance(self.__locations, Location)):
+            return [self.__locations]
+        return self.__locations
+
+    def to_dict(self):
+        return {
+            "title": self.__title,
+            "href": self.__href,
+            "image": self.__image,
+            "description": self.__description,
+            "content": self.__content,
+            "rating": self.__rating,
+            "locations": [location.to_dict() for location in self.__locations]
+        }
     
 website = Website()
 
@@ -421,6 +508,11 @@ def create_enviroment():
     #website.create_account("testUser","123")
     #website.TryLogIn("testUser","123")
     
+    # Preload some articles
+    Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4, Location("The Alps", "A mountain range in Europe"))
+    Article.add_article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5, Location("Paris", "The capital of France"))
+
+
     #website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
     
     #print(website.SearchTour(id=1).name)
