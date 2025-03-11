@@ -128,7 +128,7 @@ class TourManager:
         if(id!=""):
             for tour in self.__tour_program: #return only one instance
                 if(tour.check_id(id)):
-                    return [tour]
+                    return tour
             else:
                 return None # ไม่เจอ 
             
