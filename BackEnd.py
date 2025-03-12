@@ -507,7 +507,8 @@ def create_enviroment():
     # Preload some articles
     Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4, Location("The Alps", "A mountain range in Europe"))
     Article.add_article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5, Location("Paris", "The capital of France"))
-
+    Article.add_article("Discovering Tokyo", "tokyo", "/Articleimage/Tokyo.jpg", "Explore the wonders of Tokyo!", "A comprehensive guide to Tokyo...", 4, Location("Tokyo", "The capital of Japan"))
+    Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4, Location("The Alps", "A mountain range in Europe"))
 
     #website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
     
