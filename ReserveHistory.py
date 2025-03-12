@@ -28,8 +28,7 @@ def register_routes(rt):
 
     def renderHistory(booked):
         status = booked.status
-        print(booked.booking_id)
-        
+                
         return Tr(
             Td(f"{booked.tour_program.name}"),
             Td(f"{booked.tour_program.time}"),

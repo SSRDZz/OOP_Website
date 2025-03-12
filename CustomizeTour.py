@@ -41,15 +41,13 @@ def register_routes(rt):
                         H3("จำนวนผู้เดินทาง"),
                         Div(
                             # ผู้ใหญ่
-                            Label("ผู้ใหญ่ 8xx บาท"),
+                            Label("ผู้ใหญ่ 800 บาท"),
                             Input(id="adult",type="number",min="0",max="100",placeholder="จำนวน"),
                             Br(),
                             # เด็ก
-                            Label("เด็ก 2xx บาท"),
+                            Label("เด็ก 200 บาท"),
                             Input(id="child",type="number",min="0",max="100",placeholder="จำนวน"),
                             Br(),
-                            # ราคารวม
-                            P("รวม: 1xxx บาท"),
                             style="margin: 10px 0;"
                         ),
                         style="margin-bottom: 20px;"
@@ -99,7 +97,7 @@ def register_routes(rt):
     def post(startDate: str, endDate: str, location: str,adult:str,child:str,fname:str,lname:str,email:str,phone:str):
         if (not startDate or not endDate or not location):
             return "Error: Missing required fields!", 400
-
+        
         try:
             # Convert string dates to datetime objects
             start_date = datetime.strptime(startDate, "%Y-%m-%d")
@@ -111,8 +109,11 @@ def register_routes(rt):
             
             if adult!="" and fname!="" and lname!="" and email!="" and phone!="":
                 if(child=="" or child == None): child = "0"
+                
+                time = f"{start_date.day}/{start_date.month}/{start_date.year} - {end_date.day}/{end_date.month}/{end_date.year}"
+                
                 data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}",str(start_date)+" - "+str(start_date))
+                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}",time)
             return Redirect("/MainPage")
 
         except ValueError:

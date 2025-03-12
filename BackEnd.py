@@ -43,11 +43,12 @@ class Website:
         return
 
     def RequestCreateTour(self,name,location, data,fname,time):
-        t = self.tour_manager.CreateCustomizedTour(name,location)
+        t = self.tour_manager.CreateCustomizedTour(name,location,time)
         print(location)
         book = Booking(t,data,str(t.id)+"_"+str(fname),self.__currentUser)
         print("name : ",t.name,"location :",t.place,data,"Id :",str(t.id)+"_"+str(fname),time)
         book.update_status = 'pending'
+        
         self.currentUser.add_booking(book)
         self.pendingTour.append(book)
 
@@ -157,8 +158,8 @@ class TourManager:
         
         return tours
 
-    def CreateCustomizedTour(self,name,location):
-        t = TourProgram(name,location)
+    def CreateCustomizedTour(self,name,location,time):
+        t = TourProgram(name,location,time)
         print("Created",name,"Id :",t.id)
         return t
     
