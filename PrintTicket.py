@@ -68,22 +68,12 @@ def register_routes(rt):
                         P(Strong("Tour: "), Span(name)),
                         P(Strong("Date: "), Span(date)),
                         P(Strong("Payment Info: "), show_payment_information(current_booked, payment)),
-                        Button("Print Ticket", Class="button print-button", onclick="document.getElementById('myModal').style.display='block'"),
+                        Button("Print Ticket", Class="button print-button", onclick="window.print()"),
                         Button("Back", Class="button back-button", onclick="window.history.back()"),
                         Class="ticket-info"
                     ),
                     Class="container"
                 ),
-                Div(
-                    Div(
-                        Div(
-                            P("Printed!!"),
-                            Button("Close", Class="button", onclick="document.getElementById('myModal').style.display='none'"),
-                            Class="modal-content"
-                        ),
-                        Class="modal", Id="myModal"
-                    )
-                )
             )
         )
         
