@@ -179,7 +179,7 @@ def register_routes(rt):
                             ),
                             Div(
                                 Label("มือถือ: "),
-                                Input(type="text",id="phone", placeholder="เบอร์มือถือ"),
+                                Input(type="tel",id="phone", placeholder="เบอร์มือถือ"),
                                 style="margin-bottom: 5px;"
                             ),
                             style="padding: 10px;"
