@@ -24,7 +24,7 @@ def register_routes(rt):
                 *buttons,
                 style="margin-left: 60vw; padding: 1px 10px;"
             ),
-            Titled("Tour Pro",
+            Titled("Tour Amateur",
                 Div(
                     Form(
                         H3("ค้นหาทัวร์สุดพิเศษ"),
