@@ -59,7 +59,7 @@ def register_routes(rt):
                 H3("เพิ่มบทความใหม่"),
                 Input(name="title", placeholder="Title"),
                 Input(name="href", placeholder="URL"),
-                Input(name="image", type="file"),
+                Input(name="image", type="file", accept="image/png, image/jpeg"),
                 Input(name="description", placeholder="Description"),
                 Textarea(name="content", placeholder="Full Content"),
                 Div(
