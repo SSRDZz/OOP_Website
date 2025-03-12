@@ -4,7 +4,7 @@ from BackEnd import *
 user = website.currentUser
 
 def register_routes(rt):
-
+    
     def show_payment_information(current_booked, payment):
         name = current_booked.data.split('|')[0].split(':')[1] + " " + current_booked.data.split('|')[1].split(':')[1]
         place = current_booked.tour_program.place

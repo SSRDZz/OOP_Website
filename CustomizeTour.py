@@ -3,11 +3,11 @@ from datetime import datetime
 from BackEnd import *  # type: ignore
 
 locations = [
-    ("bangkok", "กรุงเทพฯ"),
-    ("phuket", "ภูเก็ต"),
-    ("chiangmai", "เชียงใหม่"),
-    ("pattaya", "พัทยา"),
-    ("krabi", "กระบี่"),
+    ("Bangkok", "กรุงเทพฯ"),
+    ("Phuket", "ภูเก็ต"),
+    ("Chiangmai", "เชียงใหม่"),
+    ("Pattaya", "พัทยา"),
+    ("Krabi", "กระบี่"),
 ]
 
 def register_routes(rt):
@@ -87,10 +87,14 @@ def register_routes(rt):
             pending = website.pendingTour
             grouped_book = [pending[i:i+3] for i in range(0, len(pending), 3)]
             return Div(Button("Back",onclick = "window.location.href='/MainPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
-                        *[Grid(*[Card(H3(book.tour_program.name), 
-                                      P(book.tour_program.place) ,
-                                      Button("Confirm",hx_post=f"/confirmTour?tourId={book.booking_id}"),
-                                      Button("Deny",hx_post=f"/denyTour?tourId={book.booking_id}")) for book in group]) for group in grouped_book]
+                        *[Grid(*[Card(H3(book.tour_program.name),
+                                    P(book.tour_program.time),
+                                    P(f"Booker Name : {book.data.split('|')[0].split(':')[1]} {book.data.split('|')[1].split(':')[1]}"),
+                                    P(f"Adults : {book.data.split('|')[4].split(':')[1]}"),
+                                    P(f"Children : {book.data.split('|')[5].split(':')[1]}"),
+                                    P(f"Location : {book.tour_program.place}"),
+                                    Button("Confirm",hx_post=f"/confirmTour?tourId={book.booking_id}"),
+                                    Button("Deny",hx_post=f"/denyTour?tourId={book.booking_id}")) for book in group]) for group in grouped_book]
                         )
 
     @rt('/CreateCustomizedTour', methods=["POST"])
