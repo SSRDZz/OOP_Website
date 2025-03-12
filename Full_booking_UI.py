@@ -198,7 +198,7 @@ def register_routes(rt):
     @rt('/tour-book-result/{tour_id}')
     def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str,tour_id:str):
         # print("min")
-        if adult!="" and fname!="" and lname!="" and email!="" and phone!="":
+        if adult!="" and fname!="" and lname!="" and email!="" and phone!="" and phone.isdigit():
             if(child=="" or child == None): child = "0"
             data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
             # print(data_user)
