@@ -46,7 +46,7 @@ def register_routes(rt):
 
     @rt('/SignInBackEnd', methods=["POST"])
     def post(userName : str, password : str):
-        if website.TryLogIn(userName, password):
+        if website.try_log_in(userName, password):
             return Redirect("/MainPage")
         else:
             return Redirect("/SignInAgain")

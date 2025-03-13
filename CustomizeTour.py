@@ -13,7 +13,7 @@ locations = [
 def register_routes(rt):
     @rt('/CreatTourPage')
     def get():
-        if(isinstance(website.currentUser,User)):
+        if(isinstance(website.current_user,User)):
             return Div(Button("Back",onclick = "window.location.href='/MainPage'",
                               style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                     Titled("ทัวร์แบบจัดเอง",
@@ -84,7 +84,7 @@ def register_routes(rt):
                 ),style="background-color: #F5F7F8; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); max-width: 1200px; margin: 20px auto; text-align: center;"
             ))
         else:
-            pending = website.pendingTour
+            pending = website.pending_tour
             grouped_book = [pending[i:i+3] for i in range(0, len(pending), 3)]
             return Div(Button("Back",onclick = "window.location.href='/MainPage'",style="background-color: #FFD700; color: black; padding: 10px 20px; border: none; border-radius: 5px;"),
                         *[Grid(*[Card(H3(book.tour_program.name),
@@ -117,7 +117,7 @@ def register_routes(rt):
                 time = f"{start_date.day}/{start_date.month}/{start_date.year} - {end_date.day}/{end_date.month}/{end_date.year}"
                 
                 data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-                website.RequestCreateTour(fname+"'s Private Tour",location,data_user,f"{fname}",time)
+                website.request_create_tour(fname+"'s Private Tour",location,data_user,f"{fname}",time)
             return Redirect("/MainPage")
 
         except ValueError:
@@ -125,10 +125,10 @@ def register_routes(rt):
 
     @rt('/denyTour', methods=["POST"])
     def post(tourId : str):
-        website.DenyTour(str(tourId))
+        website.deny_tour(str(tourId))
         return Redirect('/CreatTourPage')
     
     @rt('/confirmTour', methods=["POST"])
     def post(tourId : str):
-        website.ConfirmTour(str(tourId))
+        website.confirm_tour(str(tourId))
         return Redirect('/CreatTourPage')
