@@ -67,13 +67,13 @@ def register_routes(rt):
                     Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%; overflow-y: scroll;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
                 ),
                 Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="redirectToSamePage()")
-            ) if isinstance(website.currentUser, Staff) else None),
+            ) if isinstance(website.current_user, Staff) else None),
             Form(
                 H3("เพิ่มสถานที่ใหม่"),
                 Input(name="location_name", placeholder="Location Name"),
                 Textarea(name="location_description", placeholder="Location Description"),
                 Button("Add Location", hx_post="/add_location", onclick="redirectToSamePage()")
-            ) if isinstance(website.currentUser, Staff) else None,
+            ) if isinstance(website.current_user, Staff) else None,
             Div(
                 *[Div(
                     Card(
