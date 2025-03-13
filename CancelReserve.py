@@ -6,7 +6,7 @@ def register_routes(rt):
 
     @rt("/cancel-resevation/{booking_id}")
     def get(booking_id:str):
-        current_booked = website.currentUser.search_booking(booking_id)
+        current_booked = website.current_user.search_booking(booking_id)
         
         page = Div(
             Head(

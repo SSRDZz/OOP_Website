@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from BackEnd import *
 
-user = website.currentUser
+user = website.current_user
 
 def register_routes(rt):
     
@@ -28,7 +28,7 @@ def register_routes(rt):
 
     @rt("/ticket/{booking_id}")
     def get(booking_id: str):
-        user = website.currentUser
+        user = website.current_user
         current_booked = user.search_booking(booking_id)
         payment = user.search_payment(booking_id) 
         

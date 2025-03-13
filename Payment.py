@@ -1,7 +1,7 @@
 from fasthtml.common import *
 from BackEnd import *
 
-user = website.currentUser
+user = website.current_user
 selected_payment_method = "Credit/Debit"
 payment_status = 'complete'
 user_payment = None
@@ -202,7 +202,7 @@ def register_routes(rt):
         global user_payment
         global user
         
-        user = website.currentUser
+        user = website.current_user
         current_booked = user.search_booking(booking_id)
         user_payment = user.search_payment(booking_id)
         

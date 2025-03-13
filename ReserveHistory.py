@@ -11,7 +11,7 @@ def register_routes(rt):
     register_ticket(rt)
     register_cancel(rt)
 
-    user = website.currentUser  # easier to access
+    user = website.current_user  # easier to access
     
     def updateStatus(booked, status):
         if status == "pending":
@@ -39,21 +39,21 @@ def register_routes(rt):
 
     @rt('/payment/{booking_id}/update_status_done/')
     def get(booking_id: str):
-        user = website.currentUser
+        user = website.current_user
         current_booked = user.search_booking(booking_id)    
         current_booked.update_status = "done" 
         return Redirect("/reserve-history")
 
     @rt('/cancel-resevation/{booking_id}/update_status_cancel/')
     def get(booking_id: str):
-        user = website.currentUser
+        user = website.current_user
         current_booked = user.search_booking(booking_id)
         current_booked.update_status = "canceled" 
         return Redirect("/reserve-history")
 
     @rt('/reserve-history')
     def get():
-        user = website.currentUser  # Ensure the current user is fetched here
+        user = website.current_user  # Ensure the current user is fetched here
         page = Div(
             Head(
                 Title("History Page"),
@@ -129,7 +129,7 @@ def register_routes(rt):
                             Th("พิมพ์ตั๋ว"),
                             Th("ยกเลิกการจอง")
                         ),
-                        *[renderHistory(booked) for booked in user.bookingList]
+                        *[renderHistory(booked) for booked in user.booking_list]
                     ),
                     Class="table-container"
                 ),
