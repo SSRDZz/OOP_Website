@@ -9,7 +9,7 @@ class Website:
     _instance = None
     
     # Class-level variables
-    pendingTour = []
+    pending_tour = []
     tour_manager = None
     promotion = None
     articles = []
@@ -17,7 +17,7 @@ class Website:
     account = []
 
     @property
-    def currentUser(self): return self.__currentUser
+    def current_user(self): return self.__current_user
     
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -27,7 +27,7 @@ class Website:
     def __init__(self):
         self.tour_manager = TourManager()
         self.filter = ""
-        self.__currentUser = None   #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
+        self.__current_user = None   #For Debug    #ต้องลบ User("testUser","123")   ออกตอนส่ง
         self.promotion = Promotion()
 
     def add_filter(self,filter):
@@ -42,48 +42,48 @@ class Website:
         self.account.append(Staff(username, password))
         return
 
-    def RequestCreateTour(self,name,location, data,fname,time):
-        t = self.tour_manager.CreateCustomizedTour(name,location,time)
+    def request_create_tour(self,name,location, data,fname,time):
+        t = self.tour_manager.create_customized_tour(name,location,time)
         print(location)
-        book = Booking(t,data,str(t.id)+"_"+str(fname),self.__currentUser)
+        book = Booking(t,data,str(t.id)+"_"+str(fname),self.__current_user)
         print("name : ",t.name,"location :",t.place,data,"Id :",str(t.id)+"_"+str(fname),time)
         book.update_status = 'pending'
         
-        self.currentUser.add_booking(book)
-        self.pendingTour.append(book)
+        self.current_user.add_booking(book)
+        self.pending_tour.append(book)
 
-    def SearchTour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
+    def search_tour(self,id="",place="",time=""): #ใส่ id -> instance tour | ใส่ที่เหลือ list instance
         return self.tour_manager.search_tour(id,place,time)
     
     def book_tour(self, tour_program, data,id):
-        self.__currentUser.create_booking_tour(tour_program, data,id)
+        self.__current_user.create_booking_tour(tour_program, data,id)
     
-    def SearchPendingTour(self,tourId):
-        print("Search received :",tourId)
-        for i in range(len(self.pendingTour)):
-            if(self.pendingTour[i].booking_id == tourId):
+    def search_pending_tour(self,tour_id):
+        print("Search received :",tour_id)
+        for i in range(len(self.pending_tour)):
+            if(self.pending_tour[i].booking_id == tour_id):
                 print("Found pending")
                 return i
             else:
                 continue
     
-    def ConfirmTour(self,tourId):
-        i = self.SearchPendingTour(tourId)
-        self.pendingTour[i].accept()
-        del self.pendingTour[i]
+    def confirm_tour(self,tour_id):
+        i = self.Search_pending_tour(tour_id)
+        self.pending_tour[i].accept()
+        del self.pending_tour[i]
         
 
-    def DenyTour(self,tourId):
-        print("denying_Id :",tourId)
-        i = self.SearchPendingTour(tourId)
-        self.pendingTour[i].deny()
-        del self.pendingTour[i]
+    def deny_tour(self,tour_id):
+        print("denying_Id :",tour_id)
+        i = self.search_pending_tour(tour_id)
+        self.pending_tour[i].deny()
+        del self.pending_tour[i]
         
 
-    def TryLogIn(self,username, password):
+    def try_log_in(self,username, password):
         for acc in self.account:
             if(acc.verify(username,password) == True):
-                self.__currentUser = acc
+                self.__current_user = acc
                 print("user LogIn : ",acc.username)
                 return True
             else:
@@ -91,7 +91,7 @@ class Website:
         return False
 
     def generate_tour_id(self):
-        return str(int(len(self.pendingTour))+self.tour_manager.get_tour_count()+1)
+        return str(int(len(self.pending_tour))+self.tour_manager.get_tour_count()+1)
 
 class TourManager:
     def __init__(self):
@@ -158,7 +158,7 @@ class TourManager:
         
         return tours
 
-    def CreateCustomizedTour(self,name,location,time):
+    def create_customized_tour(self,name,location,time):
         t = TourProgram(name,location,time)
         print("Created",name,"Id :",t.id)
         return t
@@ -168,7 +168,6 @@ class TourManager:
 
 class TourProgram:
     
-    Travelling = []
     def __init__(self,name,place,time = 0): # time ให้เป็น 0 ไปก่อนจะเอาไปลอง code
         self.__name = name
         self.__id = website.generate_tour_id()
@@ -236,7 +235,7 @@ class User(Account):
         super().__init__(name,password)
         print("User created :",self.username)
 
-    def RequestCreateTour(self,name,location):
+    def request_create_tour(self,name,location):
         website.RequestCreatTour(self,name,location)
 
     def create_payment(self, transaction_id:str):
@@ -247,7 +246,7 @@ class User(Account):
         self.__booking.append(new_booked)
         self.create_payment(new_booked.booking_id)
 
-    def add_booking(self,booking): # type: ignore # ตกลงทำไมไม่ย้าย func นี้ไปทำใน create_booking_tour ด้วย
+    def add_booking(self,booking): 
         self.__booking.append(booking)
         self.create_payment(booking.booking_id)
         for b in self.__booking:
@@ -298,7 +297,7 @@ class Payment():
     def calculate_price(self, adults, children):
         return (adults * 800) + (children * 200)
     
-    def Pay(self):
+    def pay(self):
         return "Success"
     
 
@@ -308,7 +307,7 @@ class Promotion:
         
     def add_tour(self, tour_id: str):
         
-        tour = website.SearchTour(tour_id)
+        tour = website.search_tour(tour_id)
         self.__discounted_tour.append(tour)
 
         return "Discount added"
@@ -396,9 +395,11 @@ class Location:
         self.__description = description
         self.__ratings = []
 
+    @property
     def get_name(self):
         return self.__name
 
+    @property
     def get_description(self):
         return self.__description
 
@@ -420,7 +421,6 @@ class Location:
 
 class Article:
 
-
     def __init__(self, title, href, image, description, content="", rating=0, locations=None):
         self.__title = title
         self.__href = href
@@ -436,28 +436,32 @@ class Article:
         new_article = Article(title, sanitized_href, image_path, description, content, rating, locations)
         website.articles.append(new_article)
 
-    
-
     @staticmethod
     def find_article_by_href(href):
         href = href.lower()
         return next((article for article in website.articles if article.get_href() == href), None)
-
+    
+    @property
     def get_title(self):
         return self.__title
 
+    @property
     def get_href(self):
         return self.__href
 
+    @property
     def get_image(self):
         return self.__image
 
+    @property
     def get_description(self):
         return self.__description
 
+    @property
     def get_content(self):
         return self.__content
 
+    @property
     def get_rating(self):
         return self.__rating
 
@@ -502,17 +506,11 @@ def create_enviroment():
 
 
     website.promotion.add_tour('1')
-    #website.create_account("testUser","123")
-    #website.TryLogIn("testUser","123")
-    
-    # Preload some articles
+
     Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4, Location("The Alps", "A mountain range in Europe"))
     Article.add_article("A Day in Paris", "paris", "/Articleimage/Paris.jpg", "Experience the beauty of Paris!", "A detailed guide to spending a day in Paris...", 5, Location("Paris", "The capital of France"))
     Article.add_article("Discovering Tokyo", "tokyo", "/Articleimage/Tokyo.jpg", "Explore the wonders of Tokyo!", "A comprehensive guide to Tokyo...", 4, Location("Tokyo", "The capital of Japan"))
     Article.add_article("Exploring the Alps", "alps", "/Articleimage/japan.jpg", "A thrilling adventure in the Alps!", "Details about the journey through the Alps...", 4, Location("The Alps", "A mountain range in Europe"))
 
-    #website.book_tour(website.SearchTour('1'),"fname:Susee|lname:Sereng|email:test@gmail.com|phone:09912323434|adult:1|child:2","1")
-    
-    #print(website.SearchTour(id=1).name)
 
 create_enviroment()

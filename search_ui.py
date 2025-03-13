@@ -69,7 +69,7 @@ def register_routes(rt):
             time = f"{start.day}/{start.month}/{start.year} - {end.day}/{end.month}/{end.year}"
             
 
-        tours = website.SearchTour(tour_id,tour_place,time)
+        tours = website.search_tour(tour_id,tour_place,time)
         if(isinstance(tours,TourProgram)):
             tours = [tours]
         website.add_filter(Filter(tours))     
