@@ -84,8 +84,8 @@ def register_routes(rt):
                 # ใช้ Flexbox + Grid ช่วยจัดเรียงการ์ดให้ดูดี
                 Div(
                     
-                    displayFilterBox(),
-                    displayTourProgram(tours),
+                    display_filter_box(),
+                    display_tour_program(tours),
                     
                     style="display: flex; justify-content: center; gap: 20px; "
                 ),
@@ -104,7 +104,7 @@ def register_routes(rt):
                           """
                           )
         
-    def displayFilterBox():
+    def display_filter_box():
         page = Div(
                         H3("Filters", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
                         H2("จำนวนวัน", style="color: #333; font-size: 24px; margin-bottom: 10px;"),
@@ -143,7 +143,7 @@ def register_routes(rt):
                     )
         return page
     
-    def displayTourProgram(tours):
+    def display_tour_program(tours):
         
         return Div(
                         *[
@@ -190,7 +190,7 @@ def register_routes(rt):
             filter_tour = website.filter.remove_filter("3-5")    
 
     
-        return displayTourProgram(filter_tour)
+        return display_tour_program(filter_tour)
     
     @rt("/filter-books-season")
     def get(request):
@@ -202,7 +202,7 @@ def register_routes(rt):
             filter_tour = website.filter.remove_filter("sunny")
 
     
-        return displayTourProgram(filter_tour)
+        return display_tour_program(filter_tour)
 
     @rt("/filter-books-promotion")
     def get(request):
@@ -214,4 +214,4 @@ def register_routes(rt):
             filter_tour = website.filter.remove_filter("pro")
 
     
-        return displayTourProgram(filter_tour)
+        return display_tour_program(filter_tour)

@@ -106,16 +106,15 @@ class TourManager:
 
     
     @staticmethod
-    def check_time(time_in,time_check):   # time format -> DD/MM/YY - DD/MM/YY
+    def check_time(time_in,tour_check_time):   # time format -> DD/MM/YY - DD/MM/YY
         
         #ค่าที่เราหา
         in_start = datetime.strptime(time_in.split(" - ")[0], '%d/%m/%Y')
         in_end = datetime.strptime(time_in.split(" - ")[1], '%d/%m/%Y')
 
         #ตัวที่ต้องการจะไปเทียบ
-        check_start = datetime.strptime(time_check.split(" - ")[0], '%d/%m/%Y')
-        check_end = datetime.strptime(time_check.split(" - ")[1], '%d/%m/%Y')
-
+        check_start, check_end = tour_check_time.change_time_to_datetime()
+   
         if(in_start>=check_start and in_end<=check_end):
             return True
 
@@ -141,11 +140,11 @@ class TourManager:
         if(time!=""):
             if(place!=""):
                 for tour in self.__tour_program:
-                    if(self.check_time(time,tour.time) and place.lower() in tour.place.lower()):
+                    if(self.check_time(time,tour) and place.lower() in tour.place.lower()):
                         tours.append(tour)
             else:
                 for tour in self.__tour_program:
-                    if(self.check_time(time,tour.time)):
+                    if(self.check_time(time,tour)):
                         tours.append(tour)
 
         elif(place!=""):
@@ -194,7 +193,7 @@ class TourProgram:
         in_start = datetime.strptime(self.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
         in_end = datetime.strptime(self.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
         return in_start,in_end
-
+#
     def compare_month(self,month_in,month_out):
         in_start,in_end = self.change_time_to_datetime()
         return month_in <= in_start.month <= month_out or month_in <= in_end.month <= month_out
