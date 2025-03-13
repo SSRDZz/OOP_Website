@@ -5,7 +5,7 @@ from BackEnd import *  # type: ignore
 def register_routes(rt):
     @rt('/MainPage')
     def get():
-        user = website.currentUser
+        user = website.current_user
         tour_list = website.tour_manager.get_all_tour()
         grouped_tours = [tour_list[i:i+3] for i in range(0, len(tour_list), 3)]
         

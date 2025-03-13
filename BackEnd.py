@@ -221,7 +221,7 @@ class Account(ABC):
 
 class User(Account):
     @property
-    def bookingList(self):
+    def booking_list(self):
         return self.__booking
     
     @property
@@ -235,7 +235,7 @@ class User(Account):
         print("User created :",self.username)
 
     def request_create_tour(self,name,location):
-        website.RequestCreatTour(self,name,location)
+        website.request_create_tour(self,name,location)
 
     def create_payment(self, transaction_id:str):
         self.__payment.append(Payment(transaction_id))
