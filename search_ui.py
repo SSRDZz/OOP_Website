@@ -1,8 +1,6 @@
 from fasthtml.common import *
 from BackEnd import *
 from datetime import datetime
-import json
-
 
 
 def register_routes(rt):
