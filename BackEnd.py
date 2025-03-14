@@ -67,7 +67,7 @@ class Website:
                 continue
     
     def confirm_tour(self,tour_id):
-        i = self.Search_pending_tour(tour_id)
+        i = self.search_pending_tour(tour_id)
         self.pending_tour[i].accept()
         del self.pending_tour[i]
         
