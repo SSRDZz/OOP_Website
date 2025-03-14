@@ -199,7 +199,7 @@ class TourProgram:
 
     def compare_day(self,day_in,day_out):
         in_start,in_end = self.change_time_to_datetime()
-        return day_in <= in_end-in_start <= day_out
+        return day_in <= (in_end-in_start).days + 1 <= day_out
 
 
 class Account(ABC):
