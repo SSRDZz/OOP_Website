@@ -8,7 +8,7 @@ user_payment = None
 
 def register_routes(rt):
 
-    def updatePaymentMethod(method):
+    def update_payment_method(method):
         global payment_status
         global selected_payment_method
         
@@ -24,7 +24,7 @@ def register_routes(rt):
         current_booked = user.search_booking(booking_id)
         user_payment.payment_method = selected_payment_method
         
-        user_payment.Pay()
+        user_payment.pay()
         
         page = Html(
             Head(
@@ -138,7 +138,7 @@ def register_routes(rt):
         )
         return page
 
-    def cdcardRender():
+    def cdcard_render():
         page = Div(
             "Enter Credit/Debit Card Details",
             Br(), Br(),
@@ -160,12 +160,12 @@ def register_routes(rt):
 
     @rt('/render-card', methods=["POST"])
     def post():
-        updatePaymentMethod("Credit/Debit")
-        return cdcardRender()
+        update_payment_method("Credit/Debit")
+        return cdcard_render()
 
     @rt('/render-bank', methods=["POST"])
     def post():
-        updatePaymentMethod("Bank Transfer")
+        update_payment_method("Bank Transfer")
         page = Div(
             H3("Bank Account Transfer Details"),
             Div(
@@ -183,7 +183,7 @@ def register_routes(rt):
 
     @rt('/render-promptQR', methods=["POST"])
     def post():
-        updatePaymentMethod("PromptPay")
+        update_payment_method("PromptPay")
         page = Div(
             H3("PromptPay Details"),
             Div(
@@ -313,7 +313,7 @@ def register_routes(rt):
                             ),
                         ),
                         Div(
-                            cdcardRender(),
+                            cdcard_render(),
                             selected_payment_method = "Credit/Debit",
                             id="showed"
                         ),
