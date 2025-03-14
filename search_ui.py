@@ -69,7 +69,7 @@ def register_routes(rt):
         tours = website.search_tour(tour_id,tour_place,time)
         if(isinstance(tours,TourProgram)):
             tours = [tours]
-        website.add_filter(Filter(tours))     
+        website.add_filter(tours)     
         # return list of tourprogram
         if(tours!=None and tours!=[]):
             #     
