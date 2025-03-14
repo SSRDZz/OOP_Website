@@ -283,7 +283,7 @@ def register_routes(rt):
             *[Div(
                 Card(
                     Img(src=article.get_image),
-                    H3(A(article.get_title, href=f"/article/{article.get_href}", style="color: #1976d2;")),
+                    H3(A(article.get_title, href=f"/Article/{article.get_href}", style="color: #1976d2;")),
                     P(article.get_description),
                     P(f"Rating: {'★' * article.get_rating}"),
                     style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
