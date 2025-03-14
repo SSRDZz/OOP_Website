@@ -364,7 +364,7 @@ class Filter:
         for tour in self.__tour_search:
             count = 0
             
-            if("3-5" in self.__filter_list and tour.compare_month(3,5)):
+            if("3-5" in self.__filter_list and tour.compare_day(3,5)):
                count+=1
             if("sunny" in self.__filter_list and tour.compare_month(2,5)):
                 count +=1
