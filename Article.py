@@ -64,7 +64,7 @@ def register_routes(rt):
                 Textarea(name="content", placeholder="Full Content"),
                 Div(
                     Label("Select Locations: "),
-                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%; overflow-y: scroll;",*[Option(loc.get_name(),value=loc.get_name()) for loc in predefined_locations]),                    
+                    Select(name="locations", multiple=True, size=5, style="margin-top: 10px; width: 100%; overflow-y: scroll;",*[Option(loc.get_name,value=loc.get_name) for loc in predefined_locations]),                    
                 ),
                 Button("Add Article", hx_post="/add_article", hx_encoding="multipart/form-data", onclick="redirectToSamePage()")
             ) if isinstance(website.current_user, Staff) else None),
@@ -77,9 +77,9 @@ def register_routes(rt):
             Div(
                 *[Div(
                     Card(
-                        Img(src=article.get_image()),
-                        H3(A(article.get_title(), href=f"/Article/{article.get_href()}", style="color: #1976d2;")),
-                        P(article.get_description()),
+                        Img(src=article.get_image),
+                        H3(A(article.get_title, href=f"/Article/{article.get_href}", style="color: #1976d2;")),
+                        P(article.get_description),
                         
                         style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                     ),
@@ -162,73 +162,73 @@ def register_routes(rt):
             return P("บทความไม่พบ", style="color: red;")
 
         return Titled(
-            article.get_title(),
+            article.get_title,
             Button(
-                                "Go Back",
-                                style="""
-                                background-color: #FFD700; 
-                                color: black;
-                                padding: 10px 20px;
-                                text-align: center;         
-                                margin-top: 20px;
-                                cursor: pointer;
-                                transition: background-color 0.3s, transform 0.3s;
-                                float: right;
-                                """,
-                                id="go-back-button",
-                                onclick="history.back()",
-                                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
-                                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
-                        ),
+                "Go Back",
+                style="""
+                background-color: #FFD700; 
+                color: black;
+                padding: 10px 20px;
+                text-align: center;         
+                margin-top: 20px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+                float: right;
+                """,
+                id="go-back-button",
+                onclick="history.back()",
+                onmouseover="this.style.backgroundColor='#FFD700';this.style.transform='scale(1.05)';",
+                onmouseout="this.style.backgroundColor='#FFD700';this.style.transform='scale(1)';",
+            ),
             Div(
-                Img(src=article.get_image(), style="width: 70%; height: 75%; display: inline-block; vertical-align: top;"),
+                Img(src=article.get_image, style="width: 70%; height: 75%; display: inline-block; vertical-align: top;"),
                 style="text-align: center; margin-bottom: 20px;"
             ),
             Div(
-                P(article.get_description(), style="font-weight: bold; margin-bottom: 20px;"),
-                P(article.get_content(), style="line-height: 1.6;"),
+                P(article.get_description, style="font-weight: bold; margin-bottom: 20px;"),
+                P(article.get_content, style="line-height: 1.6;"),
             ),
             Div(
                 H3("Locations"),
                 *[Div(
-                    H4(location.get_name()),
-                    P(location.get_description()),
+                    H4(location.get_name),
+                    P(location.get_description),
                     P(f"Average Rating: {location.get_average_rating():.2f} stars"),
                     Form(
-                        Input(type="hidden", name="location_name", value=location.get_name()),
+                        Input(type="hidden", name="location_name", value=location.get_name),
                         Div(
                             Label("Rate this location: "),
-                            Div(id=f"location-star-rating-{location.get_name().replace(' ', '_')}", style="display: flex; gap: 5px;"),
-                            Input(type="hidden", name="location_rating", id=f"location-rating-input-{location.get_name().replace(' ', '_')}"),
+                            Div(id=f"location-star-rating-{location.get_name.replace(' ', '_')}", style="display: flex; gap: 5px;"),
+                            Input(type="hidden", name="location_rating", id=f"location-rating-input-{location.get_name.replace(' ', '_')}"),
                             style="margin-top: 10px;"
                         ),
-                        Button("Submit Rating", hx_post=f"/rate_location/{href}", hx_encoding="multipart/form-data", hx_target="this", hx_swap="outerHTML", onclick="redirectToSamePage()"),                    ),
+                        Button("Submit Rating", hx_post=f"/rate_location/{href}", hx_encoding="multipart/form-data", hx_target="this", hx_swap="outerHTML", onclick="redirectToSamePage()"),
+                    ),
                     style="border: 1px solid #ccc; border-radius: 10px; padding: 10px; margin: 10px;"
                 ) for location in article.get_locations()]
             ),
-    
             Script(f"""
                 function selectLocationStarRating(starElement, locationName) {{
                     var stars = document.querySelectorAll(`#location-star-rating-` + locationName.replace(/\\s+/g, '_') + ` .star`);
                     var ratingInput = document.getElementById(`location-rating-input-` + locationName.replace(/\\s+/g, '_'));
                     var ratingValue = starElement.getAttribute('data-value');
-                    
+
                     // Reset all stars' color
                     stars.forEach(function(star) {{
                         star.style.color = '#ccc';  // Reset to default color
                         star.classList.remove('selected');
                     }});
-            
+
                     // Highlight selected stars
                     for (var i = 0; i < ratingValue; i++) {{
                         stars[i].style.color = 'gold';  // Set selected color
                         stars[i].classList.add('selected');
                     }}
-                    
+
                     // Set hidden input value
                     ratingInput.value = ratingValue;
                 }}
-                   
+
                 function redirectToSamePage() {{
                     setTimeout(function() {{
                         window.location.reload();
@@ -236,7 +236,7 @@ def register_routes(rt):
                 }}
 
                 document.addEventListener('DOMContentLoaded', function () {{
-                    var locations = {json.dumps([location.get_name() for location in article.get_locations()])};
+                    var locations = {json.dumps([location.get_name for location in article.get_locations()])};
                     locations.forEach(function(locationName) {{
                         var starRatingDiv = document.getElementById(`location-star-rating-` + locationName.replace(/\\s+/g, '_'));
                         for (var i = 1; i <= 5; i++) {{
@@ -255,8 +255,6 @@ def register_routes(rt):
                     }});
                 }});
             """),
-
-    
             Style("""
                 .star {
                     font-size: 2rem;
@@ -267,9 +265,7 @@ def register_routes(rt):
                 .star.selected {
                     color: gold;
                 }
-            """)
-            ,
-    
+            """),
             style="padding: 20px; max-width: 800px; margin: auto;"
         )
     

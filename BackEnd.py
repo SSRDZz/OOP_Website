@@ -437,7 +437,7 @@ class Article:
     @staticmethod
     def find_article_by_href(href):
         href = href.lower()
-        return next((article for article in website.articles if article.get_href() == href), None)
+        return next((article for article in website.articles if article.get_href == href), None)
     
     @property
     def get_title(self):
