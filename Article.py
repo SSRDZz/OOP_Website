@@ -277,15 +277,15 @@ def register_routes(rt):
             return P("กรุณากรอกข้อความค้นหา")
         matched_articles = [
             article for article in website.articles
-            if query in article.get_title().lower() or query in article.get_description().lower()
+            if query in article.get_title.lower() or query in article.get_description.lower()
         ]
         return Div(
             *[Div(
                 Card(
-                    Img(src=article.get_image()),
-                    H3(A(article.get_title(), href=f"/article/{article.get_href()}", style="color: #1976d2;")),
-                    P(article.get_description()),
-                    P(f"Rating: {'★' * article.get_rating()}"),
+                    Img(src=article.get_image),
+                    H3(A(article.get_title, href=f"/article/{article.get_href}", style="color: #1976d2;")),
+                    P(article.get_description),
+                    P(f"Rating: {'★' * article.get_rating}"),
                     style="border: 2px solid #2196f3; border-radius: 10px; padding: 20px; margin: 10px;"
                 ),
                 style="width: 24%; display: inline-block; vertical-align: top;"
@@ -313,7 +313,7 @@ def register_routes(rt):
             with open(image_path, "wb") as f:
                 f.write(await uploaded_image.read())
             image_url = f"/Articleimage/{image_filename}"
-            location_objects = [loc for loc in predefined_locations if loc.get_name() in selected_locations]
+            location_objects = [loc for loc in predefined_locations if loc.get_name in selected_locations]
             Article.add_article(title, href, image_url, description, content, int(rating), location_objects)
             return P("บทความถูกเพิ่มแล้ว!", style="color: green;")
         except Exception as e:
@@ -329,7 +329,7 @@ def register_routes(rt):
         if not article:
             return P("บทความไม่พบ", style="color: red;")
 
-        location = next((loc for loc in article.get_locations() if loc.get_name() == location_name), None)
+        location = next((loc for loc in article.get_locations() if loc.get_name == location_name), None)
         if not location:
             return P("ไม่พบสถานที่", style="color: red;")
 
