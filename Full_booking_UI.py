@@ -198,21 +198,28 @@ def register_routes(rt):
     @rt('/tour-book-result/{tour_id}')
     def get(adult:str,child:str,fname:str,lname:str,email:str,phone:str,tour_id:str):
         # print("min")
-        if adult!="" and fname!="" and lname!="" and email!="" and phone!="" and phone.isdigit():
-            if(child=="" or child == None): child = "0"
-            data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
-            # print(data_user)
-            id = f"{tour_id}_{fname}"
-            website.book_tour(website.search_tour(id=tour_id), data_user, id)
+        try:
+            if adult!="" and fname!="" and lname!="" and email!="" and phone!="" and phone.isdigit():
+                if(child=="" or child == None): child = "0"
+                data_user = f"fname:{fname}|lname:{lname}|email:{email}|phone:{phone}|adult:{adult}|child:{child}"
+                # print(data_user)
+                id = f"{tour_id}_{fname}"
+                website.book_tour(website.search_tour(id=tour_id), data_user, id)
+                return Script(f"""
+                            alert('Success');
+                            window.location.href='/MainPage';
+                            """
+                            )
+            else :
+                return Script(f"""
+                            alert('Please Input again');
+                            window.location.href='/tour-book/{tour_id}';
+                            """
+                            )
+        except:
             return Script(f"""
-                          alert('Success');
-                          window.location.href='/MainPage';
-                          """
-                          )
-        else :
-            return Script(f"""
-                          alert('Please Input again');
-                          window.location.href='/tour-book/{tour_id}';
-                          """
-                          )
+                            alert('Please Login again');
+                            window.location.href='/';
+                            """
+                            )
            

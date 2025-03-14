@@ -115,7 +115,7 @@ class TourManager:
         #ตัวที่ต้องการจะไปเทียบ
         check_start, check_end = tour_check_time.change_time_to_datetime()
    
-        if(in_start>=check_start and in_end<=check_end):
+        if(in_start>=check_start and in_end<=check_end): #เช็คว่าอยู่ในช่วงไหม
             return True
 
         return False           
@@ -193,7 +193,7 @@ class TourProgram:
         in_start = datetime.strptime(self.time.replace(" ", "").split("-")[0], '%d/%m/%Y')
         in_end = datetime.strptime(self.time.replace(" ", "").split("-")[1], '%d/%m/%Y')
         return in_start,in_end
-#
+
     def compare_month(self,month_in,month_out):
         in_start,in_end = self.change_time_to_datetime()
         return month_in <= in_start.month <= month_out or month_in <= in_end.month <= month_out

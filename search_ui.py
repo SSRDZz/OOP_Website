@@ -2,7 +2,6 @@ from fasthtml.common import *
 from BackEnd import *
 from datetime import datetime
 
-
 def register_routes(rt):
     @rt('/search-tour')
     def get():
@@ -48,7 +47,7 @@ def register_routes(rt):
 
         else:
             check = 0 # check ว่าใส่มากี่ค่า
-            if(tour_time_go==""): 
+            if(tour_time_go==""): #ถ้าไม่ใส่เวลาเริ่ม จะ set ให้ค่าเยอะๆ
                 tour_time_go = "9999-12-31"
                 check+=1
             if(tour_time_end==""): 
