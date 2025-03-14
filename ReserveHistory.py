@@ -114,28 +114,29 @@ def register_routes(rt):
                     }
                 """)
             ),
-            Div(
-                Div("History", Class="title"),
-                Button("Back to Main Page", Class="back-button", onclick="location.href='/MainPage'"),
-                Class="header"
-            ),
-            Div(
+            Body(
                 Div(
-                    Table(
-                        Tr(
-                            Th("Tour"),
-                            Th("Date"),
-                            Th("Status"),
-                            Th("พิมพ์ตั๋ว"),
-                            Th("ยกเลิกการจอง")
-                        ),
-                        *[renderHistory(booked) for booked in user.booking_list]
-                    ),
-                    Class="table-container"
+                    Div("History", Class="title"),
+                    Button("Back to Main Page", Class="back-button", onclick="location.href='/MainPage'"),
+                    Class="header"
                 ),
-                style="margin: 15px; position: relative;"
-            ),
-            style="height : 100vh"
-        
+                Div(
+                    Div(
+                        Table(
+                            Tr(
+                                Th("Tour"),
+                                Th("Date"),
+                                Th("Status"),
+                                Th("พิมพ์ตั๋ว"),
+                                Th("ยกเลิกการจอง")
+                            ),
+                            *[renderHistory(booked) for booked in user.booking_list]
+                        ),
+                        Class="table-container"
+                    ),
+                    style="margin: 15px; position: relative;"
+                ),
+                style="height : 100vh"
+            )
         )
         return page
